@@ -9,6 +9,13 @@ plugins:
 
 nav:
   - 'Welcome': "index.md"
+  - '系统基础设施优化':
+    - '第一节 代码让CPU执行得更快 — CPU缓存' : 'chap1/1CPU_Cache.md'
+    - '第二节 内存池提升内存分配的效率' : 'chap1/2Mem_Pool.md'
+    - '第三节 哈希表利用索引管理亿级对象' : 'chap1/3Hash_index.md'
+    - '第四节 磁盘高效地传输文件零拷贝：PageCache' : 'chap1/4PageCache.md'
+    - '第五节 协程快速地实现高并发服务：Coroutine' : 'chap1/5Coroutine.md'
+    - '第六节 据业务场景选择合适的锁' : 'chap1/4PageCache.md'
 
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
 repo_name: "jxperfbook"
@@ -22,8 +29,8 @@ theme:
   feature:
     tabs: false
   palette:
-    primary: 'deep orange'
-    accent: 'deep orange'
+    primary: 'light green'
+    accent: 'light green'
   i18n:
     prev: 'Previous'
     next: 'Next'
