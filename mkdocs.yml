@@ -23,7 +23,7 @@ nav:
     - '第四节 提升TCP四次挥手的性能' : 'chap2/4tcpshutdown.md'
     - '第五节 TCP缓冲区兼顾并发数量与传输速度' : 'chap2/5tcpchachepool.md'
     - '第六节 调整TCP拥塞控制的性能' : 'chap2/6tcpcongestion.md'
-  - '分布式系统优化'
+  - '分布式系统优化':
     - '第一节 通过监控找到性能瓶颈': 'chap3/1Mon_perf.md'
     - '第二节 舍弃一致性去换取性能的CAP理论': 'chap3/2perf_cap.md'
     
