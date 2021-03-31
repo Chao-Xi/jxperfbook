@@ -34,6 +34,11 @@ nav:
     - '第八节 消息队列基于异步消息提升性能': 'chap3/8message_queue.md'
     - '第九节 MapReduce通过集群实现离线计算': 'chap3/9map_reduce.md'
     - '第十节 权衡关系数据库与NoSQL数据库': 'chap3/10DB_choice.md'
+  - 'IT运维面试问题总结':
+    - '第一节 IT运维面试问题总结- Linux基础' : 'chap4/1Linux.md'
+    - '第二节 IT运维面试问题总结-基础服务、磁盘管理、虚拟平台和系统管理' : 'chap4/2Linux_SVC.md'
+    - '第三节 IT运维面试问题总结-运维工具、开源应用(Ceph、Docker、Apache、Nginx等)' : 'chap4/3Linux_tools.md'
+
 
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
 repo_name: "jxperfbook"
