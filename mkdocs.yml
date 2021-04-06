@@ -38,6 +38,9 @@ nav:
     - '第一节 IT运维面试问题总结- Linux基础' : 'chap4/1Linux.md'
     - '第二节 IT运维面试问题总结-基础服务、磁盘管理、虚拟平台和系统管理' : 'chap4/2Linux_SVC.md'
     - '第三节 IT运维面试问题总结-运维工具、开源应用(Ceph、Docker、Apache、Nginx等)' : 'chap4/3Linux_tools.md'
+    - '第四节 IT运维面试问题总结-数据库、监控、网络管理' : 'chap4/4Linux_db_dia.md'
+    - '第五节 IT运维面试问题总结-简述Etcd、Kubernetes、Lvs、HAProxy等' : 'chap4/5k8s_OpenShift.md'
+    - '第六节 Python面试' : 'chap4/6Py_interview.md'
 
 
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
