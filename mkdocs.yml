@@ -41,7 +41,7 @@ nav:
     - '第四节 IT运维面试问题总结-数据库、监控、网络管理' : 'chap4/4Linux_db_dia.md'
     - '第五节 IT运维面试问题总结-简述Etcd、Kubernetes、Lvs、HAProxy等' : 'chap4/5k8s_OpenShift.md'
     - '第六节 Python面试' : 'chap4/6Py_interview.md'
-  - 'Python 面试题与总结'：
+  - 'Python 面试题与总结':
     - '1、Apple Interview(3Sum)': 'chap5/1Apple_3sum.md'
     - '2、Python Interview': 'chap5/2Python_interview.md'
     - '3、Longest substring': 'chap5/3GS_longest_substr.md'
