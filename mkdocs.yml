@@ -52,10 +52,13 @@ nav:
     - '8、GS Interview': 'chap5/8gs_interview.md'
     - '9、Find substring inside String': 'chap5/9Substring.md'
     - '10、Reverse String': 'chap5/10reverse_string.md'
+  - 'Linux 面试题与总结':
+    - 'L1 1min 内对 Linux 进行性能诊断': 'chap6/1Linux_perf.md'
+    - 'L2 当面试官问你load average时，怎么回答？': 'chap6/2Linux_load_avg.md'
+    - 'L3 文件系统inode': 'chap6/3Linux_inode.md'
+    - 'L4 运维必须掌握的Linux面试题': 'chap6/4Linux_ops_int.md'
     
-
-
-
+    
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
 repo_name: "jxperfbook"
 
