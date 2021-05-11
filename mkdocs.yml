@@ -57,6 +57,7 @@ nav:
     - 'L2 当面试官问你load average时，怎么回答？': 'chap6/2Linux_load_avg.md'
     - 'L3 文件系统inode': 'chap6/3Linux_inode.md'
     - 'L4 运维必须掌握的Linux面试题': 'chap6/4Linux_ops_int.md'
+    - 'L5 常见网络编程面试题': 'chap6/5Linux_network_int.md'
     
     
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
