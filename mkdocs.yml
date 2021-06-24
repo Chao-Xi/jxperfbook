@@ -43,6 +43,7 @@ nav:
     - '第六节 Python面试' : 'chap4/6Py_interview.md'
     - '第七节 prometheus：要点总结及面试': 'chap4/7Pro_interview.md'
     - 'L8 Data Analyst Interview': 'chap4/8Data_ana_interview1.md'
+    - '第八节 分析岗笔试/面试知识点': 'chap4/8Data_ana_interview2.md'
   - 'Python 面试题与总结':
     - '1、Apple Interview(3Sum)': 'chap5/1Apple_3sum.md'
     - '2、Python Interview': 'chap5/2Python_interview.md'
