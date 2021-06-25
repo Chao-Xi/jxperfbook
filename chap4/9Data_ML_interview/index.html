@@ -1,0 +1,2043 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Jacob's 系统性能&Linux调优技术与实战教程">
+      
+      
+      
+        <meta name="author" content="Jacob Xi">
+      
+      
+        <link rel="canonical" href="https://chao-xi.github.io/jxperfbook/chap4/9Data_ML_interview/">
+      
+      <link rel="icon" href="../../images/logo.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.8">
+    
+    
+      
+        <title>L9 Top 50 Machine Learning Interview Questions & Answers - Jacob Performance&Linux Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#8bc34b">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="light-green" data-md-color-accent="light-green">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#l9-top-50-machine-learning-interview-questions-answers" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Jacob Performance&amp;Linux Book" class="md-header__button md-logo" aria-label="Jacob Performance&Linux Book" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Jacob Performance&Linux Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              L9 Top 50 Machine Learning Interview Questions & Answers
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/Chao-Xi/jxperfbook.git/" title="前往 GitHub 仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jxperfbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Jacob Performance&amp;Linux Book" class="md-nav__button md-logo" aria-label="Jacob Performance&Linux Book" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    Jacob Performance&Linux Book
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/Chao-Xi/jxperfbook.git/" title="前往 GitHub 仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jxperfbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Welcome
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
+        系统基础设施优化
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="系统基础设施优化" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          系统基础设施优化
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/1CPU_Cache/" class="md-nav__link">
+        第一节 代码让CPU执行得更快 — CPU缓存
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/2Mem_Pool/" class="md-nav__link">
+        第二节 内存池提升内存分配的效率
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/3Hash_index/" class="md-nav__link">
+        第三节 哈希表利用索引管理亿级对象
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/4PageCache/" class="md-nav__link">
+        第四节 磁盘高效地传输文件零拷贝：PageCache
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/5Coroutine/" class="md-nav__link">
+        第五节 协程快速地实现高并发服务：Coroutine
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/6Locks/" class="md-nav__link">
+        第六节 据业务场景选择合适的锁
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      <label class="md-nav__link" for="__nav_3">
+        系统层网络优化
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="系统层网络优化" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          系统层网络优化
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/1broadcast_network/" class="md-nav__link">
+        第一节 一对多通讯如何实现
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/2C10M/" class="md-nav__link">
+        第二节 C10M是如何实现事件驱动
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/3tcp3shakehand/" class="md-nav__link">
+        第三节 提升TCP三次握手的性能
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/4tcpshutdown/" class="md-nav__link">
+        第四节 提升TCP四次挥手的性能
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/5tcpchachepool/" class="md-nav__link">
+        第五节 TCP缓冲区兼顾并发数量与传输速度
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/6tcpcongestion/" class="md-nav__link">
+        第六节 调整TCP拥塞控制的性能
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        分布式系统优化
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="分布式系统优化" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          分布式系统优化
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/1Mon_perf/" class="md-nav__link">
+        第一节 通过监控找到性能瓶颈
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/2perf_cap/" class="md-nav__link">
+        第二节 舍弃一致性去换取性能的CAP理论
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/3perf_akf/" class="md-nav__link">
+        第三节 AKF立方体可扩展性来提高性能
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/4perf_nwr/" class="md-nav__link">
+        第四节 NWR算法修改读写模型以提升性能
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/5nginx_openresty/" class="md-nav__link">
+        第五节 负载均衡：选择Nginx还是OpenResty
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/6hash_consistent/" class="md-nav__link">
+        第六节 一致性哈希的均衡负载
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/7cache_expire/" class="md-nav__link">
+        第七节 过期缓存防止缓存被流量打穿
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/8message_queue/" class="md-nav__link">
+        第八节 消息队列基于异步消息提升性能
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/9map_reduce/" class="md-nav__link">
+        第九节 MapReduce通过集群实现离线计算
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/10DB_choice/" class="md-nav__link">
+        第十节 权衡关系数据库与NoSQL数据库
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      <label class="md-nav__link" for="__nav_5">
+        IT运维面试问题总结
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="IT运维面试问题总结" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          IT运维面试问题总结
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1Linux/" class="md-nav__link">
+        第一节 IT运维面试问题总结- Linux基础
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2Linux_SVC/" class="md-nav__link">
+        第二节 IT运维面试问题总结-基础服务、磁盘管理、虚拟平台和系统管理
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3Linux_tools/" class="md-nav__link">
+        第三节 IT运维面试问题总结-运维工具、开源应用(Ceph、Docker、Apache、Nginx等)
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4Linux_db_dia/" class="md-nav__link">
+        第四节 IT运维面试问题总结-数据库、监控、网络管理
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5k8s_OpenShift/" class="md-nav__link">
+        第五节 IT运维面试问题总结-简述Etcd、Kubernetes、Lvs、HAProxy等
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6Py_interview/" class="md-nav__link">
+        第六节 Python面试
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7Pro_interview/" class="md-nav__link">
+        第七节 prometheus：要点总结及面试
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8Data_ana_interview1/" class="md-nav__link">
+        L8 Data Analyst Interview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8Data_ana_interview2/" class="md-nav__link">
+        第八节 分析岗笔试/面试知识点
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          L9 Top 50 Machine Learning Interview Questions & Answers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        L9 Top 50 Machine Learning Interview Questions & Answers
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-is-machine-learning" class="md-nav__link">
+    1) What is Machine learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-mention-the-difference-between-data-mining-and-machine-learning" class="md-nav__link">
+    2) Mention the difference between Data Mining and Machine learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-what-is-overfitting-in-machine-learning" class="md-nav__link">
+    3) What is ‘Overfitting’ in Machine learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-why-overfitting-happens" class="md-nav__link">
+    4) Why overfitting happens?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-how-can-you-avoid-overfitting" class="md-nav__link">
+    5) How can you avoid overfitting ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-what-is-inductive-machine-learning" class="md-nav__link">
+    6) What is inductive machine learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-what-are-the-five-popular-algorithms-of-machine-learning" class="md-nav__link">
+    7) What are the five popular algorithms of Machine Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-what-are-the-different-algorithm-techniques-in-machine-learning" class="md-nav__link">
+    8) What are the different Algorithm techniques in Machine Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-what-are-the-three-stages-to-build-the-hypotheses-or-model-in-machine-learning" class="md-nav__link">
+    9) What are the three stages to build the hypotheses or model in machine learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-what-is-the-standard-approach-to-supervised-learning" class="md-nav__link">
+    10) What is the standard approach to supervised learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-what-is-training-set-and-test-set" class="md-nav__link">
+    11) What is ‘Training set’ and ‘Test set’?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-list-down-various-approaches-for-machine-learning" class="md-nav__link">
+    12) List down various approaches for machine learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-what-is-not-machine-learning" class="md-nav__link">
+    13) What is not Machine Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-explain-what-is-the-function-of-unsupervised-learning" class="md-nav__link">
+    14) Explain what is the function of ‘Unsupervised Learning’?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-explain-what-is-the-function-of-supervised-learning" class="md-nav__link">
+    15) Explain what is the function of ‘Supervised Learning’?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-what-is-algorithm-independent-machine-learning" class="md-nav__link">
+    16) What is algorithm independent machine learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-what-is-the-difference-between-artificial-learning-and-machine-learning" class="md-nav__link">
+    17) What is the difference between artificial learning and machine learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-what-is-classifier-in-machine-learning" class="md-nav__link">
+    18) What is classifier in machine learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-what-are-the-advantages-of-naive-bayes" class="md-nav__link">
+    19) What are the advantages of Naive Bayes?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-in-what-areas-pattern-recognition-is-used" class="md-nav__link">
+    20) In what areas Pattern Recognition is used?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-what-is-genetic-programming" class="md-nav__link">
+    21) What is Genetic Programming?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-what-is-inductive-logic-programming-in-machine-learning" class="md-nav__link">
+    22) What is Inductive Logic Programming in Machine Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-what-is-model-selection-in-machine-learning" class="md-nav__link">
+    23) What is Model Selection in Machine Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-what-are-the-two-methods-used-for-the-calibration-in-supervised-learning" class="md-nav__link">
+    24) What are the two methods used for the calibration in Supervised Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-which-method-is-frequently-used-to-prevent-overfitting" class="md-nav__link">
+    25) Which method is frequently used to prevent overfitting?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#26-what-is-the-difference-between-heuristic-for-rule-learning-and-heuristics-for-decision-trees" class="md-nav__link">
+    26) What is the difference between heuristic for rule learning and heuristics for decision trees?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#27-what-is-perceptron-in-machine-learning" class="md-nav__link">
+    27) What is Perceptron in Machine Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#28-explain-the-two-components-of-bayesian-logic-program" class="md-nav__link">
+    28) Explain the two components of Bayesian logic program?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#29-what-are-bayesian-networks-bn" class="md-nav__link">
+    29) What are Bayesian Networks (BN) ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30-why-instance-based-learning-algorithm-sometimes-referred-as-lazy-learning-algorithm" class="md-nav__link">
+    30) Why instance based learning algorithm sometimes referred as Lazy learning algorithm?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#31-what-are-the-two-classification-methods-that-svm-support-vector-machine-can-handle" class="md-nav__link">
+    31) What are the two classification methods that SVM ( Support Vector Machine) can handle?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32-what-is-ensemble-learning" class="md-nav__link">
+    32) What is ensemble learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33-why-ensemble-learning-is-used" class="md-nav__link">
+    33) Why ensemble learning is used?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34-when-to-use-ensemble-learning" class="md-nav__link">
+    34) When to use ensemble learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#35-what-are-the-two-paradigms-of-ensemble-methods" class="md-nav__link">
+    35) What are the two paradigms of ensemble methods?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#36-what-is-the-general-principle-of-an-ensemble-method-and-what-is-bagging-and-boosting-in-ensemble-method" class="md-nav__link">
+    36) What is the general principle of an ensemble method and what is bagging and boosting in ensemble method?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#37-what-is-bias-variance-decomposition-of-classification-error-in-ensemble-method" class="md-nav__link">
+    37) What is bias-variance decomposition of classification error in ensemble method?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#38-what-is-an-incremental-learning-algorithm-in-ensemble" class="md-nav__link">
+    38) What is an Incremental Learning algorithm in ensemble?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#39-what-is-pca-kpca-and-ica-used-for" class="md-nav__link">
+    39) What is PCA, KPCA and ICA used for?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#40-what-is-dimension-reduction-in-machine-learning" class="md-nav__link">
+    40) What is dimension reduction in Machine Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#41-what-are-support-vector-machines" class="md-nav__link">
+    41) What are support vector machines?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#42-what-are-the-components-of-relational-evaluation-techniques" class="md-nav__link">
+    42) What are the components of relational evaluation techniques?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#43-what-are-the-different-methods-for-sequential-supervised-learning" class="md-nav__link">
+    43) What are the different methods for Sequential Supervised Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#44-what-are-the-areas-in-robotics-and-information-processing-where-sequential-prediction-problem-arises" class="md-nav__link">
+    44) What are the areas in robotics and information processing where sequential prediction problem arises?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#45-what-is-batch-statistical-learning" class="md-nav__link">
+    45) What is batch statistical learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#46-what-is-pac-learning" class="md-nav__link">
+    46)   What is PAC Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#47-what-are-the-different-categories-you-can-categorized-the-sequence-learning-process" class="md-nav__link">
+    47) What are the different categories you can categorized the sequence learning process?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#48-what-is-sequence-learning" class="md-nav__link">
+    48) What is sequence learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#49-what-are-two-techniques-of-machine-learning" class="md-nav__link">
+    49) What are two techniques of Machine Learning ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#50-give-a-popular-application-of-machine-learning-that-you-see-on-day-to-day-basis" class="md-nav__link">
+    50) Give a popular application of machine learning that you see on day to day basis?
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10Deep_learning/" class="md-nav__link">
+        L10 30 Frequently asked Deep Learning Interview
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      <label class="md-nav__link" for="__nav_6">
+        Python 面试题与总结
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Python 面试题与总结" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Python 面试题与总结
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/1Apple_3sum/" class="md-nav__link">
+        1、Apple Interview(3Sum)
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/2Python_interview/" class="md-nav__link">
+        2、Python Interview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/3GS_longest_substr/" class="md-nav__link">
+        3、Longest substring
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/4GS_remove_sort_list/" class="md-nav__link">
+        4、Remove duplicate in Sort List
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/5Sort_list/" class="md-nav__link">
+        5、Reverse Sort List
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/6RM_dup_dict/" class="md-nav__link">
+        6、Remove duplicate from dictionary
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/7Find_max/" class="md-nav__link">
+        7、Find Maxmium number count in list and nth number
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/8gs_interview/" class="md-nav__link">
+        8、GS Interview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/9Substring/" class="md-nav__link">
+        9、Find substring inside String
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/10reverse_string/" class="md-nav__link">
+        10、Reverse String
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/11zeroinN/" class="md-nav__link">
+        11、Count how many zero in N!
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/12JumpGame/" class="md-nav__link">
+        12、Jump Game
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+      
+      <label class="md-nav__link" for="__nav_7">
+        Linux 面试题与总结
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Linux 面试题与总结" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Linux 面试题与总结
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/1Linux_perf/" class="md-nav__link">
+        L1 1min 内对 Linux 进行性能诊断
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/2Linux_load_avg/" class="md-nav__link">
+        L2 当面试官问你load average时，怎么回答？
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/3Linux_inode/" class="md-nav__link">
+        L3 文件系统inode
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/4Linux_ops_int/" class="md-nav__link">
+        L4 运维必须掌握的Linux面试题
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/5Linux_network_int/" class="md-nav__link">
+        L5 常见网络编程面试题
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-is-machine-learning" class="md-nav__link">
+    1) What is Machine learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-mention-the-difference-between-data-mining-and-machine-learning" class="md-nav__link">
+    2) Mention the difference between Data Mining and Machine learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-what-is-overfitting-in-machine-learning" class="md-nav__link">
+    3) What is ‘Overfitting’ in Machine learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-why-overfitting-happens" class="md-nav__link">
+    4) Why overfitting happens?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-how-can-you-avoid-overfitting" class="md-nav__link">
+    5) How can you avoid overfitting ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-what-is-inductive-machine-learning" class="md-nav__link">
+    6) What is inductive machine learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-what-are-the-five-popular-algorithms-of-machine-learning" class="md-nav__link">
+    7) What are the five popular algorithms of Machine Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-what-are-the-different-algorithm-techniques-in-machine-learning" class="md-nav__link">
+    8) What are the different Algorithm techniques in Machine Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-what-are-the-three-stages-to-build-the-hypotheses-or-model-in-machine-learning" class="md-nav__link">
+    9) What are the three stages to build the hypotheses or model in machine learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-what-is-the-standard-approach-to-supervised-learning" class="md-nav__link">
+    10) What is the standard approach to supervised learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-what-is-training-set-and-test-set" class="md-nav__link">
+    11) What is ‘Training set’ and ‘Test set’?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-list-down-various-approaches-for-machine-learning" class="md-nav__link">
+    12) List down various approaches for machine learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-what-is-not-machine-learning" class="md-nav__link">
+    13) What is not Machine Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-explain-what-is-the-function-of-unsupervised-learning" class="md-nav__link">
+    14) Explain what is the function of ‘Unsupervised Learning’?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-explain-what-is-the-function-of-supervised-learning" class="md-nav__link">
+    15) Explain what is the function of ‘Supervised Learning’?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-what-is-algorithm-independent-machine-learning" class="md-nav__link">
+    16) What is algorithm independent machine learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-what-is-the-difference-between-artificial-learning-and-machine-learning" class="md-nav__link">
+    17) What is the difference between artificial learning and machine learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-what-is-classifier-in-machine-learning" class="md-nav__link">
+    18) What is classifier in machine learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-what-are-the-advantages-of-naive-bayes" class="md-nav__link">
+    19) What are the advantages of Naive Bayes?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-in-what-areas-pattern-recognition-is-used" class="md-nav__link">
+    20) In what areas Pattern Recognition is used?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-what-is-genetic-programming" class="md-nav__link">
+    21) What is Genetic Programming?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-what-is-inductive-logic-programming-in-machine-learning" class="md-nav__link">
+    22) What is Inductive Logic Programming in Machine Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-what-is-model-selection-in-machine-learning" class="md-nav__link">
+    23) What is Model Selection in Machine Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-what-are-the-two-methods-used-for-the-calibration-in-supervised-learning" class="md-nav__link">
+    24) What are the two methods used for the calibration in Supervised Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-which-method-is-frequently-used-to-prevent-overfitting" class="md-nav__link">
+    25) Which method is frequently used to prevent overfitting?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#26-what-is-the-difference-between-heuristic-for-rule-learning-and-heuristics-for-decision-trees" class="md-nav__link">
+    26) What is the difference between heuristic for rule learning and heuristics for decision trees?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#27-what-is-perceptron-in-machine-learning" class="md-nav__link">
+    27) What is Perceptron in Machine Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#28-explain-the-two-components-of-bayesian-logic-program" class="md-nav__link">
+    28) Explain the two components of Bayesian logic program?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#29-what-are-bayesian-networks-bn" class="md-nav__link">
+    29) What are Bayesian Networks (BN) ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30-why-instance-based-learning-algorithm-sometimes-referred-as-lazy-learning-algorithm" class="md-nav__link">
+    30) Why instance based learning algorithm sometimes referred as Lazy learning algorithm?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#31-what-are-the-two-classification-methods-that-svm-support-vector-machine-can-handle" class="md-nav__link">
+    31) What are the two classification methods that SVM ( Support Vector Machine) can handle?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32-what-is-ensemble-learning" class="md-nav__link">
+    32) What is ensemble learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33-why-ensemble-learning-is-used" class="md-nav__link">
+    33) Why ensemble learning is used?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34-when-to-use-ensemble-learning" class="md-nav__link">
+    34) When to use ensemble learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#35-what-are-the-two-paradigms-of-ensemble-methods" class="md-nav__link">
+    35) What are the two paradigms of ensemble methods?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#36-what-is-the-general-principle-of-an-ensemble-method-and-what-is-bagging-and-boosting-in-ensemble-method" class="md-nav__link">
+    36) What is the general principle of an ensemble method and what is bagging and boosting in ensemble method?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#37-what-is-bias-variance-decomposition-of-classification-error-in-ensemble-method" class="md-nav__link">
+    37) What is bias-variance decomposition of classification error in ensemble method?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#38-what-is-an-incremental-learning-algorithm-in-ensemble" class="md-nav__link">
+    38) What is an Incremental Learning algorithm in ensemble?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#39-what-is-pca-kpca-and-ica-used-for" class="md-nav__link">
+    39) What is PCA, KPCA and ICA used for?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#40-what-is-dimension-reduction-in-machine-learning" class="md-nav__link">
+    40) What is dimension reduction in Machine Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#41-what-are-support-vector-machines" class="md-nav__link">
+    41) What are support vector machines?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#42-what-are-the-components-of-relational-evaluation-techniques" class="md-nav__link">
+    42) What are the components of relational evaluation techniques?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#43-what-are-the-different-methods-for-sequential-supervised-learning" class="md-nav__link">
+    43) What are the different methods for Sequential Supervised Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#44-what-are-the-areas-in-robotics-and-information-processing-where-sequential-prediction-problem-arises" class="md-nav__link">
+    44) What are the areas in robotics and information processing where sequential prediction problem arises?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#45-what-is-batch-statistical-learning" class="md-nav__link">
+    45) What is batch statistical learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#46-what-is-pac-learning" class="md-nav__link">
+    46)   What is PAC Learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#47-what-are-the-different-categories-you-can-categorized-the-sequence-learning-process" class="md-nav__link">
+    47) What are the different categories you can categorized the sequence learning process?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#48-what-is-sequence-learning" class="md-nav__link">
+    48) What is sequence learning?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#49-what-are-two-techniques-of-machine-learning" class="md-nav__link">
+    49) What are two techniques of Machine Learning ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#50-give-a-popular-application-of-machine-learning-that-you-see-on-day-to-day-basis" class="md-nav__link">
+    50) Give a popular application of machine learning that you see on day to day basis?
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/Chao-Xi/jxperfbook.git/edit/master/docs/chap4/9Data_ML_interview.md" title="编辑此页" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="l9-top-50-machine-learning-interview-questions-answers"><strong>L9 Top 50 Machine Learning Interview Questions &amp; Answers</strong></h1>
+<h3 id="1-what-is-machine-learning"><strong>1) What is Machine learning?</strong></h3>
+<p>Machine learning is a branch of computer science which deals with system programming in order to automatically learn and improve with experience.  For example: Robots are programed so that they can perform the task based on data they gather from sensors. It automatically learns programs from data.</p>
+<h3 id="2-mention-the-difference-between-data-mining-and-machine-learning"><strong>2) Mention the difference between Data Mining and Machine learning?</strong></h3>
+<p>Machine learning relates with the study, design and development of the algorithms that give computers the capability to learn without being explicitly programmed.  While, data mining can be defined as the process in which the unstructured data tries to extract knowledge or unknown interesting patterns.  During this process machine, learning algorithms are used.</p>
+<h3 id="3-what-is-overfitting-in-machine-learning"><strong>3) What is ‘Overfitting’ in Machine learning?</strong></h3>
+<p>In machine learning, when a statistical model describes random error or noise instead of underlying relationship ‘overfitting’ occurs.  When a model is excessively complex, overfitting is normally observed, because of having too many parameters with respect to the number of training data types. The model exhibits poor performance which has been overfit.</p>
+<h3 id="4-why-overfitting-happens"><strong>4) Why overfitting happens?</strong></h3>
+<p>The possibility of overfitting exists as the criteria used for training the model is not the same as the criteria used to judge the efficacy of a model.</p>
+<h3 id="5-how-can-you-avoid-overfitting"><strong>5) How can you avoid overfitting ?</strong></h3>
+<p>By using a lot of data overfitting can be avoided, overfitting happens relatively as you have a small dataset, and you try to learn from it. But if you have a small database and you are forced to come with a model based on that. In such situation, you can use a technique known as cross validation. In this method the dataset splits into two section, testing and training datasets, the testing dataset will only test the model while, in training dataset, the datapoints will come up with the model.</p>
+<p>In this technique,  a model is usually given a dataset of a known data on which training (training data set) is run and a dataset of unknown data against which the model is tested. The idea of cross validation is to define a dataset to “test” the model in the training phase.</p>
+<h3 id="6-what-is-inductive-machine-learning"><strong>6) What is inductive machine learning?</strong></h3>
+<p>The inductive machine learning involves the process of learning by examples, where a system, from a set of observed instances tries to induce a general rule.</p>
+<h3 id="7-what-are-the-five-popular-algorithms-of-machine-learning">7) What are the five popular algorithms of Machine Learning?</h3>
+<ul>
+<li>Decision Trees</li>
+<li>Neural Networks (back propagation)</li>
+<li>Probabilistic networks</li>
+<li>Nearest Neighbor</li>
+<li>Support vector machines</li>
+</ul>
+<h3 id="8-what-are-the-different-algorithm-techniques-in-machine-learning"><strong>8) What are the different Algorithm techniques in Machine Learning?</strong></h3>
+<p>The different types of techniques in Machine Learning are</p>
+<ul>
+<li>Supervised Learning</li>
+<li>Unsupervised Learning</li>
+<li>Semi-supervised Learning</li>
+<li>Reinforcement Learning</li>
+<li>Transduction</li>
+<li>Learning to Learn</li>
+</ul>
+<h3 id="9-what-are-the-three-stages-to-build-the-hypotheses-or-model-in-machine-learning"><strong>9) What are the three stages to build the hypotheses or model in machine learning?</strong></h3>
+<ul>
+<li>Model building</li>
+<li>Model testing</li>
+<li>Applying the model</li>
+</ul>
+<h3 id="10-what-is-the-standard-approach-to-supervised-learning"><strong>10) What is the standard approach to supervised learning?</strong></h3>
+<p>The standard approach to supervised learning is to split the set of example into the training set and the test.</p>
+<h3 id="11-what-is-training-set-and-test-set"><strong>11) What is ‘Training set’ and ‘Test set’?</strong></h3>
+<p>In various areas of information science like machine learning, a set of data is used to discover the potentially predictive relationship known as ‘Training Set’. Training set is an examples given to the learner, while Test set is used to test the accuracy of the hypotheses generated by the learner, and it is the set of example held back from the learner. Training set are distinct from Test set.</p>
+<h3 id="12-list-down-various-approaches-for-machine-learning"><strong>12) List down various approaches for machine learning?</strong></h3>
+<p>The different approaches in Machine Learning are</p>
+<ul>
+<li>Concept Vs Classification Learning</li>
+<li>Symbolic Vs Statistical Learning</li>
+<li>Inductive Vs Analytical Learning</li>
+</ul>
+<h3 id="13-what-is-not-machine-learning"><strong>13) What is not Machine Learning?</strong></h3>
+<ul>
+<li>Artificial Intelligence</li>
+<li>Rule based inference</li>
+</ul>
+<h3 id="14-explain-what-is-the-function-of-unsupervised-learning"><strong>14) Explain what is the function of ‘Unsupervised Learning’?</strong></h3>
+<ul>
+<li>Find clusters of the data</li>
+<li>Find low-dimensional representations of the data</li>
+<li>Find interesting directions in data</li>
+<li>Interesting coordinates and correlations</li>
+<li>Find novel observations/ database cleaning</li>
+</ul>
+<h3 id="15-explain-what-is-the-function-of-supervised-learning"><strong>15) Explain what is the function of ‘Supervised Learning’?</strong></h3>
+<ul>
+<li>Classifications</li>
+<li>Speech recognition</li>
+<li>Regression</li>
+<li>Predict time series</li>
+<li>Annotate strings</li>
+</ul>
+<h3 id="16-what-is-algorithm-independent-machine-learning"><strong>16) What is algorithm independent machine learning?</strong></h3>
+<p>Machine learning in where mathematical foundations is independent of any particular classifier or learning algorithm is referred as algorithm independent machine learning?</p>
+<h3 id="17-what-is-the-difference-between-artificial-learning-and-machine-learning"><strong>17) What is the difference between artificial learning and machine learning?</strong></h3>
+<p>Designing and developing algorithms according to the behaviours based on empirical data are known as Machine Learning.  While artificial intelligence in addition to machine learning, it also covers other aspects like knowledge representation, natural language processing, planning, robotics etc.</p>
+<h3 id="18-what-is-classifier-in-machine-learning"><strong>18) What is classifier in machine learning?</strong></h3>
+<p>A classifier in a Machine Learning is a system that inputs a vector of discrete or continuous feature values and outputs a single discrete value, the class.</p>
+<h3 id="19-what-are-the-advantages-of-naive-bayes"><strong>19) What are the advantages of Naive Bayes?</strong></h3>
+<p>In Naïve Bayes classifier will converge quicker than discriminative models like logistic regression, so you need less training data.  The main advantage is that it can’t learn interactions between features.</p>
+<h3 id="20-in-what-areas-pattern-recognition-is-used"><strong>20) In what areas Pattern Recognition is used?</strong></h3>
+<p>Pattern Recognition can be used in</p>
+<ul>
+<li>Computer Vision</li>
+<li>Speech Recognition</li>
+<li>Data Mining</li>
+<li>Statistics</li>
+<li>Informal Retrieval</li>
+<li>Bio-Informatics</li>
+</ul>
+<h3 id="21-what-is-genetic-programming"><strong>21) What is Genetic Programming?</strong></h3>
+<p>Genetic programming is one of the two techniques used in machine learning. The model is based on the testing and selecting the best choice among a set of results.</p>
+<h3 id="22-what-is-inductive-logic-programming-in-machine-learning"><strong>22) What is Inductive Logic Programming in Machine Learning?</strong></h3>
+<p>Inductive Logic Programming (ILP) is a subfield of machine learning which uses logical programming representing background knowledge and examples.</p>
+<h3 id="23-what-is-model-selection-in-machine-learning"><strong>23) What is Model Selection in Machine Learning?</strong></h3>
+<p>The process of selecting models among different mathematical models, which are used to describe the same data set is known as Model Selection. Model selection is applied to the fields of statistics, machine learning and data mining.</p>
+<h3 id="24-what-are-the-two-methods-used-for-the-calibration-in-supervised-learning"><strong>24) What are the two methods used for the calibration in Supervised Learning?</strong></h3>
+<p>The two methods used for predicting good probabilities in Supervised Learning are</p>
+<ul>
+<li>Platt Calibration</li>
+<li>Isotonic Regression</li>
+<li>These methods are designed for binary classification, and it is not trivial.</li>
+</ul>
+<h3 id="25-which-method-is-frequently-used-to-prevent-overfitting"><strong>25) Which method is frequently used to prevent overfitting?</strong></h3>
+<p>When there is sufficient data ‘Isotonic Regression’ is used to prevent an overfitting issue.</p>
+<h3 id="26-what-is-the-difference-between-heuristic-for-rule-learning-and-heuristics-for-decision-trees"><strong>26) What is the difference between heuristic for rule learning and heuristics for decision trees?</strong></h3>
+<p>The difference is that the heuristics for decision trees evaluate the average quality of a number of disjointed sets while rule learners only evaluate the quality of the set of instances that is covered with the candidate rule.</p>
+<h3 id="27-what-is-perceptron-in-machine-learning"><strong>27) What is Perceptron in Machine Learning?</strong></h3>
+<p>In Machine Learning, Perceptron is an algorithm for supervised classification of the input into one of several possible non-binary outputs.</p>
+<h3 id="28-explain-the-two-components-of-bayesian-logic-program"><strong>28) Explain the two components of Bayesian logic program?</strong></h3>
+<p>Bayesian logic program consists of two components.  The first component is a logical one ; it consists of a set of Bayesian Clauses, which captures the qualitative structure of the domain.  The second component is a quantitative one, it encodes the quantitative information about the domain.</p>
+<h3 id="29-what-are-bayesian-networks-bn"><strong>29) What are Bayesian Networks (BN) ?</strong></h3>
+<p>Bayesian Network is used to represent the graphical model for probability relationship among a set of variables.</p>
+<h3 id="30-why-instance-based-learning-algorithm-sometimes-referred-as-lazy-learning-algorithm"><strong>30) Why instance based learning algorithm sometimes referred as Lazy learning algorithm?</strong></h3>
+<p>Instance based learning algorithm is also referred as Lazy learning algorithm as they delay the induction or generalization process until classification is performed.</p>
+<h3 id="31-what-are-the-two-classification-methods-that-svm-support-vector-machine-can-handle"><strong>31) What are the two classification methods that SVM ( Support Vector Machine) can handle?</strong></h3>
+<ul>
+<li>Combining binary classifiers</li>
+<li>Modifying binary to incorporate multiclass learning</li>
+</ul>
+<h3 id="32-what-is-ensemble-learning"><strong>32) What is ensemble learning?</strong></h3>
+<p>To solve a particular computational program, multiple models such as classifiers or experts are strategically generated and combined. This process is known as ensemble learning.</p>
+<h3 id="33-why-ensemble-learning-is-used"><strong>33) Why ensemble learning is used?</strong></h3>
+<p>Ensemble learning is used to improve the classification, prediction, function approximation etc of a model.</p>
+<h3 id="34-when-to-use-ensemble-learning"><strong>34) When to use ensemble learning?</strong></h3>
+<p>Ensemble learning is used when you build component classifiers that are more accurate and independent from each other.</p>
+<h3 id="35-what-are-the-two-paradigms-of-ensemble-methods"><strong>35) What are the two paradigms of ensemble methods?</strong></h3>
+<p>The two paradigms of ensemble methods are</p>
+<ul>
+<li>Sequential ensemble methods</li>
+<li>Parallel ensemble methods</li>
+</ul>
+<h3 id="36-what-is-the-general-principle-of-an-ensemble-method-and-what-is-bagging-and-boosting-in-ensemble-method"><strong>36) What is the general principle of an ensemble method and what is bagging and boosting in ensemble method?</strong></h3>
+<p>The general principle of an ensemble method is to combine the predictions of several models built with a given learning algorithm in order to improve robustness over a single model.  Bagging is a method in ensemble for improving unstable estimation or classification schemes.  While boosting method are used sequentially to reduce the bias of the combined model.  Boosting and Bagging both can reduce errors by reducing the variance term.</p>
+<h3 id="37-what-is-bias-variance-decomposition-of-classification-error-in-ensemble-method"><strong>37) What is bias-variance decomposition of classification error in ensemble method?</strong></h3>
+<p>The expected error of a learning algorithm can be decomposed into bias and variance. A bias term measures how closely the average classifier produced by the learning algorithm matches the target function.  The variance term measures how much the learning algorithm’s prediction fluctuates for different training sets.</p>
+<h3 id="38-what-is-an-incremental-learning-algorithm-in-ensemble"><strong>38) What is an Incremental Learning algorithm in ensemble?</strong></h3>
+<p>Incremental learning method is the ability of an algorithm to learn from new data that may be available after classifier has already been generated from already available dataset.</p>
+<h3 id="39-what-is-pca-kpca-and-ica-used-for"><strong>39) What is PCA, KPCA and ICA used for?</strong></h3>
+<p>PCA (Principal Components Analysis), KPCA ( Kernel based Principal Component Analysis) and ICA ( Independent Component Analysis) are important feature extraction techniques used for dimensionality reduction.</p>
+<h3 id="40-what-is-dimension-reduction-in-machine-learning"><strong>40) What is dimension reduction in Machine Learning?</strong></h3>
+<p>In Machine Learning and statistics, dimension reduction is the process of reducing the number of random variables under considerations and can be divided into feature selection and feature extraction.</p>
+<h3 id="41-what-are-support-vector-machines"><strong>41) What are support vector machines?</strong></h3>
+<p>Support vector machines are supervised learning algorithms used for classification and regression analysis.</p>
+<h3 id="42-what-are-the-components-of-relational-evaluation-techniques"><strong>42) What are the components of relational evaluation techniques?</strong></h3>
+<p>The important components of relational evaluation techniques are</p>
+<ul>
+<li>Data Acquisition</li>
+<li>Ground Truth Acquisition</li>
+<li>Cross Validation Technique</li>
+<li>Query Type</li>
+<li>Scoring Metric</li>
+<li>Significance Test</li>
+</ul>
+<h3 id="43-what-are-the-different-methods-for-sequential-supervised-learning"><strong>43) What are the different methods for Sequential Supervised Learning?</strong></h3>
+<p>The different methods to solve Sequential Supervised Learning problems are</p>
+<ul>
+<li>Sliding-window methods</li>
+<li>Recurrent sliding windows</li>
+<li>Hidden Markow models</li>
+<li>Maximum entropy Markow models</li>
+<li>Conditional random fields</li>
+<li>Graph transformer networks</li>
+</ul>
+<h3 id="44-what-are-the-areas-in-robotics-and-information-processing-where-sequential-prediction-problem-arises"><strong>44) What are the areas in robotics and information processing where sequential prediction problem arises?</strong></h3>
+<p>The areas in robotics and information processing  where sequential prediction problem arises are</p>
+<ul>
+<li>Imitation Learning</li>
+<li>Structured prediction</li>
+<li>Model based reinforcement learning</li>
+</ul>
+<h3 id="45-what-is-batch-statistical-learning"><strong>45) What is batch statistical learning?</strong></h3>
+<p>Statistical learning techniques allow learning a function or predictor from a set of observed data that can make predictions about unseen or future data. These techniques provide guarantees on the performance of the learned predictor on the future unseen data based on a statistical assumption on the data generating process.</p>
+<h3 id="46-what-is-pac-learning"><strong>46)   What is PAC Learning?</strong></h3>
+<p>PAC (Probably Approximately Correct) learning is a learning framework that has been introduced to analyze learning algorithms and their statistical efficiency.</p>
+<h3 id="47-what-are-the-different-categories-you-can-categorized-the-sequence-learning-process"><strong>47) What are the different categories you can categorized the sequence learning process?</strong></h3>
+<ul>
+<li>Sequence prediction</li>
+<li>Sequence generation</li>
+<li>Sequence recognition</li>
+<li>Sequential decision</li>
+</ul>
+<h3 id="48-what-is-sequence-learning"><strong>48) What is sequence learning?</strong></h3>
+<p>Sequence learning is a method of teaching and learning in a logical manner.</p>
+<h3 id="49-what-are-two-techniques-of-machine-learning"><strong>49) What are two techniques of Machine Learning ?</strong></h3>
+<p>The two techniques of Machine Learning are</p>
+<ul>
+<li>Genetic Programming</li>
+<li>Inductive Learning</li>
+</ul>
+<h3 id="50-give-a-popular-application-of-machine-learning-that-you-see-on-day-to-day-basis"><strong>50) Give a popular application of machine learning that you see on day to day basis?</strong></h3>
+<p>The recommendation engine implemented by major ecommerce websites uses Machine Learning.</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../8Data_ana_interview2/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 第八节 分析岗笔试/面试知识点" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              第八节 分析岗笔试/面试知识点
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../10Deep_learning/" class="md-footer__link md-footer__link--next" aria-label="下一页: L10 30 Frequently asked Deep Learning Interview" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              L10 30 Frequently asked Deep Learning Interview
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2021-9999 Jacob Xi
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "\u590d\u5236", "clipboard.copied": "\u5df2\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\uff0c\\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.b0710199.min.js", "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.76f349be.min.js"></script>
+      
+    
+  </body>
+</html>

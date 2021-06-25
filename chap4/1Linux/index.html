@@ -1,0 +1,1635 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Jacob's 系统性能&Linux调优技术与实战教程">
+      
+      
+      
+        <meta name="author" content="Jacob Xi">
+      
+      
+        <link rel="canonical" href="https://chao-xi.github.io/jxperfbook/chap4/1Linux/">
+      
+      <link rel="icon" href="../../images/logo.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.8">
+    
+    
+      
+        <title>第一节 IT运维面试问题总结- Linux基础 - Jacob Performance&Linux Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#8bc34b">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="light-green" data-md-color-accent="light-green">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#it-linux" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Jacob Performance&amp;Linux Book" class="md-header__button md-logo" aria-label="Jacob Performance&Linux Book" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Jacob Performance&Linux Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              第一节 IT运维面试问题总结- Linux基础
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/Chao-Xi/jxperfbook.git/" title="前往 GitHub 仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jxperfbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Jacob Performance&amp;Linux Book" class="md-nav__button md-logo" aria-label="Jacob Performance&Linux Book" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    Jacob Performance&Linux Book
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/Chao-Xi/jxperfbook.git/" title="前往 GitHub 仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jxperfbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Welcome
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
+        系统基础设施优化
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="系统基础设施优化" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          系统基础设施优化
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/1CPU_Cache/" class="md-nav__link">
+        第一节 代码让CPU执行得更快 — CPU缓存
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/2Mem_Pool/" class="md-nav__link">
+        第二节 内存池提升内存分配的效率
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/3Hash_index/" class="md-nav__link">
+        第三节 哈希表利用索引管理亿级对象
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/4PageCache/" class="md-nav__link">
+        第四节 磁盘高效地传输文件零拷贝：PageCache
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/5Coroutine/" class="md-nav__link">
+        第五节 协程快速地实现高并发服务：Coroutine
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/6Locks/" class="md-nav__link">
+        第六节 据业务场景选择合适的锁
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      <label class="md-nav__link" for="__nav_3">
+        系统层网络优化
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="系统层网络优化" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          系统层网络优化
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/1broadcast_network/" class="md-nav__link">
+        第一节 一对多通讯如何实现
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/2C10M/" class="md-nav__link">
+        第二节 C10M是如何实现事件驱动
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/3tcp3shakehand/" class="md-nav__link">
+        第三节 提升TCP三次握手的性能
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/4tcpshutdown/" class="md-nav__link">
+        第四节 提升TCP四次挥手的性能
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/5tcpchachepool/" class="md-nav__link">
+        第五节 TCP缓冲区兼顾并发数量与传输速度
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/6tcpcongestion/" class="md-nav__link">
+        第六节 调整TCP拥塞控制的性能
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        分布式系统优化
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="分布式系统优化" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          分布式系统优化
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/1Mon_perf/" class="md-nav__link">
+        第一节 通过监控找到性能瓶颈
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/2perf_cap/" class="md-nav__link">
+        第二节 舍弃一致性去换取性能的CAP理论
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/3perf_akf/" class="md-nav__link">
+        第三节 AKF立方体可扩展性来提高性能
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/4perf_nwr/" class="md-nav__link">
+        第四节 NWR算法修改读写模型以提升性能
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/5nginx_openresty/" class="md-nav__link">
+        第五节 负载均衡：选择Nginx还是OpenResty
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/6hash_consistent/" class="md-nav__link">
+        第六节 一致性哈希的均衡负载
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/7cache_expire/" class="md-nav__link">
+        第七节 过期缓存防止缓存被流量打穿
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/8message_queue/" class="md-nav__link">
+        第八节 消息队列基于异步消息提升性能
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/9map_reduce/" class="md-nav__link">
+        第九节 MapReduce通过集群实现离线计算
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/10DB_choice/" class="md-nav__link">
+        第十节 权衡关系数据库与NoSQL数据库
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      <label class="md-nav__link" for="__nav_5">
+        IT运维面试问题总结
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="IT运维面试问题总结" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          IT运维面试问题总结
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          第一节 IT运维面试问题总结- Linux基础
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        第一节 IT运维面试问题总结- Linux基础
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#linux" class="md-nav__link">
+    Linux基础
+  </a>
+  
+    <nav class="md-nav" aria-label="Linux基础">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#linux_1" class="md-nav__link">
+    简述Linux主流的发行版？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux_2" class="md-nav__link">
+    简述Linux启动过程？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux_3" class="md-nav__link">
+    简述Linux删除文件的原理？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux_4" class="md-nav__link">
+    简述Linux运行级别？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux_5" class="md-nav__link">
+    简述Linux常见目录及其作用？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux_6" class="md-nav__link">
+    简述Linux操作系统常见的文件系统有？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linuxbuffercache" class="md-nav__link">
+    简述Linux系统中的buffer和cache区别？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linuxinodeblock" class="md-nav__link">
+    简述Linux中inode和block？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linuxfsck" class="md-nav__link">
+    简述Linux文件系统修复fsck过程？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux_7" class="md-nav__link">
+    简述Linux中软链接和硬链接的区别？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcpudp" class="md-nav__link">
+    简述TCP三次握手，四次断开，及其优点和缺点，同时相对于UDP的差别？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcpip" class="md-nav__link">
+    简述TCP/IP及其主要协议？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#osi" class="md-nav__link">
+    简述OSI模型及其主要协议？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipip" class="md-nav__link">
+    简述IP协议、IP地址？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    简述静态路由和动态路由及其特点？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nat" class="md-nav__link">
+    简述NAT的几种类型，及其原理？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    简述包过滤防火墙和代理应用防火墙的区别？
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2Linux_SVC/" class="md-nav__link">
+        第二节 IT运维面试问题总结-基础服务、磁盘管理、虚拟平台和系统管理
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3Linux_tools/" class="md-nav__link">
+        第三节 IT运维面试问题总结-运维工具、开源应用(Ceph、Docker、Apache、Nginx等)
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4Linux_db_dia/" class="md-nav__link">
+        第四节 IT运维面试问题总结-数据库、监控、网络管理
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5k8s_OpenShift/" class="md-nav__link">
+        第五节 IT运维面试问题总结-简述Etcd、Kubernetes、Lvs、HAProxy等
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6Py_interview/" class="md-nav__link">
+        第六节 Python面试
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7Pro_interview/" class="md-nav__link">
+        第七节 prometheus：要点总结及面试
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8Data_ana_interview1/" class="md-nav__link">
+        L8 Data Analyst Interview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8Data_ana_interview2/" class="md-nav__link">
+        第八节 分析岗笔试/面试知识点
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../9Data_ML_interview/" class="md-nav__link">
+        L9 Top 50 Machine Learning Interview Questions & Answers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10Deep_learning/" class="md-nav__link">
+        L10 30 Frequently asked Deep Learning Interview
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      <label class="md-nav__link" for="__nav_6">
+        Python 面试题与总结
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Python 面试题与总结" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Python 面试题与总结
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/1Apple_3sum/" class="md-nav__link">
+        1、Apple Interview(3Sum)
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/2Python_interview/" class="md-nav__link">
+        2、Python Interview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/3GS_longest_substr/" class="md-nav__link">
+        3、Longest substring
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/4GS_remove_sort_list/" class="md-nav__link">
+        4、Remove duplicate in Sort List
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/5Sort_list/" class="md-nav__link">
+        5、Reverse Sort List
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/6RM_dup_dict/" class="md-nav__link">
+        6、Remove duplicate from dictionary
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/7Find_max/" class="md-nav__link">
+        7、Find Maxmium number count in list and nth number
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/8gs_interview/" class="md-nav__link">
+        8、GS Interview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/9Substring/" class="md-nav__link">
+        9、Find substring inside String
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/10reverse_string/" class="md-nav__link">
+        10、Reverse String
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/11zeroinN/" class="md-nav__link">
+        11、Count how many zero in N!
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/12JumpGame/" class="md-nav__link">
+        12、Jump Game
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+      
+      <label class="md-nav__link" for="__nav_7">
+        Linux 面试题与总结
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Linux 面试题与总结" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Linux 面试题与总结
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/1Linux_perf/" class="md-nav__link">
+        L1 1min 内对 Linux 进行性能诊断
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/2Linux_load_avg/" class="md-nav__link">
+        L2 当面试官问你load average时，怎么回答？
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/3Linux_inode/" class="md-nav__link">
+        L3 文件系统inode
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/4Linux_ops_int/" class="md-nav__link">
+        L4 运维必须掌握的Linux面试题
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/5Linux_network_int/" class="md-nav__link">
+        L5 常见网络编程面试题
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#linux" class="md-nav__link">
+    Linux基础
+  </a>
+  
+    <nav class="md-nav" aria-label="Linux基础">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#linux_1" class="md-nav__link">
+    简述Linux主流的发行版？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux_2" class="md-nav__link">
+    简述Linux启动过程？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux_3" class="md-nav__link">
+    简述Linux删除文件的原理？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux_4" class="md-nav__link">
+    简述Linux运行级别？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux_5" class="md-nav__link">
+    简述Linux常见目录及其作用？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux_6" class="md-nav__link">
+    简述Linux操作系统常见的文件系统有？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linuxbuffercache" class="md-nav__link">
+    简述Linux系统中的buffer和cache区别？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linuxinodeblock" class="md-nav__link">
+    简述Linux中inode和block？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linuxfsck" class="md-nav__link">
+    简述Linux文件系统修复fsck过程？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux_7" class="md-nav__link">
+    简述Linux中软链接和硬链接的区别？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcpudp" class="md-nav__link">
+    简述TCP三次握手，四次断开，及其优点和缺点，同时相对于UDP的差别？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcpip" class="md-nav__link">
+    简述TCP/IP及其主要协议？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#osi" class="md-nav__link">
+    简述OSI模型及其主要协议？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipip" class="md-nav__link">
+    简述IP协议、IP地址？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    简述静态路由和动态路由及其特点？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nat" class="md-nav__link">
+    简述NAT的几种类型，及其原理？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    简述包过滤防火墙和代理应用防火墙的区别？
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/Chao-Xi/jxperfbook.git/edit/master/docs/chap4/1Linux.md" title="编辑此页" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="it-linux"><strong>第一节 IT运维面试问题总结- Linux基础</strong></h1>
+<p><a href="https://www.yuque.com/docs/share/d3dd1e8e-6828-4da7-9e30-6a4f45c6fa8e">https://www.yuque.com/docs/share/d3dd1e8e-6828-4da7-9e30-6a4f45c6fa8e</a></p>
+<h2 id="linux"><strong>Linux基础</strong></h2>
+<h3 id="linux_1"><strong>简述Linux主流的发行版？</strong></h3>
+<p>Redhat、CentOS、Fedora、SuSE、Debian、Ubuntu、FreeBSD等。</p>
+<h3 id="linux_2"><strong>简述Linux启动过程？</strong></h3>
+<ul>
+<li>开机BIOS自检，加载硬盘。</li>
+<li>读取MBR，MBR引导。</li>
+<li>grub引导菜单(Boot Loader)。</li>
+<li>加载内核kernel。</li>
+<li>启动init进程，依据inittab文件设定运行级别。</li>
+<li>init进程，执行rc.sysinit文件。</li>
+<li>启动内核模块，执行不同级别的脚本程序。</li>
+<li>执行<code>/etc/rc.d/rc.local</code>。</li>
+<li>启动tty，进入系统登陆界面。</li>
+</ul>
+<h3 id="linux_3"><strong>简述Linux删除文件的原理？</strong></h3>
+<p>Linux系统是通过link的数量来控制文件删除的，<strong>只有当一个文件不存在任何link的时候，这个文件才会被删除</strong>。</p>
+<p>一般来说每个文件两个link计数器来控制：<code>i_count</code>和<code>i_nlink</code>。</p>
+<p><strong>当一个文件被一个程序占用的时候<code>i_count</code>就加1。</strong></p>
+<p>当文件的硬链接多一个的时候<code>i_nlink</code>也加1。</p>
+<p>删除一个文件，就是让这个文件，没有进程占用，同时<code>i_link</code>数量为0。</p>
+<h3 id="linux_4"><strong>简述Linux运行级别？</strong></h3>
+<ul>
+<li>0：关机模式</li>
+<li>1：单用户模式&lt;==破解root密码</li>
+<li>2：无网络支持的多用户模式</li>
+<li>3：有网络支持的多用户模式（文本模式，工作中最常用的模式）</li>
+<li>4：保留，未使用</li>
+<li>5：有网络支持的X-windows支持多用户模式（桌面）</li>
+<li>6：重新引导系统，即重启</li>
+</ul>
+<h3 id="linux_5"><strong>简述Linux常见目录及其作用？</strong></h3>
+<ul>
+<li><code>/</code>（根目录）：Linux文件系统的起点；</li>
+<li><strong>boot：存放Linux系统启动做必须的文件</strong>；</li>
+<li>var：存放经常变换的文件；</li>
+<li>home：普通用户的家目录</li>
+<li>root：Linux系统的root用户家目录；</li>
+<li><strong>bin：存放系统基本的用户命令；</strong></li>
+<li><strong>sbin：存放系统基本的管理命令；</strong></li>
+<li>use：存放Linux应用程序；</li>
+<li>etc：<strong>存放Linux系统和各种程序的配置文件</strong>。</li>
+</ul>
+<h3 id="linux_6"><strong>简述Linux操作系统常见的文件系统有？</strong></h3>
+<ul>
+<li>EXT3</li>
+<li>EXT4</li>
+<li>XFS</li>
+</ul>
+<h3 id="linuxbuffercache"><strong>简述Linux系统中的buffer和cache区别？</strong></h3>
+<p>buffer和cache都是内存中的一块区域，</p>
+<p><strong>当CPU需要写数据到磁盘时，由于磁盘速度比较慢，所以CPU先把数据存进buffer，然后CPU去执行其他任务，buffer中的数据会定期写入磁盘；</strong></p>
+<p><strong>当CPU需要从磁盘读入数据时，由于磁盘速度比较慢，可以把即将用到的数据提前存入cache，CPU直接从Cache中读取数据。</strong></p>
+<h3 id="linuxinodeblock"><strong>简述Linux中inode和block？</strong></h3>
+<p><strong>inode节点是一个64字节长的表，表中包含了文件的相关信息</strong>，如：字节数、属主UserID、属组GroupID、读写执行权限、时间戳等。</p>
+<p><strong>在inode节点表中最重要的内容是：磁盘地址表</strong>。</p>
+<p>文件名存放在目录当中，但Linux系统内部不使用文件名，<strong>而是使用inode号码识别文件</strong>。对于系统来说文件名只是inode号码便于识别的别称。</p>
+<p>即Linux文件系统通过把inode和文件名进行关联来查找文件。当</p>
+<p>需要读取该文件时，文件系统在当前目录表中查找该文件名对应的项，<strong>由此得到该文件相对应的inode节点号，通过该inode节点的磁盘地址表把分散存放的文件物理块连接成文件的逻辑结构</strong>。</p>
+<p>文件是存储在硬盘上的，硬盘的最小存储单位叫做扇区sector，每个扇区存储512字节。操作系统读取硬盘的时候，不会一个个扇区地读取，这样效率太低，而是一次性连续读取多个扇区，即一次性读取一个块block。这种由多个扇区组成的块，是文件存取的最小单位。块的大小，最常见的是4KB，即连续八个sector组成一个block。</p>
+<p>即512字节组成一个扇区（sector），多个扇区组成一个块（block），常见的块单位4KB，即连续八个扇区组成一个block。</p>
+<blockquote>
+<p>一个文件必须占用一个inode，<strong>但至少占用一个block</strong>。</p>
+</blockquote>
+<h3 id="linuxfsck"><strong>简述Linux文件系统修复fsck过程？</strong></h3>
+<p>成功修复文件系统的前提是要有两个以上的主文件系统（即两个系统），并保证在修复之前卸载将被修复的文件系统，然后使用命令fsck对受到破坏的文件系统进行修复。</p>
+<p>fsck检查文件系统分为5步，每一步检查系统不同部分的连接特性并对上一步进行验证和修改。</p>
+<p>检查从超级块开始、然后是分配的磁盘块、路径名、目录的连接性、链接数目以及空闲块链表、inode。</p>
+<h3 id="linux_7"><strong>简述Linux中软链接和硬链接的区别？</strong></h3>
+<ul>
+<li>软链接</li>
+</ul>
+<p><strong>软链接类似于Windows的快捷方式功能的文件，可以快速连接到目标文件或目</strong>录。即再创建一个独立的文件，而这个文件会让数据的读取指向它连接的那个文件的文件名。<strong>例如，文件A和文件B的inode号码虽然不一样，但是文件A的内容是文件B的路径</strong>。<strong>读取文件A时，系统会自动将访问者导向文件B。这时，文件A就称为文件B的软链接</strong>。</p>
+<ul>
+<li>硬链接</li>
+</ul>
+<p><strong>通过文件系统的inode链接来产生的新的文件名，而不是产生新的文件，称为硬链接。</strong></p>
+<p><strong>一般情况下，每个inode号码对应一个文件名，但是Linux允许多个文件名指向同一个inode号码</strong>。意味着可以使用不同的文件名访问相同的内容。创建硬链接，源文件与目标文件的inode号码相同，都指向同一个inode。inode信息中的链接数这时就会增加1。</p>
+<p>当一个文件拥有多个硬链接时，对文件内容修改，会影响到所有其他文件的内容；</p>
+<p>删除一个文件名，不影响另一个文件名的访问，删除一个文件名，只会使得inode中的链接数减1。</p>
+<ul>
+<li>区别</li>
+</ul>
+<p>软链接与硬链接最大的区别：软链接是文件A指向文件B的文件名，而不是文件B的inode号码，文件<strong>B的inode链接数不会因此发生变化</strong>。</p>
+<blockquote>
+<p>不能对目录做硬链接，但是通过mkdir命令创建一个新目录，通常其硬链接数应该有2个，因为常见的目录本身为1个硬链接，而目录下面的隐藏目录.（点号）是该目录的又一个硬链接，也算是1个连接数。</p>
+</blockquote>
+<h3 id="tcpudp"><strong>简述TCP三次握手，四次断开，及其优点和缺点，同时相对于UDP的差别？</strong></h3>
+<p>TCP与UDP概念：</p>
+<ul>
+<li>TCP：<strong>传输控制协议，即面向连接</strong>；</li>
+<li>UDP：用户数据报协议，无连接的，即发<strong>送数据之前不需要建立连接</strong></li>
+</ul>
+<p>TCP与UDP的优缺点上的区别：</p>
+<p>TCP的优点：</p>
+<p>可靠，稳定。TCP的可靠体现在TCP在传递数据之前，会有三次握手来建立连接，而且在数据传递时，有确认、窗口、重传、拥塞控制机制，在数据传完后，还会断开连接用来节约系统资源。</p>
+<ul>
+<li>三次握手：<ol>
+<li>第一次握手，主机A向主机B发出一个含同步序列号的标志位的数据段给主机B ，向主机B请求建立连接。通过这个数据段，A向B声明通信请求，以及告知B可用某个序列号作为起始数据段进行响应；</li>
+<li>第二次握手，主机B收到主机A的请求后，用一带有确认应答(ACK)和同步序列号(SYN)标志位的数据段响应A。通过此数据段，B向A声明已收到A的请求，A可以传输数据了，同时告知A可用某个序列号作为起始数据段进行响应</li>
+<li>第三次握手，主机A收到主机B的数据段后，再发送一个确认应答，确认已收到主机B 的数据段，之后开始正式实际传输数据。</li>
+</ol>
+</li>
+</ul>
+<p><img alt="Alt Image Text" src="../../images/chap2_4_1.png" title="Body image" /></p>
+<blockquote>
+<p>ACK：TCP报头的控制位之一，对数据进行确认。确认由目的端发出，来告知发送端这个序列号之前的数据段都收到了。比如，确认号为X，则表示前X-1个数据段都收到了。只有当ACK=1时，确认号才有效，当ACK=0时，确认号无效，此时会要求重传数据，保证数据的完整性。</p>
+<p>SYN：同步序列号，这个标志位只有在TCP建立连接时才会被置1，握手完成后SYN标志位被置0。</p>
+</blockquote>
+<ul>
+<li>
+<p>四次断开：</p>
+<ul>
+<li>当主机A完成数据传输后，将控制位FIN置1，提出停止TCP连接的请求；</li>
+<li>主机B收到FIN后对其作出响应，确认这一方向上的TCP连接将关闭，将ACK置1；</li>
+<li>主机B再提出反方向的关闭请求，将FIN置1；</li>
+<li>主机A对主机B的请求进行确认，将ACK置1，双方向的关闭结束</li>
+</ul>
+</li>
+<li>
+<p>TCP的缺点：</p>
+</li>
+</ul>
+<p><strong>慢、效率低、占用系统资源高、易被攻击：TCP在传递数据之前，要先建连接，需要消耗时间，而且在数据传递时，确认机制、重传机制、拥塞控制机制等都会消耗大量的时间</strong>，而且要在每台设备上维护所有的传输连接。</p>
+<p>同时，每个连接都会占用系统的CPU、内存等硬件资源。而且，因为TCP有确认机制、三次握手机制，这些也导致TCP容易被人利用，实现DOS、DDOS、CC等攻击。</p>
+<blockquote>
+<ul>
+<li>DoS：拒绝服务（Denial of Servic），造成DoS的攻击行为被称为DoS攻击，其目的是使计算机或网络无法提供正常的服务。最常见的DoS攻击有计算机网络带宽攻击和连通性攻击。</li>
+<li>DDOS：分布式拒绝服务(DDoS:Distributed Denial of Service)，DDoS攻击指借助于客户/服务器技术，将多个计算机联合起来作为攻击平台，对一个或多个目标发动DDoS攻击，从而成倍地提高拒绝服务攻击的威力。</li>
+</ul>
+</blockquote>
+<ul>
+<li>UDP的优点：</li>
+</ul>
+<p>快、比TCP稍安全、没有TCP的握手、确认、窗口、重传、拥塞控制等机制，UDP是一个无状态的传输协议，所以它在传递数据时非常快。没有TCP的这些机制，UDP被攻击者利用的漏洞就要少一些。但UDP也是无法避免攻击的，比如：<strong>UDP Flood攻击</strong>。</p>
+<blockquote>
+<p>UDP Flood攻击检测：短时间内向特定目标不断发送 UDP 报文，致使目标系统负担过重而不能处理合法的传输任务，就发生了 UDP Flood。启用 UDP Flood 攻击检测功能时，要求设置一个连接速率阈值，一旦发现保护主机响应的 UDP 连接速率超过该值，防火墙会输出发生 UDP Flood 攻击的告警日志，并且根据用户的配置可以阻止发往该主机的后续连接请求。</p>
+</blockquote>
+<ul>
+<li>UDP的缺点：</li>
+</ul>
+<p>不可靠、不稳定。因为UDP没有那些可靠的机制，在数据传递时，如果网络质量不好，就会很容易丢包。</p>
+<ul>
+<li>TCP应用场景：</li>
+</ul>
+<p><strong>当对网络通讯质量有要求的时候，比如：整个数据要准确无误的传递给对方，要求可靠的应用，比如HTTP、HTTPS、FTP等传输文件的协议，POP、SMTP等邮件传输的协议。</strong></p>
+<ul>
+<li>UDP应用场景：</li>
+</ul>
+<p>当对网络通讯质量要求不高的时候，要求网络通讯速度能尽量的快。比如QQ语音、QQ视频、TFTP 。</p>
+<h3 id="tcpip"><strong>简述TCP/IP及其主要协议？</strong></h3>
+<p>TCP/IP协议是一个协议簇，其中包括很多协议的。</p>
+<p>TCP/IP协议包括<strong>应用层、传输层、网络层、网络访问层（网络接口层、网际层）</strong>。</p>
+<p>应用层：应用程序间沟通的层</p>
+<ul>
+<li>超文本传输协议(HTTP)：万维网的基本协议；</li>
+<li>文件传输(TFTP)：简单文件传输协议；</li>
+<li>远程登录(Telnet)：提供远程访问其它主机功能，它允许用户登录internet主机，并在这台主机上执行命令；</li>
+<li>网络管理(SNMP)：简单网络管理协议，该协议提供了监控网络设备的方法，以及配置管理、统计信息收集、性能管理及安全管理等；</li>
+<li>域名系统(DNS)：域名解析服务，该系统用于在internet中将域名及转换成IP地址；</li>
+</ul>
+<p>传输层：提供了节点间的数据传送服务，给数据包加入传输数据并把它传输到下一层中，这一层负责传送数据，并且确定数据已被送达并接收。</p>
+<ul>
+<li>传输控制协议（TCP）</li>
+<li>用户数据报协议（UDP）</li>
+</ul>
+<p>网络层：负责提供基本的数据封包传送功能，让每一个数据包都能够到达目的主机（但不检查是否被正确接收）。</p>
+<ul>
+<li>Internet协议(IP) ：根据网间报文IP地址，从一个网络通过路由器传到另一网络；</li>
+<li>ICMP：Internet控制信息协议(ICMP)；</li>
+<li>ARP：地址解析协议(ARP) ——"最不安全的协议"。</li>
+<li>RARP：反向地址解析协议(RARP)：</li>
+</ul>
+<p>网络访问层：又称作主机到网络层(host-to-network)，IP地址与物理地址硬件的映射及IP封装成帧，基于不同硬件类型的网络接口，网络访问层定义了与物理介质的连接。</p>
+<h3 id="osi"><strong>简述OSI模型及其主要协议？</strong></h3>
+<p>OSI模型是一个开放式系统互联参考模型，该模型人为的定义了七层结构。由下至上及其主要作用为：</p>
+<ul>
+<li>物理层：OSI的物理层规定了通信端点之间的机械特性、电气特性、功能特性以及过程特性，该层为上层协议提供了一个传输数据的物理媒体。该层数据的单位称为比特(bit)。其主要有：EIA/TIA、RS-232、EIA/TIA、RS-449、V.35、RJ-45、fddi令牌环网。</li>
+<li>数据链路层：定义了在单个链路上如何传输数据，其主要作用包括：作用包括物理地址寻址、数据的成帧、流量控制、数据的检错、重发等。该层数据的单位称为帧(frame)。其主要有：ARP、RARP、SDLC、HDLC、PPP、STP、帧中继。</li>
+<li>网络层：定义了端到端的包传输，定义了能够标识所有结点的逻辑地址，还定义了路由实现的方式和学习路由的方式。为了适应最大传输单元长度小于包长度的传输介质，网络层还定义了如何将一个包分解成更小的包的分段方法。主要负责寻找地址和路由选择，网络层还可以实现拥塞控制、网际互连等功能。该层数据的单位称为数据包(packet)。主要有：IP、IPX、RIP、OSPF。</li>
+<li>传输层：主要功能：<ul>
+<li>为端到端连接提供传输服务；</li>
+<li>这种传输服务分为可靠和不可靠的，其中TCP是典型的可靠传输，而UDP则是不可靠传输；</li>
+<li>为端到端连接提供流量控制，差错控制，重新排序，服务质量等管理服务。</li>
+</ul>
+</li>
+<li>会话层：他定义了如何开始、控制和结束一个会话，即负责建立和断开通信连接（数据流动的逻辑通路）。主要有：RPC、SQL、NetBIOS。</li>
+<li>表示层：定义数据格式及加密。主要负责数据格式的转换，确保一个系统的应用层信息可被另一个系统应用层读取。主要有：加密、ASII、TIFF、JPEG、HTML、PICT。</li>
+<li>应用层：与其他计算机进行通讯的一个应用，它是对应应用程序的通信服务的，为应用程序提供服务并规定应用程序中通信相关的细节。主要有：Telnet、HTTP、FTP、WWW、NFS、SMTP。</li>
+</ul>
+<h3 id="ipip"><strong>简述IP协议、IP地址？</strong></h3>
+<p><strong>IP协议(Internet Protocol)：又称互联网协议</strong>，是支持网间互连的数据报协议。它提供网间连接的完善功能，包括IP数据包规定互连网络范围内的IP地址格式。</p>
+<p>为了实现连接到互联网上的结点之间的通信，必须为每个结点（入网的计算机）分配一个地址，并且应当保证这个地址是全网唯一的，这便是IP地址。</p>
+<p>目前的IP地址（IPv4：IP第4版本）由32个二进制位表示，每8位二进制数为一个整数，中间由小数点间隔，整个IP地址空间有4组8位二进制数，由表示主机所在的网络的地址以及主机在该网络中的标识共同组成。为了便于寻址和层次化的构造网络，IP地址被分为A、B、C、D、E五类，商业应用中只用到A、B、C三类。</p>
+<ul>
+<li>A类地址：网络标识由第一组8位二进制数表示，网络中的主机标识占3组8位二进制数，网络标识的第一位二进制数取值必须为"0"。A类地址允许有126个网段，每个网络大约允许有1670万台主机，通常分配给拥有大量主机的网络（如主干网）。<code>1.0.0.1－127.255.255.254</code></li>
+<li>B类地址：网络标识由前两组8位二进制数表示，网络中的主机标识占两组8位二进制数，网络标识的前两位二进制数取值必须为"10"。B类地址允许有16384个网段，每个网络允许有65533台主机，适用于结点比较多的网络（如区域网）。<code>128.1.0.1－191.255.255.254</code></li>
+<li>C类地址：网络标识由前3组8位二进制数表示，网络中主机标识占1组8位二进制数，网络标识的前3位二进制数取值必须为"110"。具有C类地址的网络允许有254台主机，适用于结点比较少的网络（如校园网）。<code>192.0.1.1－223.255.255.254</code></li>
+</ul>
+<p>为了便于记忆，通常习惯采用4个十进制数来表示一个IP地址，十进制数之间采用句点"."予以分隔。这种IP地址的表示方法也被称为点分十进制法。</p>
+<h3 id="_1"><strong>简述静态路由和动态路由及其特点？</strong></h3>
+<ul>
+<li>静态路由：由系统管理员创建的路由，适用于网关数量有限的场合，且网络拓朴结构不经常变化的网络。其缺点是不能动态地适用网络状况的变化，当网络状况变化后需要网络管理员手动修改路由表。</li>
+<li>动态路由：由路由选择协议动态构建的路由，路由协议之间通过交换各自所拥有的路由信息实时更新路由表的内容。动态路由可以自动学习网络的拓朴结构，并更新路由表。其缺点是路由广播更新信息将占据大量的网络带宽。</li>
+</ul>
+<h3 id="nat"><strong>简述NAT的几种类型，及其原理？</strong></h3>
+<p>常见的NAT主要有DNA和SNAT。</p>
+<ul>
+<li><strong>SNAT：指在数据包从网卡发送出去的时候，把数据包中的源地址部分替换为指定的IP</strong>。此时，接收方就认为数据包的来源是被替换的那个IP的主机。</li>
+<li><strong>DNAT：指数据包从网卡发送出去的时候，修改数据包中的目的IP</strong>。此时，若访问A，但因此DNAT的存在，所有访问A的数据包的目的IP全部修改为B，那么，实际上访问的是B。</li>
+</ul>
+<h3 id="_2"><strong>简述包过滤防火墙和代理应用防火墙的区别？</strong></h3>
+<ul>
+<li>包过滤防火墙：工作在网络层，根据包头中的源IP地址、目标IP地址、协议类型、端口号进行过滤；</li>
+<li>代理应用防火墙：工作在应用层，使用代理服务器技术，将内网对外网的访问，变为防火墙对外网的访问，可以对包的内容进行分辨，从而过滤。</li>
+</ul>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../../chap3/10DB_choice/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 第十节 权衡关系数据库与NoSQL数据库" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              第十节 权衡关系数据库与NoSQL数据库
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../2Linux_SVC/" class="md-footer__link md-footer__link--next" aria-label="下一页: 第二节 IT运维面试问题总结-基础服务、磁盘管理、虚拟平台和系统管理" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              第二节 IT运维面试问题总结-基础服务、磁盘管理、虚拟平台和系统管理
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2021-9999 Jacob Xi
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "\u590d\u5236", "clipboard.copied": "\u5df2\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\uff0c\\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.b0710199.min.js", "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.76f349be.min.js"></script>
+      
+    
+  </body>
+</html>
