@@ -66,6 +66,8 @@ nav:
     - 'L3 文件系统inode': 'chap6/3Linux_inode.md'
     - 'L4 运维必须掌握的Linux面试题': 'chap6/4Linux_ops_int.md'
     - 'L5 常见网络编程面试题': 'chap6/5Linux_network_int.md'
+    - 'L6 Git 实用技巧记录': 'chap6/6Git_principle.md'
+    - 'L7 深入浅出负载均衡': 'chap6/7LoadBalancer.md'
     
     
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
