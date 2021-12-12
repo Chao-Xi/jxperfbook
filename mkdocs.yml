@@ -72,6 +72,7 @@ nav:
     - 'L9 Linux面试最高频的5个基本问题（CPU+COMMMAND)': 'chap6/9Linux_five.md'
   - 'Companies Interview':
     - '1 Microsoft Interview2021': 'chap7/1Ms.md'
+    - '2 Microsoft Interview Algorithm 2021': 'chap7/2Ms_al.md'
 
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
 repo_name: "jxperfbook"
