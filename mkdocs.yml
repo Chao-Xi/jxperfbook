@@ -70,6 +70,7 @@ nav:
     - 'L7 深入浅出负载均衡': 'chap6/7LoadBalancer.md'
     - 'L8 Linux 面试题 合集CDN': 'chap6/8Linux_all.md'
     - 'L9 Linux面试最高频的5个基本问题（CPU+COMMMAND)': 'chap6/9Linux_five.md'
+    - 'L10 HAProxy从零开始到掌握': 'chap6/10haproxy_learn.md'
   - 'Companies Interview':
     - '1 Microsoft Interview2021': 'chap7/1Ms.md'
     - '2 Microsoft Interview Algorithm 2021': 'chap7/2Ms_al.md'
