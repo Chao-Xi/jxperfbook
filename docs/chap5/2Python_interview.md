@@ -110,7 +110,7 @@ print ('Lenth of assassin creed list:', len(AC_list))
 
 print (AC_list[4])                              # Odyssey             
 print (AC_list[-1])                             # Odyssey
-print (AC_list[2:])  
+print (AC_list[2:])                             # ['Syndicate', 'Chronicles', 'Odyssey']
 ```
 
 ```
@@ -516,9 +516,14 @@ print(type(random_element))
 for _ in range(10):
 	print(random_element)
 
+for _ in range(10):
+    print(_)
+
+
 # import math
-# rads = math.adians(90)
+# rads = math.radians(90)
 # print(rads)
+# 1.5707963267948966
 
 import datetime
 import calendar

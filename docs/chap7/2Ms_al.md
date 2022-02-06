@@ -176,8 +176,77 @@ print(twoSum(nums,target))
 ```
 
 
+```
+def two_sum(nums, target):
+    # idxDict = dict()
+    idxDict = {}
+    for idx, num in enumerate(nums):
+        if target - num in idxDict:    
+            return [idxDict[target - num], idx]
+            # return True
+            # return [idxDict[target - num]]
+        idxDict[num] = idx
+    
+nums = [3, 2, 11, 15]
+target = 13   
+print(two_sum(nums,target))
+```
+
+### Output two values from two sum
+
+**Naive Solution**
 
 
+```
+def twoSumNaive(num_arr, pair_sum):
+    # search first element in the array
+    for i in range(len(num_arr)-1):
+        # search other element in the array
+        for j in range(i + 1, len(num_arr)):
+        # if these two elemets sum to pair_sum, print the pair
+            if num_arr[i] + num_arr[j] == pair_sum:
+                print("Pair with sum", pair_sum,"is: (", num_arr[i],",",num_arr[j],")")
+                print([i,j])
 
+# Driver Code
+num_arr = [3, 5, 2, -4, 8, 11]
+pair_sum = 7
+    
+# Function call inside print
+twoSumNaive(num_arr, pair_sum) 
+
+# Pair with sum 7 is: ( 5 , 2 )
+# [1, 2]
+# Pair with sum 7 is: ( -4 , 11 )
+# [3, 5]
+```
+
+**Optimal Solution hashtable**
+
+
+```
+def twoSumHashing(num_arr, pair_sum):
+    sums = []
+    hashTable = {}
+
+    for i in range(len(num_arr)):
+        complement = pair_sum - num_arr[i]
+        if complement in hashTable:
+            print("Pair with sum", pair_sum,"is: (", num_arr[i],",",complement,")")
+            # print([i,hashTable[pair_sum - num_arr[i]]])
+        hashTable[num_arr[i]] = num_arr[i]
+
+# Driver Code
+num_arr = [4, 5, 1, 8]
+pair_sum = 9
+
+# Calling function
+twoSumHashing(num_arr, pair_sum)
+```
+
+```
+Pair with sum 9 is: ( 5 , 4 )
+Pair with sum 9 is: ( 8 , 1 )
+```
 
 
