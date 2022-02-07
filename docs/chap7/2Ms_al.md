@@ -77,8 +77,35 @@ heros = ['Batman', 'Superman', 'Spiderman', 'Wolverine', 'Deadpool']
 print(list(zip(names, heros)))
 
 # {'Bruce': 'Batman', 'Clark': 'Superman', 'Peter': 'Spiderman', 'Logan': 'Wolverine', 'Wade': 'Deadpool'}
+```
 
 ```
+names = ['Bruce', 'Clark', 'Peter', 'Logan', 'Wade']
+print(list(zip(*names)))
+
+# [('B', 'C', 'P', 'L', 'W'), ('r', 'l', 'e', 'o', 'a'), ('u', 'a', 't', 'g', 'd'), ('c', 'r', 'e', 'a', 'e')]
+
+a = ["ab","ab","abc"]
+print(list(zip(*a)))
+
+# [('a', 'a', 'a'), ('b', 'b', 'b')]
+```
+
+
+```
+b = ""
+for j in list(zip(*a)):
+    # print(j)
+    if len(set(j)) == 1:
+        b += j[0]
+    else:
+        break
+print(b)
+
+# ab
+```
+
+
 ```
 def longest_string(arr):
     result = ""
@@ -152,7 +179,7 @@ for i, num in enumerate(a):
 (0, 3)
 (1, 4)
 (2, 5)
-(3, 6
+(3, 6)
 ```
 
 ```
