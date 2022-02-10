@@ -49,6 +49,7 @@ nav:
     - 'L10 30 Frequently asked Deep Learning Interview': 'chap4/10Deep_learning.md'
     - 'L11 Redis 核心技术考题':  'chap4/11Redis_rev.md'
     - 'L12 ES 期末考试':  'chap4/12ES_rev.md'
+    - 'L13 Istio面试': 'chap4/13istio_rev.md'
   - 'Python 面试题与总结':
     - '1、Apple Interview(3Sum)': 'chap5/1Apple_3sum.md'
     - '2、Python Interview': 'chap5/2Python_interview.md'
