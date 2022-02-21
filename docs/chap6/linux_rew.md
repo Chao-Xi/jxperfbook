@@ -196,7 +196,17 @@ sudo netstat -tunlp
 * `-l` -仅显示监听端口。
 * `-p` -显示侦听器进程的PID和名称。仅当你以root用户或 sudo 用户身份运行命令时，才会显示此信息。
 
-![Alt Image Text](../images/chap13_1.png "Body image")
+```
+Proto Recv-Q Send-Q Local Address   Foreign Address     State       PID/Program name      
+tcp        0      0 0:22              0:*               LISTEN      445/sshd              
+tcp        0      0 0:25              0:*               LISTEN      929/master            
+tcp6       0      0 :::3306           ::*               LISTEN      534/mysqld            
+tcp6       0      0 :::80             :::*              LISTEN      515/apache2           
+tcp6       0      0 :::22             :::*              LISTEN      445/sshd              
+tcp6       0      0 :::25             :::*              LISTEN      929/master            
+tcp6       0      0 :::33060          :::*              LISTEN      534/mysqld            
+udp        0      0 0:68              0:*                           966/dhclient  
+```
 
 * Proto-套接字使用的协议。
 * Local Address -进程侦听的IP地址和端口号。
