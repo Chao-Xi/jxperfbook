@@ -180,3 +180,108 @@ Unix/Linux系统允许，多个文件名指向同一个inode号码。
 netstat -nlp |grep LISTEN   //查看当前所有监听端口·
 ```
 
+## **监听端口**
+
+侦听端口是应用程序或进程在其上侦听的网络端口，充当通信端点。
+
+每个监听端口都可以使用防火墙打开或关闭（过滤）。一般而言，开放端口是一个网络端口，它接受来自远程位置的传入数据包。
+
+```
+sudo netstat -tunlp
+```
+
+* `-t`-显示TCP端口。
+* `-u` -显示UDP端口。
+* `-n` -显示数字地址而不是解析主机。
+* `-l` -仅显示监听端口。
+* `-p` -显示侦听器进程的PID和名称。仅当你以root用户或 sudo 用户身份运行命令时，才会显示此信息。
+
+![Alt Image Text](../images/chap13_1.png "Body image")
+
+* Proto-套接字使用的协议。
+* Local Address -进程侦听的IP地址和端口号。
+* PID/Program name -PID和进程名称。
+
+```
+sudo netstat -nlp | grep 22
+```
+
+```
+tcp        0      0 0:22              0:*               LISTEN      445/sshd  
+tcp6       0      0 :::22             :::*              LISTEN      445/sshd  
+```
+
+### **用ss**
+
+检查监听端口
+
+ss是新的netstat。它缺少netstat的某些功能，但是公开了更多的TCP状态，并且速度稍快。命令选项基本相同，因此从netstat到ss的转换并不困难。
+
+要使用ss获取所有监听端口的列表，请输入：
+
+```
+sudo ss -tunlp
+```
+
+输出与netstat报告的输出几乎相同：
+
+```
+State    Recv-Q   Send-Q     Local Address:Port      Peer Address:Port                                                                                          
+LISTEN   0        128              0:22             0:*      users:(("sshd",pid=445,fd=3))                                                          
+LISTEN   0        100              0:25             0:*      users:(("master",pid=929,fd=13))                                                       
+LISTEN   0        128                    *:3306                 *:*      users:(("mysqld",pid=534,fd=30))                                                       
+LISTEN   0        128                    *:80                   *:*      users:(("apache2",pid=765,fd=4),("apache2",pid=764,fd=4),("apache2",pid=515,fd=4))     
+LISTEN   0        128                 [::]:22                [::]:*      users:(("sshd",pid=445,fd=4))                                                          
+LISTEN   0        100                 [::]:25                [::]:*      users:(("master",pid=929,fd=14))                                                       
+LISTEN   0        70                     *:33060                *:*      users:(("mysqld",pid=534,fd=33))  
+```
+
+### **使用lsof**
+
+检查监听端口
+
+lsof是功能强大的命令行应用程序，可提供有关进程打开的文件的信息。
+
+在Linux中，所有内容都是文件。你可以将套接字视为写入网络的文件。
+
+要获取具有lsof的所有侦听TCP端口的列表，请输入：
+
+```
+sudo lsof -nP -iTCP -sTCP:LISTEN  
+```
+
+使用的选项如下:
+
+* `-n`-不要将端口号转换为端口名称。
+* `-p` -不解析主机名，显示数字地址。
+
+
+-iTCP -sTCP:LISTEN -仅显示TCP状态为LISTEN的网络文件。
+
+```
+COMMAND   PID     USER   FD   TYPE DEVICE SIZE/OFF NODE NAME  
+sshd      445     root    3u  IPv4  16434      0t0  TCP *:22 (LISTEN)  
+sshd      445     root    4u  IPv6  16445      0t0  TCP *:22 (LISTEN)  
+apache2   515     root    4u  IPv6  16590      0t0  TCP *:80 (LISTEN)  
+mysqld    534    mysql   30u  IPv6  17636      0t0  TCP *:3306 (LISTEN)  
+mysqld    534    mysql   33u  IPv6  19973      0t0  TCP *:33060 (LISTEN)  
+apache2   764 www-data    4u  IPv6  16590      0t0  TCP *:80 (LISTEN)  
+apache2   765 www-data    4u  IPv6  16590      0t0  TCP *:80 (LISTEN)  
+master    929     root   13u  IPv4  19637      0t0  TCP *:25 (LISTEN)  
+master    929     root   14u  IPv6  19638      0t0  TCP *:25 (LISTEN)  
+```
+
+* COMMAND，PID，USER-运行与端口关联的程序的名称，PID和用户。
+* NAME -端口号。
+
+要查找正在侦听特定端口（例如端口3306）的进程，可以使用：
+
+```
+sudo lsof -nP -iTCP:3306 -sTCP:LISTEN  
+```
+输出显示MySQL服务器使用端口3306:
+
+```
+COMMAND PID  USER   FD   TYPE DEVICE SIZE/OFF NODE NAME  
+mysqld  534 mysql   30u  IPv6  17636      0t0  TCP *:3306 (LISTEN)
+```
