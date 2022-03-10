@@ -82,6 +82,9 @@ nav:
     - '3 UBS interview': 'chap7/3ubs.md'
     - '4 Morgan Stanly 2021': 'chap7/4MorganS.md'
     - '5 Apple 2021': 'chap7/5apple.md'
+    - '6 AWS': 'chap7/6aws.md'
+  - 'Shell Int':
+    - '1 Shell 分析服务器日志命令': 'chap8/1shell_logs.md'
 
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
 repo_name: "jxperfbook"
