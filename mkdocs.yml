@@ -86,6 +86,7 @@ nav:
     - '6 AWS': 'chap7/6aws.md'
   - 'Shell Int':
     - '1 Shell 分析服务器日志命令': 'chap8/1shell_logs.md'
+    - '2 Linux 系统下查找文件命令总结': 'chap8/2linux_locate.md'
 
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
 repo_name: "jxperfbook"
