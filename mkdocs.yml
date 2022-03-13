@@ -50,6 +50,7 @@ nav:
     - 'L11 Redis 核心技术考题':  'chap4/11Redis_rev.md'
     - 'L12 ES 期末考试':  'chap4/12ES_rev.md'
     - 'L13 Istio面试': 'chap4/13istio_rev.md'
+    - 'L14 SRE本质就是一个懂运维的资深开发': 'chap4/14sre.md'
   - 'Python 面试题与总结':
     - '1、Apple Interview(3Sum)': 'chap5/1Apple_3sum.md'
     - '2、Python Interview': 'chap5/2Python_interview.md'
