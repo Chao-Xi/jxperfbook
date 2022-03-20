@@ -87,6 +87,12 @@ nav:
   - 'Shell Int':
     - '1 Shell 分析服务器日志命令': 'chap8/1shell_logs.md'
     - '2 Linux 系统下查找文件命令总结': 'chap8/2linux_locate.md'
+    - '3 Basic Shell Scripting for Devops': 'chap8/3devops_shell.md'
+    - '4 基本 shell 脚本 系统+文件+卷+时间': 'chap8/4Basic_shell.md'
+    - '5 Shell Package 安装+配置脚本': 'chap8/5install_shell.md'
+    - '6 监控 Shell 脚本': 'chap8/6mon_shell.md'
+    - '7 网络+数据库 Shell 脚本': 'chap8/7net_shell.md'
+    - '8 Secret shell 脚本': 'chap8/8secret_shell.md'
 
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
 repo_name: "jxperfbook"
