@@ -86,6 +86,7 @@ nav:
     - '4 Morgan Stanly 2021': 'chap7/4MorganS.md'
     - '5 Apple 2021': 'chap7/5apple.md'
     - '6 AWS': 'chap7/6aws.md'
+    - '7 Tesla': 'chap7/7tesla.md'
   - 'Shell Int':
     - '1 Shell 分析服务器日志命令': 'chap8/1shell_logs.md'
     - '2 Linux 系统下查找文件命令总结': 'chap8/2linux_locate.md'
