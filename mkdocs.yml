@@ -79,6 +79,7 @@ nav:
     - 'L10 HAProxy从零开始到掌握': 'chap6/10haproxy_learn.md'
     - 'L12 从 lsof 开始，深入理解 Linux 虚拟文件系统': 'chap6/12Linux_vir_file.md'
     - 'Linux review': 'chap6/linux_rew.md'
+    - 'L13 Linux故障排查思路及常用命令': 'chap6/13Linux_ts.md'
   - 'Companies Interview':
     - '1 Microsoft Interview2021': 'chap7/1Ms.md'
     - '2 Microsoft Interview Algorithm 2021': 'chap7/2Ms_al.md'
