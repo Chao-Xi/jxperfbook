@@ -66,6 +66,7 @@ nav:
     - '10、Reverse String': 'chap5/10reverse_string.md'
     - '11、Count how many zero in N!': 'chap5/11zeroinN.md'
     - '12、Jump Game': 'chap5/12JumpGame.md'
+    - '13、GS interview preparation': 'chap5/13Gs_int.md'
   - 'Linux 面试题与总结':
     - 'L1 1min 内对 Linux 进行性能诊断': 'chap6/1Linux_perf.md'
     - 'L2 当面试官问你load average时，怎么回答？': 'chap6/2Linux_load_avg.md'
