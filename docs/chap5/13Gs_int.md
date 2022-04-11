@@ -57,6 +57,8 @@ None
 ```
 
 
+
+
 ## **String** 
 
 ### **1 Reverse words in a given string**
@@ -168,8 +170,159 @@ $ python3 21repreatstring.py
 had
 ```
 
+### **最长公共前缀**
+
+编写一个函数来查找字符串数组中的最长公共前缀。
+
+如果不存在公共前缀，返回空字符串 ""。
+
+```
+示例 1:
+
+输入: ["flower","flow","flight"]
+输出: "fl"
+示例 2:
+
+输入: ["dog","racecar","car"]
+输出: ""
+解释: 输入不存在公共前缀。
+说明:
+
+所有输入只包含小写字母 a-z 。
+```
+
+**Option1**
+
+```
+示例 1:
+
+输入: ["flower","flow","flight"]
+输出: "fl"
+示例 2:
+
+输入: ["dog","racecar","car"]
+输出: ""
+解释: 输入不存在公共前缀。
+说明:
+
+所有输入只包含小写字母 a-z 。
+```
+
+```
+def longest_string(arr):
+    result = ""
+    for i in zip(*arr):
+        if len(set(i)) == 1:
+            result += i[0]
+        else:
+            break
+    return result
+
+arr = ["a","ab","abc"]
+print(longest_string(arr))
+```
+
+**Option2**
+
+```
+def longest_str(str):
+    if not str:
+        return ""
+    res = str[0]
+    i = 1
+    while i < len(str):
+        while str[i].find(res) != 0:
+            res = res[0:len(res)-1]
+        i += 1
+    return res
+
+print(longest_str(["aabc","ab"]))
+```
+
 
 ## **Array** 
+
+### **Two Sum**
+
+给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
+
+你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。
+
+```
+给定 nums = [2, 7, 11, 15], target = 9
+因为 nums[0] + nums[1] = 2 + 7 = 9
+所以返回 [0, 1]
+```
+
+**Option1**
+
+```
+def twoSum(nums, target):
+    """
+    :type nums: List[int]
+    :type target: int
+    :rtype: List[int]
+    """
+    idxDict = dict()
+    for idx, num in enumerate(nums):
+        if target - num in idxDict:
+            return [idxDict[target - num], idx]
+        idxDict[num] = idx
+
+
+nums = [2, 7, 11, 15]
+target = 9
+
+print(twoSum(nums,target))
+```
+
+**Option2**
+
+```
+def twoSumNaive(num_arr, pair_sum):
+    # search first element in the array
+    for i in range(len(num_arr)-1):
+        # search other element in the array
+        for j in range(i + 1, len(num_arr)):
+        # if these two elemets sum to pair_sum, print the pair
+            if num_arr[i] + num_arr[j] == pair_sum:
+                print("Pair with sum", pair_sum,"is: (", num_arr[i],",",num_arr[j],")")
+                print([i,j])
+
+# Driver Code
+num_arr = [3, 5, 2, -4, 8, 11]
+pair_sum = 7
+
+# Function call inside print
+twoSumNaive(num_arr, pair_sum) 
+
+# Pair with sum 7 is: ( 5 , 2 )
+# [1, 2]
+# Pair with sum 7 is: ( -4 , 11 )
+# [3, 5]
+```
+
+**Option3**
+
+```
+def twoSumHashing(num_arr, pair_sum):
+    sums = []
+    hashTable = {}
+
+    for i in range(len(num_arr)):
+        complement = pair_sum - num_arr[i]
+        if complement in hashTable:
+            print("Pair with sum", pair_sum,"is: (", num_arr[i],",",complement,")")
+            # print([i,hashTable[pair_sum - num_arr[i]]])
+        hashTable[num_arr[i]] = num_arr[i]
+
+# Driver Code
+num_arr = [4, 5, 1, 8]
+pair_sum = 9
+
+# Calling function
+twoSumHashing(num_arr, pair_sum)
+```
 
 
 ### **Check if two arrays are equal or not**
@@ -708,6 +861,107 @@ $ python3 16blheight.py
 Tree is not balanced
 ```
 
+### **Find the kth smallest element in a given a binary search tree (BST)**
+
+Write a Python program to find the kth smallest element in a given a binary search tree.
+
+```
+class TreeNode(object):
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+def kth_smallest(root, k):
+    stack = []
+    while root or stack:
+        while root:
+            stack.append(root)
+            root = root.left
+        root = stack.pop()
+        k -= 1
+        if k == 0:
+            break
+        root = root.right
+    return root.val
+
+root = TreeNode(8)  
+root.left = TreeNode(5)  
+root.right = TreeNode(14) 
+root.left.left = TreeNode(4)  
+root.left.right = TreeNode(6) 
+root.left.right.left = TreeNode(8)  
+root.left.right.right = TreeNode(7)  
+root.right.right = TreeNode(24) 
+root.right.right.left = TreeNode(22)  
+
+print(kth_smallest(root, 2))
+print(kth_smallest(root, 3))
+```
+
+```
+5
+8
+```
+
+
+### Given the root of a binary tree, determine if it is a valid binary search tree (BST).
+
+```
+# A valid BST is defined as follows:
+
+# The left subtree of a node contains only nodes with keys less than the node's key.
+# The right subtree of a node contains only nodes with keys greater than the node's key.
+# Both the left and right subtrees must also be binary search trees.
+
+# Input: root = [2,1,3]
+# Output: true
+
+# Input: root = [5,1,4,null,null,3,6]
+# Output: false
+# Explanation: The root node's value is 5 but its right child's value is 4.
+```
+
+**Option1**
+
+```
+class Solution:
+    def isValidateBST(self, root):
+        def dfs(lower, upper, node):
+            if not node:
+                return true
+            elif node.val<=lower or node.val >= upper:
+                return False
+            else:
+                return dfs(lower, node.val, node.left) and dfs(node.val, upper, node.right)
+        
+        return dfs(float('-inf'),float('inf'),root)
+```
+
+**Option2**
+
+```
+def isValidBST(self, root):
+        if not root:
+            return True
+        
+        def inOrder(root, order):
+            if root is None:
+                return
+            inOrder(root.left, order)
+            order.append(root.val)
+            inOrder(root.right, order)
+        
+        order = []
+        inOrder(root, order)
+        for i in range(1, len(order)):
+            if order[i] <= order[i-1]:
+                return False
+        return True
+
+```
+
+
 ## Stack
 
 ### Get minimum element from stack 
@@ -849,6 +1103,8 @@ if __name__ == '__main__':
 
 ## Linked lists
 
+### **Intersection Point in Y Shapped Linked Lists** 
+
 ```
 # Given two singly linked lists of size N and M, 
 # write a program to get the point where two linked lists intersect each other.
@@ -975,6 +1231,62 @@ if __name__ == '__main__':
 python3 12listinterction.py 
 The node of intersection is  15
 ```
+
+### **Reverse Linked List**
+
+Reverse a singly linked list.
+
+Explanation: head -> prev(None); move pointer: head -> head.next, prev -> head
+
+**Iteratively**
+
+
+```
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def reverseList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        next = None
+        while head:
+            head.next, head, next = next, head.next, head
+        return next # ***important***
+ ```
+ 
+ Recursion
+
+ 
+ ```
+ # Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def reverseList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        return self.reverse(head)
+
+    def reverse(self, node, prev=None):
+        if not node:
+            return prev
+        n = node.next
+        node.next = prev
+
+        return self.reverse(n, node)
+```
+
 
 ## Others
 
