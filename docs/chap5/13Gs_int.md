@@ -495,7 +495,93 @@ print(s.maxProfit([100,180,260,310,40,535,695]))
 
 * `float("inf")` used for setting a variable with an infinitely large value.
 
+
+### 在数组 `{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }` 中，查找 8 是否出现过。
+
+```
+def main():
+# 需要查找的数字
+    targetNumb = 8
+    arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    middle = 0
+    low = 0
+    high = len(arr) - 1
+    isfind = 0
+
+    while low <= high:
+        middle = round((low + high) /2)
+        if arr[middle] ==  targetNumb:
+            print(f"{targetNumb} in arr, and the index is {middle}")
+            isfind = 1
+            break
+        elif arr[middle] > targetNumb:  #  说明该数在low~middle之间
+            high = middle - 1
+        else:                       #  说明该数在middle~high之间
+            low = middle + 1
+    if isfind == 0:
+        print(f"{targetNumb} is not in the arr")
+
+
+if __name__ == "__main__":
+    main()
+
+# 二分查找的时间复杂度是 O(logn)，
+```
+
+
+
+
 ## **Sort** 
+
+### **Bubble Sort**
+
+```
+# 冒泡排序最好时间复杂度是 O(n)
+# 冒泡排序最坏时间复杂度会比较惨，是 O(n*n)。
+
+# 从第一个数据开始，依次比较相邻元素的大小。如果前者大于后者，则进行交换操作，把大的元素往后交换。通过多轮迭代，直到没有交换操作为止
+
+def main():
+    arr = [ 1, 0, 3, 4, 5, -6, 7, 8, 9, 10 ]
+    print(f"The the original data order: {arr}")
+    for i in range(1,len(arr)):           # Start from 2nd one
+        for j in range(0, len(arr)-i):    # Start from 1st one
+           if arr[j] > arr[j+1]:
+               temp = arr[j]
+               arr[j] = arr[j + 1]
+               arr[j + 1] = temp
+    
+    print(f"The the Bubble sort data order: {arr}")
+
+if __name__ == "__main__":
+    main()
+```
+
+### **Insert Sort**
+
+```
+# 1、插入排序的原理
+# 选取未排序的元素，插入到已排序区间的合适位置，直到未排序区间为空
+# 插入排序的平均时间复杂度是 O(n*n)。
+
+def main():
+    arr = [ 2, 3, 5, 1, 23, 6, 78, 34 ]
+    print(f"The the original data order: {arr}")
+    for i in range(1,len(arr)):
+        temp = arr[i]
+        j = i - 1
+        for j in range(j,0-1):
+            if  arr[j] > temp:
+                arr[j+1] = arr[j]
+            else:
+                break
+        arr[j+1] = temp
+
+    print(f"The the sorted data order: {arr}")
+
+if __name__ == "__main__":
+    main()
+```
 
 ### **Merge Sort**
 
@@ -961,6 +1047,90 @@ def isValidBST(self, root):
 
 ```
 
+### **Tree Order**
+
+**preorder**
+
+```
+# 先序遍历
+
+class Node:
+    def __init__(self, data):
+        self.left = None
+        self.right = None
+        self.data = data
+
+# Insert Node
+    def insert(self, data):
+
+        if self.data:
+            if data < self.data:
+                if self.left is None:
+                    self.left = Node(data)
+                else:
+                    self.left.insert(data)
+            elif data > self.data:
+                if self.right is None:
+                    self.right = Node(data)
+                else:
+                    self.right.insert(data)
+        else:
+            self.data = data
+
+# Print the Tree
+    def PrintTree(self):
+        if self.left:
+            self.left.PrintTree()
+        print(self.data),
+        if self.right:
+            self.right.PrintTree()
+# Preorder traversal
+# Root -> Left ->Right
+    def PreorderTraversal(self, root):
+        res = []
+        if root:
+            res.append(root.data)
+            res = res + self.PreorderTraversal(root.left)
+            res = res + self.PreorderTraversal(root.right)
+        return res
+
+root = Node(27)
+root.insert(14)
+root.insert(35)
+root.insert(10)
+root.insert(19)
+root.insert(31)
+root.insert(42)
+print(root.PreorderTraversal(root))
+```
+
+**Inorder traversal**
+
+```
+# Inorder traversal
+# Left -> Root -> Right
+
+def inorderTraversal(self, root):
+        res = []
+        if root:
+            res = self.inorderTraversal(root.left)
+            res.append(root.data)
+            res = res + self.inorderTraversal(root.right)
+        return res
+```
+
+**Postorder traversal**
+
+```
+def PostorderTraversal(self, root):
+        res = []
+        if root:
+            res = self.PostorderTraversal(root.left)
+            res = res + self.PostorderTraversal(root.right)
+            res.append(root.data)
+        return res
+```
+
 
 ## Stack
 
@@ -1100,6 +1270,55 @@ if __name__ == '__main__':
     print(q.deQueue())
     print(q.deQueue())
 ```
+
+### **给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效**。
+
+```
+# 有效字符串需满足：左括号必须与相同类型的右括号匹配，左括号必须以正确的顺序匹配。
+# 例如，{ [ ( ) ( ) ] } 是合法的，而 { ( [ ) ] } 是非法的。
+```
+
+```
+def main():
+    s =  "{[()()]}"
+    print(isLegal(s))
+    # print(s[0])
+    # print(isLeft(s))
+
+def isLeft(c):
+    if c == '{' or c == '(' or c == '[':
+        return 1
+    else:
+        return 0
+
+def isPair(p, curr):
+    if ( p == '{' and curr == '}' ) or ( p == '(' and curr == ')') or (p == '[' and curr == ']'):
+        return 1
+    else:
+        return 0
+
+def isLegal(s):
+    stack = []
+    for i in range(0,len(s)):
+        curr = s[i]
+        if isLeft(curr) == 1:
+            stack.append(curr)
+        else:
+            if len(stack) == 0:
+                return "Illegal"
+            p = stack.pop()
+            if isPair(p, curr) == 0:
+                return "Illegal"
+    
+    if len(stack) == 0:
+        return "Legal"
+    else:
+        return "Illegal"
+
+if __name__ == '__main__':
+    main()
+```
+
 
 ## Linked lists
 
@@ -1258,12 +1477,12 @@ class Solution(object):
         while head:
             head.next, head, next = next, head.next, head
         return next # ***important***
- ```
+```
  
- Recursion
+* Recursion
 
  
- ```
+```
  # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
