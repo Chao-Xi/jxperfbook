@@ -89,8 +89,65 @@ output:
 3
 ```
 
+## **3、 Find the most n repeated word in a string**
 
-## **3、Find Nth number in list**
+**N largest values in dictionary**
+
+```
+from collections import Counter
+
+def getNthFrequency(str, n):
+    array = str.split(' ')
+    res_array = []
+    i = 1
+    # return array
+    res_dict = dict(Counter(array))
+    # return result
+    while i <= n:
+        maximum_key = max(res_dict, key=res_dict.get)
+        res_array.append(maximum_key)
+        res_dict.pop(maximum_key)
+        i += 1
+    
+    return res_array
+    
+
+if __name__ == '__main__':
+    str = "In this program, to use Counter, we have to import it from the collections class in our program. Since Counter works for hashable objects they are accessed using a key. We can get the Key using the get method."
+    print(getNthFrequency(str,2))
+```
+
+**`maximum_key = max(res_dict, key=res_dict.get)`**
+
+**`['the', 'to']`**
+
+```
+from collections import Counter
+from heapq import nlargest
+
+
+def getNthFrequency(str, N):
+    array = str.split(' ')
+    res_array = []
+    i = 1
+    # return array
+    res_dict = dict(Counter(array))
+    # N largest values in dictionary
+    # Using nlargest
+    res = nlargest(N, res_dict, key = res_dict.get)
+    return res 
+
+if __name__ == '__main__':
+    str = "In this program, to use Counter, we have to import it from the collections class in our program. Since Counter works for hashable objects they are accessed using a key. We can get the Key using the get method."
+    print(getNthFrequency(str,3))
+```
+
+```
+['the', 'to', 'using']
+```
+
+
+## **4、Find Nth number in list**
 
 在一个有序数组中，查找出第一个大于 9 的数字，假设一定存在。例如，`arr = { -1, 3, 3, 7, 10, 14, 14 }`; 
 
