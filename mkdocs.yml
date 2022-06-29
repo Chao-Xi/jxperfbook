@@ -82,6 +82,7 @@ nav:
     - 'Linux review': 'chap6/linux_rew.md'
     - 'L13 Linux故障排查思路及常用命令': 'chap6/13Linux_ts.md'
     - 'L14 Linux iptables命令详解': 'chap6/14Linux_iptables.md'
+    - 'L15 Linux网络基础与性能优化': 'chap6/15linux_network.md'
   - 'Companies Interview':
     - '1 Microsoft Interview2021': 'chap7/1Ms.md'
     - '2 Microsoft Interview Algorithm 2021': 'chap7/2Ms_al.md'
