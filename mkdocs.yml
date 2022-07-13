@@ -100,6 +100,7 @@ nav:
     - '6 监控 Shell 脚本': 'chap8/6mon_shell.md'
     - '7 网络+数据库 Shell 脚本': 'chap8/7net_shell.md'
     - '8 Secret shell 脚本': 'chap8/8secret_shell.md'
+    - '9 Linux script 录播': 'chap8/9script_shell.md'
 
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
 repo_name: "jxperfbook"
