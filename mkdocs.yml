@@ -103,6 +103,9 @@ nav:
     - '7 网络+数据库 Shell 脚本': 'chap8/7net_shell.md'
     - '8 Secret shell 脚本': 'chap8/8secret_shell.md'
     - '9 Linux script 录播': 'chap8/9script_shell.md'
+    - '10 使用 unlink 删除文件': 'chap8/10linux_unlink.md'
+    - '11 如何在 Linux 下限制端口仅对指定 IP 开放访问': 'chap8/11linux_ip_port.md'
+    - '12 Linux 命令 socat': 'chap8/12socat.md'
 
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
 repo_name: "jxperfbook"
