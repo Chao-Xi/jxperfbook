@@ -52,7 +52,9 @@ nav:
     - 'L13 Istio面试': 'chap4/13istio_rev.md'
     - 'L14 SRE本质就是一个懂运维的资深开发': 'chap4/14sre.md'
     - 'L15 Top Prometheus Interview Questions and Answers (2022)': 'chap4/15prometheus.md'
-    - '16 Top Jenkins Interview Questions and Answers (2022)': 'chap4/16jenkins.md'
+    - 'L16 Top Jenkins Interview Questions and Answers (2022)': 'chap4/16jenkins.md'
+    - 'L17 DevOps Engineer: 30+ Interview Questions and Answers': 'chap4/17devops_int2023.md'
+    - 'L18 Helm指南：Kubernetes包管理器简介': 'chap4/18helm2023.md'
   - 'Python 面试题与总结':
     - '1、Apple Interview(3Sum)': 'chap5/1Apple_3sum.md'
     - '2、Python Interview': 'chap5/2Python_interview.md'
