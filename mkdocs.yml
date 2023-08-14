@@ -94,6 +94,7 @@ nav:
     - '6 AWS': 'chap7/6aws.md'
     - '7 Tesla': 'chap7/7tesla.md'
     - 'My Interview': 'chap7/my.md'
+    - '架构师面试合集': 'chap7/int_anws.md'
   - 'Linux 常用命令':
     - '0 Linux常用命令': 'chap8/0shell_linux.md'
     - '1 Shell 分析服务器日志命令': 'chap8/1shell_logs.md'
