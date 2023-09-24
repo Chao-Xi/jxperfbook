@@ -109,6 +109,7 @@ nav:
     - '10 使用 unlink 删除文件': 'chap8/10linux_unlink.md'
     - '11 如何在 Linux 下限制端口仅对指定 IP 开放访问': 'chap8/11linux_ip_port.md'
     - '12 Linux 命令 socat': 'chap8/12socat.md'
+    - '14 Linux shell 脚本详解学习 2023': 'chap8/14linux_shell.md'
 
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
 repo_name: "jxperfbook"
