@@ -110,6 +110,8 @@ nav:
     - '11 如何在 Linux 下限制端口仅对指定 IP 开放访问': 'chap8/11linux_ip_port.md'
     - '12 Linux 命令 socat': 'chap8/12socat.md'
     - '14 Linux shell 脚本详解学习 2023': 'chap8/14linux_shell.md'
+  - 'AutoSys':
+    - '1 AutoSys: A Beginner’s Guide AutoSys Workload Automation': 'chap10/1autosys_intro.md'
 
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
 repo_name: "jxperfbook"
