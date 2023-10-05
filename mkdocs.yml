@@ -112,7 +112,14 @@ nav:
     - '14 Linux shell 脚本详解学习 2023': 'chap8/14linux_shell.md'
     - '15 使用grep分析日志': 'chap8/15grep_learn.md'
   - 'AutoSys':
-    - '1 AutoSys: A Beginner’s Guide AutoSys Workload Automation': 'chap10/1autosys_intro.md'
+    - '0 AutoSys: A Beginner’s Guide AutoSys Workload Automation': 'chap10/1autosys_intro.md'
+    - '1 Autosys Introduction': 'chap10/1Autosys_tot1.md'
+    - '2 Autosys JIL': 'chap10/2Autosys_jil.md'
+    - '3 Autosys Components, Configuration & Validation': 'chap10/3Autosys_comp.md'
+    - '4 Austosys command': 'chap10/4Autosys_cmd.md'
+    - '5 Manage Job in the Database': 'chap10/5Autosys_job_cmd.md'
+    - '6 Autotsys virtual resource management': 'chap10/6autosys_vir_resouce.md'
+    - '7 Shell Script to check Autosys agent installed': 'chap10/7autosys_shell.md'
 
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
 repo_name: "jxperfbook"
