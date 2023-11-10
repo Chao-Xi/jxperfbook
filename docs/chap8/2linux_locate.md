@@ -13,6 +13,17 @@ alias ls='ls --color=auto'
     /usr/bin/ls
 ```
 
+### find命令
+
+从指定的起始目录开始，递归查找其各个子目录，查找满足条件的文件并对其执行相关的操作。
+
+```
+[root@localhost ~] find /path/to/search -name "filename"
+```
+
+find命令的一般用法除了根据名称来查找文件外，还可以根据文件大小和时间来查找。
+
+
 ### **寻找特定文件**
 
 whereis命令用来定位指令的二进制程序、源代码文件和man手册页等相关文件的路径,该命令只能用于程序名的搜索
