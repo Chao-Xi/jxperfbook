@@ -112,6 +112,7 @@ nav:
     - '12 Linux 命令 socat': 'chap8/12socat.md'
     - '14 Linux shell 脚本详解学习 2023': 'chap8/14linux_shell.md'
     - '15 使用grep分析日志': 'chap8/15grep_learn.md'
+    - '16 Linux File Operation (df/du/rsync)': 'chap8/17file_opt.md'
   - 'AutoSys':
     - '0 AutoSys: A Beginner’s Guide AutoSys Workload Automation': 'chap10/1autosys_intro.md'
     - '1 Autosys Introduction': 'chap10/1Autosys_tot1.md'
