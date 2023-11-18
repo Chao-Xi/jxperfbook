@@ -1,4 +1,4 @@
-# Linux File Operation (df/du/rsync)
+# Linux File Operation (df/du/rsync/批量删除/定时备份)
 
 ## Linux中df和du命令的10个高级用法
 
@@ -251,3 +251,114 @@ $ rsync -avh --bwlimit=1000 source/ destination/
 
 上述命令中，`--bwlimit=1000`表示限制带宽为1000 KB/s。
 
+## 5 删除文件
+
+首先准备好你要删除的文件目录到一个list.txt中
+
+例如：
+
+```
+ls -1 > list.txt
+```
+
+这个命令会将当前目录下的文件和目录名（不包括子目录）输出到 `list.txt` 文件中。
+
+* `ls` 是列出目录内容的命令。
+* `-1` 选项让 ls 每行只输出一个文件名，这使得输出更适合被脚本读取。
+* `>` 是重定向操作符，它会将 ls 的输出写入到 list.txt 文件中。如果 list.txt 文件已经存在，这个操作会覆盖原有的文件内容。
+
+
+如果你只希望列出文件，而非目录，你可以使用 `ls -1p | grep -v /` 命令：
+
+```
+ls -1p | grep -v / > list.txt
+```
+
+* `ls -1p` 命令会在目录名后添加 `/ `符号。
+* `grep -v /` 命令会过滤掉包含 `/` 的行，也就是目录名。
+* 最后结果重定向到 `list.txt` 文件中。
+
+然后你可以使用 bash 脚本来实现删除文件。以下是一个示例脚本
+
+```
+#!/bin/bash
+
+# 假设你的 txt 文件名为 filelist.txt
+while IFS= read -r line
+do
+    if [ -f "$line" ]; then
+        rm "$line"
+        echo "$line 文件已被删除"
+    else
+        echo "$line 文件不存在"
+    fi
+done < "filelist.txt"
+```
+
+**`IFS= read -r line` 是一种安全的读取文本文件的方式，它可以处理文件名中的特殊字符。**
+
+`[ -f "$line" ]` 会检查一个名为 $line 的文件是否存在。
+
+` rm "$line" `  会删除指定的文件。
+
+`echo "$line 文件已被删除"` 或 `"$line 文件不存在"` 是一个简单的确认消息，它不是必需的，但有助于你知道脚本在做什么。
+
+另外，对于文件删除操作，一定要小心，因为删除的文件无法恢复。对于需要删除的文件，最好先确认一下，避免误删。
+
+那如果使用python呢，可以使用 os 模块，它提供了许多处理文件和目录的功能。下面是一个示例脚本：
+
+```
+import os
+
+# 假设你的 txt 文件名为 filelist.txt
+with open('filelist.txt', 'r') as f:
+    for line in f.readlines():
+        line = line.strip()  # 移除行尾的换行符
+        if os.path.isfile(line):
+            try:
+                os.remove(line)
+                print(f'文件 {line} 已被删除')
+            except OSError as e:
+                print(f'删除文件 {line} 发生错误: {e.strerror}')
+        else:
+            print(f'文件 {line} 不存在')
+```
+
+这个脚本使用了 os.path.isfile(line) 来检查一个名为 line 的文件是否存在，os.remove(line) 来删除指定的文件。
+
+使用 try/except 结构是为了处理可能发生的错误，例如权限问题或其它文件系统错误。当删除文件发生错误时，我们打印出错误信息。删除文件操作要特别小心，先在一些不重要的文件上测试。确认没有问题后，再在你要删除的文件上执行。
+
+
+## 备份文件
+
+用python备份可以使用 shutil 和 os 库来复制文件和管理路径。以下是一个示例脚本：
+
+```
+import os
+import shutil
+from datetime import datetime
+
+# 创建一个带日期的备份目录
+backup_dir = "/path/to/your/backup/directory/backup_" + datetime.now().strftime("%Y%m%d%H%M%S")
+os.makedirs(backup_dir, exist_ok=True)
+
+# 从 list.txt 读取文件名
+with open('list.txt', 'r') as f:
+    for line in f.readlines():
+        line = line.strip()  # 移除行尾的换行符
+        if os.path.isfile(line):
+            # 复制文件到备份目录
+            shutil.copy(line, backup_dir)
+```
+
+这个脚本会创建一个带时间戳的备份目录，并从 list.txt 中读取文件名，将存在的文件复制到备份目录。
+
+要定时执行这个脚本，你依然需要使用 cron 任务。你可以使用 `crontab -e `命令打开你的用户的 cron 配置，并添加类似如下的配置：
+
+```
+0 0 * * * /usr/bin/python3 /path/to/your/script.py
+```
+
+这行配置表示每天午夜执行脚本 `/path/to/your/script.py`，`/usr/bin/python3 `是 Python 3 的常见路径，你需要根据你的环境替换为正确的 Python 路径。
+
+注意：在给定的路径中，`/path/to/your/backup/directory/` 和 `/path/to/your/script.py` 你需要替换为你自己的路径。
