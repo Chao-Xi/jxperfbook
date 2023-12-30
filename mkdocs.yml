@@ -115,6 +115,7 @@ nav:
     - '16 Linux File Operation (df/du/rsync/批量删除/定时备份)': 'chap8/17file_opt.md'
     - '17 Shell script中的8个常用的特殊变量': 'chap8/18linux_var.md'
     - '18 Curl的10个高级用法': 'chap8/19curl.md'
+    - '19 Shell脚本执行不再受限，不进入所在目录也能成功运行': 'chap8/20shell_dir.md'
   - 'AutoSys':
     - '0 AutoSys: A Beginner’s Guide AutoSys Workload Automation': 'chap10/1autosys_intro.md'
     - '1 Autosys Introduction': 'chap10/1Autosys_tot1.md'
