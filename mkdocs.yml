@@ -120,6 +120,7 @@ nav:
     - '21 使用find命令轻松查找文件': 'chap8/22find.md'
     - '22 使用Shell逻辑表达式，满足各种条件检测': 'chap8/22find.md'
     - '23 xargs命令的使用技巧': 'chap8/24xargs.md'
+    - '24 快速提升Shell脚本能力': 'chap8/25shell_script.md'
   - 'AutoSys':
     - '0 AutoSys: A Beginner’s Guide AutoSys Workload Automation': 'chap10/1autosys_intro.md'
     - '1 Autosys Introduction': 'chap10/1Autosys_tot1.md'
