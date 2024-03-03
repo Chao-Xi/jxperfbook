@@ -122,6 +122,7 @@ nav:
     - '23 xargs命令的使用技巧': 'chap8/24xargs.md'
     - '24 快速提升Shell脚本能力': 'chap8/25shell_script.md'
     - '25 如何清理 Linux 僵尸进程？': 'chap8/26linux_zombie.md'
+    - '26 Linux inode 介绍与清理': 'chap8/27Inode.md'
   - 'AutoSys':
     - '0 AutoSys: A Beginner’s Guide AutoSys Workload Automation': 'chap10/1autosys_intro.md'
     - '1 Autosys Introduction': 'chap10/1Autosys_tot1.md'
