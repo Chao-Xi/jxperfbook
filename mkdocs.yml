@@ -123,6 +123,13 @@ nav:
     - '24 快速提升Shell脚本能力': 'chap8/25shell_script.md'
     - '25 如何清理 Linux 僵尸进程？': 'chap8/26linux_zombie.md'
     - '26 Linux inode 介绍与清理': 'chap8/27Inode.md'
+    - '27 Vim 技巧': 'chap8/28vim.md'
+    - '28 Linux AWK 文本处理': 'chap8/29awk.md'
+    - '29 nohup命令：在Linux中轻松实现后台运行和守护进程': 'chap8/30nohup.md'
+  - 'Bash Programming 技巧':
+    - '1 简洁的 Bash Programming 技巧': 'chap9/1bash_prom.md'
+    - '2 简洁的 Bash Programming 技巧续篇': 'chap9/2bash_skill.md' 
+    - '3 Bash Pitfalls: 编程易犯的错误（一）': 'chap9/3bash_skill.md'   
   - 'AutoSys':
     - '0 AutoSys: A Beginner’s Guide AutoSys Workload Automation': 'chap10/1autosys_intro.md'
     - '1 Autosys Introduction': 'chap10/1Autosys_tot1.md'

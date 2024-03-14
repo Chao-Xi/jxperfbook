@@ -1,4 +1,4 @@
-# **Bash Pitfalls: 编程易犯的错误（一）**
+# **3 Bash Pitfalls: 编程易犯的错误（一）**
 
 ## 1. **`for i in $(ls *.mp3)`**
 
