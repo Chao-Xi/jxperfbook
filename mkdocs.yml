@@ -127,6 +127,7 @@ nav:
     - '28 Linux AWK 文本处理': 'chap8/29awk.md'
     - '29 nohup命令：在Linux中轻松实现后台运行和守护进程': 'chap8/30nohup.md'
     - '30 文件系统中的“分身术”ln命令': 'chap8/31ln.md'
+    - '31 Linux 系统日志之深入解析': 'chap8/32Linux_logs.md'
   - 'Bash Programming 技巧':
     - '1 简洁的 Bash Programming 技巧': 'chap9/1bash_prom.md'
     - '2 简洁的 Bash Programming 技巧续篇': 'chap9/2bash_skill.md' 
