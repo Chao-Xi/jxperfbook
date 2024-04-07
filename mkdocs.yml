@@ -128,6 +128,7 @@ nav:
     - '29 nohup命令：在Linux中轻松实现后台运行和守护进程': 'chap8/30nohup.md'
     - '30 文件系统中的“分身术”ln命令': 'chap8/31ln.md'
     - '31 Linux 系统日志之深入解析': 'chap8/32Linux_logs.md'
+    - '32 Linux 中 `.bashrc`、`.bash-profile` 和 `.profile` 之间的区别': 'chap8/33bash.md'
   - 'Bash Programming 技巧':
     - '1 简洁的 Bash Programming 技巧': 'chap9/1bash_prom.md'
     - '2 简洁的 Bash Programming 技巧续篇': 'chap9/2bash_skill.md' 
