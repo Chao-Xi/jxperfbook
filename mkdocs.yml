@@ -130,6 +130,7 @@ nav:
     - '31 Linux 系统日志之深入解析': 'chap8/32Linux_logs.md'
     - '32 Linux 中 `.bashrc`、`.bash-profile` 和 `.profile` 之间的区别': 'chap8/33bash.md'
     - '33 6大Linux命令线上日志排查': 'chap8/34linux_6logs.md'
+    - '34 未安装telnet 和 nc 等工具，如何测试端口是否开放': 'chap8/35port_detect.md'
   - 'Bash Programming 技巧':
     - '1 简洁的 Bash Programming 技巧': 'chap9/1bash_prom.md'
     - '2 简洁的 Bash Programming 技巧续篇': 'chap9/2bash_skill.md' 
