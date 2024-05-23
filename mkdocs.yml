@@ -131,6 +131,7 @@ nav:
     - '32 Linux 中 `.bashrc`、`.bash-profile` 和 `.profile` 之间的区别': 'chap8/33bash.md'
     - '33 6大Linux命令线上日志排查': 'chap8/34linux_6logs.md'
     - '34 未安装telnet 和 nc 等工具，如何测试端口是否开放': 'chap8/35port_detect.md'
+    - '35 df命令显示磁盘空间不足而du命令显示还有很多空闲空间': 'chap8/36dudf.md'
   - 'Bash Programming 技巧':
     - '1 简洁的 Bash Programming 技巧': 'chap9/1bash_prom.md'
     - '2 简洁的 Bash Programming 技巧续篇': 'chap9/2bash_skill.md' 
