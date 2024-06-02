@@ -96,6 +96,7 @@ nav:
     - 'My Interview': 'chap7/my.md'
     - '架构师面试合集': 'chap7/int_anws.md'
   - 'Linux 常用命令':
+    - '0 Shell命令行一些快捷键组合': 'chap8/0shell_cmd.md'
     - '0 Linux常用命令': 'chap8/0shell_linux.md'
     - 'Linux 实用运维命令 - Update': 'chap8/16linux_ops.md'
     - '1 Shell 分析服务器日志命令': 'chap8/1shell_logs.md'
