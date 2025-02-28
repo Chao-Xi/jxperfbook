@@ -1,4 +1,4 @@
-# 1 CI/CD 之路 &  GitOps 面试题合集
+# 1 CI/CD 之路 & GitOps 面试题合集
 
 ## 1 CI/CD 之路
 

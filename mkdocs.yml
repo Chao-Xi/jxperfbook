@@ -149,7 +149,8 @@ nav:
     - '6 Autotsys virtual resource management': 'chap10/6autosys_vir_resouce.md'
     - '7 Shell Script to check Autosys agent installed': 'chap10/7autosys_shell.md'
   - '2025 - 面试准备':
-    - '1 CI/CD 之路 / GitOps 面试题合集': '2025/1cicd.md'
+    - '1 CI/CD 之路-GitOps 面试题合集': '2025/1cicd.md'
+    - '2 Docker面试10大必考题': '2025/2docker.md'
 
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
 repo_name: "jxperfbook"
