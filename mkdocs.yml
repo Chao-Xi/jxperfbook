@@ -151,6 +151,10 @@ nav:
   - '2025 - 面试准备':
     - '1 CI/CD 之路-GitOps 面试题合集': '2025/1cicd.md'
     - '2 Docker面试10大必考题': '2025/2docker.md'
+    - '3 Kubernetes 面试题精解：从入门到进阶(2025)': '2025/3kubernetes.md'
+    - '4 Linux 系统故障时': '2025/4Linux_tb.md'
+    - '5 AWS 面试': '2025/5aws.md'
+    - '6 监控生态面试通关秘籍': '2025/6monitor.md'
 
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
 repo_name: "jxperfbook"
