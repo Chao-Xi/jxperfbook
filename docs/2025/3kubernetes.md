@@ -266,6 +266,18 @@ Kubelet 会清理容器和与 Pod 相关的资源，例如：
 
 Kubernetes（K8s）是一个强大的容器编排平台，旨在自动化应用程序容器的部署、扩展和管理。它由多个组件组成，每个组件在整个 Kubernetes 系统中发挥着重要作用。以下是对 Kubernetes 每个关键组件的理解
 
+
+### **0 核心组件**
+
+* `etcd`保存了整个集群的状态;
+* `apiserver`提供了资源操作的唯一入口，并提供认证、授权、访问控制、API注册和发现等机制;
+* `controller manager`负责维护集群的状态，比如**故障检测**、**自动扩展**、**滚动更新**等
+* `scheduler`负责资源的调度，按照预定的**调度策略将Pod调度到相应的机器上**
+* `kubelet`负责维持容器的生命周期，同时也负责`Volume(CVI)`和网络`(CNI)`的管理;
+* `Container runtime`负责镜像管理以及Pod和容器的真正运行(CRI);
+* `kube-proxy`负责为`Service`提供`cluster`内部的**服务发现和负载均衡**;
+* `Flannel` 网络保证，集群内各节点能通过`Pod`网段互联互通
+
 ### 1. APIServer
 
 * **作用**：API Server 是 Kubernetes 控制平面的核心组件，它作为所有用户请求的入口，**负责接收和处理外部请求（如 kubectl 命令）以及集群内各组件的内部请求。API Server 提供 RESTful API 接口，供用户和 Kubernetes 控制平面的其他组件交互**。
@@ -537,6 +549,8 @@ livenessProbe:
   periodSeconds: 10
 ```
 
+可以根据用户自定义规则来判定pod是否健康，如果livenessProbe探针探测到容器不健康，则**kubelet会根据其重启策略来决定是否重启，如果一个容器不包含livenessProbe探针，**则kubelet会认为容器的livenessProbe探针的返回值永远成功。
+
 ### 2. 就绪探针（Readiness Probe）
 
 **目的**：检测容器是否准备好接收流量，若失败则从** Service 的 Endpoints 中移除**。
@@ -555,6 +569,9 @@ readinessProbe:
   initialDelaySeconds: 10
   periodSeconds: 5
 ```
+
+同样是可以根据用户自定义规则来判断pod是否健康，**如果探测失败，控制器会将此pod从对应service的endpoint列表中移除**，从此不再将任何请求调度到此Pod上，直到下次探测成功。
+
 
 ### 3. 启动探针（Startup Probe）
 
@@ -575,6 +592,19 @@ startupProbe:
   failureThreshold: 30  # 最长等待 30*5=150 秒
   periodSeconds: 5
 ```
+
+**启动检查机制，应用一些启动缓慢的业务，避免业务长时间启动而被上面两类探针kill掉，这个问题也可以换另一种方式解决，就是定义上面两类探针机制时，初始化时间定义的长一些即可**。
+
+* `initialDelaySeconds`：初始第一次探测间隔，用于应用启动的时间，**防止应用还没启动而健康检查失败**
+* `periodSeconds`：**检查间隔，多久执行probe检查，默认为10s；**
+* `timeoutSeconds`：**检查超时时长**，探测应用timeout后为失败；
+* `successThreshold`：**成功探测阈值，表示探测多少次为健康正常，默认探测1次**。
+
+**1）Exec**： 通过执行命令的方式来检查服务是否正常，比如使用`cat`命令查看`pod`中的某个重要配置文件是否存在，若存在，则表示pod健康。反之异常。
+
+**2）Httpget**： **通过发送http/htps请求检查服务是否正常，返回的状态码为200-399则表示容器健康（注http get类似于命令curl -I）**。
+
+**3）tcpSocket：** 通过容器的IP和Port执行TCP检查，如果能够建立TCP连接，则表明容器健康，**这种方式与HTTPget的探测机制有些类似，tcpsocket健康检查适用于TCP业务**。
 
 ## 2: Kubernetes 的 QoS 分类（Guaranteed、Burstable、BestEffort）及其资源管理策略？
 
@@ -947,3 +977,139 @@ Kubernetes 的资源管理器（Scheduler） 通过以下方式确保资源的�
 * 资源请求和限制**：每个 Pod 在调度时，Kubernetes 会根据资源请求和限制来选择最合适的节**点。
 * QoS 策略：通过 QoS 类别（Guaranteed、Burstable、BestEffort）来管理 Pod 的优先级和资源分配。
 * 调度策略：如资源亲和性、节点亲和性等，帮助在资源有限的情况下，做出最合适的资源调度决策。
+
+## 28 Four types of k8s services
+
+我们在定义`Service`的时候可以指定一个自己需要的类型的`Service`，如果不指定的**话默认是`ClusterIP`类型**。
+
+我们可以使用的服务类型如下：
+
+* `ClusterIP`：通过集群的**内部 IP 暴露服务**，选择该值，**服务只能够在集群内部可以访问，这也是默认的`ServiceType`**。
+* `NodePort`：通过每个 **`Node节点上的IP`** 和 **`静态端口（NodePort）`** 暴露服务。NodePort 服务会路由到 ClusterIP 服务，这个 ClusterIP 服务会自动创建。通过请求 : **可以从集群的外部访问一个 NodePort 服务**。
+* `LoadBalancer`：**使用云提供商的负载局衡器，可以向外部暴露服务**。外部的负载均衡器可以路由到 `NodePort` 服务和 `ClusterIP` 服务，这个需要结合具体的云厂商进行操作。
+* `ExternalName`：**通过返回 CNAME 和它的值，可以将服务映射到 `externalName` 字段的内容**（例如， `foo.bar.example.com`）。没有任何类型代理被创建，这只有 Kubernetes 1.7 或更高版本的 kube-dns 才支持。
+
+## 29 k8s 的 `service` 和 `ep(endpoints)` 是如何关联和相互影响的。
+
+**`Service`是对一组提供相同功能的`Pods`的抽象，并为它们提供一个统一的入口**。
+
+借助Service，应用可以方便的实现**服务发现**与**负载均衡**，并实现**应用的零宕机升级**。
+
+* `Service`通过标签来选取服务后端，一般配合`Replication Controller` 或者`Deployment`来保证后端容器的正常运行。
+* **这些匹配标签的`Pod IP`和`端口列表`组成`endpoints`，由`kube-proxy`负责将服务IP负载均衡到这些`endpoints`上。**
+
+**`Service`同样是根据`Label Selector`来刷选`Pod`进行关联的，实际上k8s在`Service`和`Pod`之间通过`Endpoint`衔接，`Endpoints`同`Service`关联的`Pod`；相对应，可以认为是`Service`的服务代理后端，`k8s`会根据`Service`关联到`Pod`的`Pod IP` 信息组合成一个`Endpoints`。**
+
+## 30 `deployment/rs`有什么区别。其使用方式、使用条件和原理是什么。
+
+`Deployment`继承了`rc`的全部功能外，
+
+<mark>还可以查看**升级详细进度**和**状态**. 当升级出现问题的时候，可以使用**回滚操作**, 回滚到指定的版本，每一次对`Deployment`的操作，都会保存下来，变能方便的进行回滚操作了，另外对于**每一次升级都可以随时暂停和启动**</mark>
+
+### **拥有多种升级方案：**
+
+* `Recreate`删除现在的`Pod`，
+* 重新创建；`RollingUpdate`滚动升级，逐步替换现有`Pod`，对于生产环境的服务升级，显然这是一种最好的方式
+
+**一个`Deployment`拥有多个`Replica Set`，而一个`Replica Set`拥有一个或多个`Pod`。**
+
+**一个`Deployment`控制多个`rs`主要是为了支持回滚机制，每当`Deployment`操作时，`Kubernetrs`会重新生成一个`Replica Set`并保留，以后有需要的话就可以回滚至之前的状态**
+
+#### 使用方式:
+
+* 滚动升级`Deployment`
+
+```
+spec:
+  minReadySeconds: 5
+  strategy:
+    # indicate which strategy we want for rolling update
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+```
+
+* `rollout`滚动升级`Deployment`
+
+```
+# check
+$ kubectl rollout status deployment/nginx-deploy
+
+# pause
+$ kubectl rollout pause deployment <deployment>
+
+# resume
+$ kubectl rollout resume deployment <deployment>
+```
+
+* `rollback`滚动升级`Deployment`
+
+```
+# check history
+$ kubectl rollout history deployment nginx-deploy
+deployments "nginx-deploy"
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
+
+# roll back with specific history
+$ kubectl rollout history deployment nginx-deploy --revision=2
+
+# roll back last one directly
+$ kubectl rollout undo deployment nginx-deploy
+
+# roll back to version x directly
+$ kubectl rollout undo deployment nginx-deploy --to-revision=2
+```
+
+
+## **31 StatefulSet和Deployment的区别**
+
+**“Deployment用于部署无状态服务，StatefulSet用来部署有状态服务”。**
+
+### **无状态的应用**
+
+* **pod之间没有顺序**
+* **所有pod共享存储**
+* **pod名字包含随机数字**
+* service都有`ClusterIP`,**可以负载均衡**
+
+### **有状态的应用**
+
+* **部署、扩展、更新、删除都要有顺序**
+* 每**个pod都有自己存储，所以都用volumeClaimTemplates，为每个pod都生成一个自己的存储，保存自己的状态**
+* **pod名字始终是固定的**
+* service没有ClusterIP，**是`headlessservice`，所以无法负载均衡，返回的都是pod名，所以pod名字都必须固定**，
+	* `StatefulSet`在`Headless Service`的基础上又为StatefulSet控制的每个Pod副本创建了一个DNS域名:`$(podname).(headless server name).namespace.svc.cluster.local`
+
+
+## **32、 DaemonSet资源对象的特性？**
+
+**DaemonSet这种资源对象会在每个k8s集群中的节点上运行，并且每个节点只能运行一个pod，这是它和deployment资源对象的最大也是唯一的区别**。所以，在其yaml文件中，不支持定义replicas，除此之外，与Deployment、RS等资源对象的写法相同。
+
+它的一般使用场景如下：
+
+* **在去做每个节点的日志收集工作；**
+* **监控每个节点的的运行状态；**
+
+
+## **33、 创建一个pod的流程是什么？**
+
+* 客户端提交Pod的配置信息（可以是yaml文件定义好的信息）到`kube-apiserver`；
+* `Apiserver`收到指令后，通知给controller-manager创建一个资源对象；
+* **`Controller-manager`通过`api-server`将pod的配置信息存储到ETCD数据中心中；**
+* Kube-scheduler检测到pod信息会开始调度预选，会先过滤掉不符合Pod资源配置要求的节点，然后开始调度调优，主要是挑选出更适合运行pod的节点，然后将pod的资源配置单发送到node节点上的kubelet组件上。
+* **Kubelet根据scheduler发来的资源配置单运行pod，运行成功后，将pod的运行信息返回给scheduler，scheduler将返回的pod运行状况的信息存储到etcd数据中心。**
+
+## **34、 删除一个Pod会发生什么事情？**
+
+答：Kube-apiserver会接受到用户的删除指令，默认有30秒时间等待优雅退出，超过30秒会被标记为死亡状态，此时Pod的状态Terminating，kubelet看到pod标记为Terminating就开始了关闭Pod的工作；
+
+
+关闭流程如下：
+
+* pod从service的endpoint列表中被移除；
+* 如果该pod定义了一个停止前的钩子，其会在pod内部被调用，停止钩子一般定义了如何优雅的结束进程；
+* 进程被发送TERM信号（kill -14）
+* 当超过优雅退出的时间后，Pod中的所有进程都会被发送SIGKILL信号`（kill -9）`。
