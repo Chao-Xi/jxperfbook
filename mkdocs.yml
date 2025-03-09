@@ -160,6 +160,7 @@ nav:
     - '8 SAP面试': '2025/8sap.md'
     - '9 数据库面试': '2025/9db_interview.md'
     - '10 Prometheus面试': '2025/10prometheus.md'
+    - '11 深度剖析 Istio (2025)': '2025/11istio.md'
 
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
 repo_name: "jxperfbook"

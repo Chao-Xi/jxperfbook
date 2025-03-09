@@ -1113,3 +1113,206 @@ $ kubectl rollout undo deployment nginx-deploy --to-revision=2
 * 如果该pod定义了一个停止前的钩子，其会在pod内部被调用，停止钩子一般定义了如何优雅的结束进程；
 * 进程被发送TERM信号（kill -14）
 * 当超过优雅退出的时间后，Pod中的所有进程都会被发送SIGKILL信号`（kill -9）`。
+
+
+## Kubernetes(k8s)-常用命令(kubectl命令)
+
+### 获取资源信息
+
+```
+Kubectl get <resource>: 
+
+列出某种类型的所有资源。例如，kubectl get pods 会列出默认命名空间所有的 Pods。
+```
+
+当然这个查询只能查询到最一些名字，时间等比较简单的信息。如果想要查询比较详细的信息则可以使用 `-o yaml（也可以是json） 参数`，我们前面讲过的备份也是通过这个参数。
+
+```
+kubectl get pod  etcd-master01 -n kube-system  -o yaml
+```
+
+我们在查询Pod的时候，有的时候并知道他在哪个命名空间，则我们可以使用-A参数(早期的版本还需要必须使用`--all-namespaces`参数)，然后使用grep方式进行过滤。
+
+```
+kubectl get pod -A |grep apiserver
+```
+
+还有的是需要确定Pod对应的节点等信息，可以添加`-o wide`参数。
+
+```
+kubectl get pod -o wide
+```
+
+`kubectl describe <resource> <name>`：显示某个具体资源的详细信息。
+
+例如，`kubectl describe pod my-pod`。这个主要用于查询资源的event事件，进行检查资源状态
+
+**以上无论是get还是describe，后面的资源类型我们前面讲过的大部分资源都可以使用。具体哪些资源可以使用 kubectl api-resources获取。**
+
+
+### 创建和更新资源
+
+```
+kubectl apply -f <file>: 根据指定的 YAML 或 JSON 文件创建或更新资源。
+```
+
+例如，`kubectl apply -f deployment.yaml`，**可用于创建和更新**。
+
+`kubectl create -f <file>`: 根据指定的 YAML 或 JSON 文件创建资源。与 apply 不同，create 仅用于创建操作。
+
+**`kubectl edit <resource> <name>:` 编辑集群中的资源。**
+
+这将打开一个文本编辑器供您修改当前资源的配置。
+
+**`kubectl patch <resource> <name>`：**
+
+
+更新某部分资源，这里的资源一般是这个更新这个资源的局部信息，比如更新副本数量：
+
+```
+kubectl patch deployment/my-deployment --type='merge' -p '{"spec":{"replicas":3}}'
+```
+
+**删除资源**
+
+`kubectl delete <resource> <name>:` 删除某个具体资源。
+
+例如，`kubectl delete pod my-pod`
+
+
+**`kubectl delete -f <file>`: 根据指定的 YAML 或 JSON 文件删除资源。**
+
+**与 Pod 和容器交互**
+
+```
+kubectl exec <pod> -- <command>: 在指定的 Pod 中执行命令，也可以使用bash进入容器。
+```
+
+例如，`kubectl exec my-pod -- ls / `会在 my-pod 中执行 `ls /`。
+
+`kubectl logs <pod>`: 获取 Pod 中容器的日志。如果 Pod 有多个容器，则需使用 `-c <container>` 指定容器。
+
+**`kubectl attach <pod>`: 附加到正在运行的容器以查看输出流或交云控制台。**
+
+**`kubectl port-forward <pod> <local-port>:<pod-port>`: 将本地端口转发到 Pod 中的端口。**
+
+
+**管理集群**
+
+* `kubectl config view`: 查看 kubectl 的配置信息，包括集群、用户和上下文。
+* `kubectl top <node|pod>`: 显示节点或 Pod 的 CPU 和内存使用情况，需要安装监控组件才可以用。
+
+**管理节点**
+
+`kubectl cordon`：隔离节点，避免新Pod调度过来，用于维护服务器前准备工作。
+
+`kubectl uncordon`：取消隔离，重新开放调度，维护结束以后恢复服务器。
+
+`kubectl drain`：驱逐Pod，用于移除当前节点的Pod，才能对节点进行操作具体的维护操作。
+
+`kubectl taint`：污点操作，用于控制节点的污点添加与删除，合理的进行调度。
+
+`kubeclt label`：标签操作，用于操作资源的标签添加或者删除
+
+```
+#添加标签
+kubectl label <resource-type> <resource-name> <label-key>=<label-value>
+
+#删除标签
+kubectl label <resource-type> <resource-name> <label-key>-
+```
+
+**其他命令**
+
+```
+kubectl rollout status <resource>/<name>: 查看资源的部署状态。
+
+例如，kubectl rollout status deployment/my-deployment。
+
+kubectl rollout undo <resource>/<name>: 回滚资源到之前的状态。
+
+例如，kubectl rollout undo deployment/my-deployment。
+
+kubectl scale <resource>/<name> --replicas=<num>: 缩放资源的副本数。
+例如，kubectl scale deployment/my-deployment --replicas=3。
+```
+
+```
+#更新镜像，使用较多的命令
+kubectl set image <resource>/<name> <container_name>=<new_image>:<tag>
+kubectl set image deployment/my-deployment my-container=nginx:1.19
+```
+
+```
+kubectl
+kubectl controls the Kubernetes cluster manager.
+
+ Find more information at: https://kubernetes.io/docs/reference/kubectl/
+
+Basic Commands (Beginner):
+  create          Create a resource from a file or from stdin
+  expose          Take a replication controller, service, deployment or pod and expose it as a new
+Kubernetes service
+  run             Run a particular image on the cluster
+  set             Set specific features on objects
+
+Basic Commands (Intermediate):
+  explain         Get documentation for a resource
+  get             Display one or many resources
+  edit            Edit a resource on the server
+  delete          Delete resources by file names, stdin, resources and names, or by resources and
+label selector
+
+Deploy Commands:
+  rollout         Manage the rollout of a resource
+  scale           Set a new size for a deployment, replica set, or replication controller
+  autoscale       Auto-scale a deployment, replica set, stateful set, or replication controller
+
+Cluster Management Commands:
+  certificate     Modify certificate resources
+  cluster-info    Display cluster information
+  top             Display resource (CPU/memory) usage
+  cordon          Mark node as unschedulable
+  uncordon        Mark node as schedulable
+  drain           Drain node in preparation for maintenance
+  taint           Update the taints on one or more nodes
+
+Troubleshooting and Debugging Commands:
+  describe        Show details of a specific resource or group of resources
+  logs            Print the logs for a container in a pod
+  attach          Attach to a running container
+  exec            Execute a command in a container
+  port-forward    Forward one or more local ports to a pod
+  proxy           Run a proxy to the Kubernetes API server
+  cp              Copy files and directories to and from containers
+  auth            Inspect authorization
+  debug           Create debugging sessions for troubleshooting workloads and nodes
+  events          List events
+
+Advanced Commands:
+  diff            Diff the live version against a would-be applied version
+  apply           Apply a configuration to a resource by file name or stdin
+  patch           Update fields of a resource
+  replace         Replace a resource by file name or stdin
+  wait            Experimental: Wait for a specific condition on one or many resources
+  kustomize       Build a kustomization target from a directory or URL
+
+Settings Commands:
+  label           Update the labels on a resource
+  annotate        Update the annotations on a resource
+  completion      Output shell completion code for the specified shell (bash, zsh, fish, or
+powershell)
+
+Subcommands provided by plugins:
+
+Other Commands:
+  api-resources   Print the supported API resources on the server
+  api-versions    Print the supported API versions on the server, in the form of "group/version"
+  config          Modify kubeconfig files
+  plugin          Provides utilities for interacting with plugins
+  version         Print the client and server version information
+
+Usage:
+  kubectl [flags] [options]
+```
+

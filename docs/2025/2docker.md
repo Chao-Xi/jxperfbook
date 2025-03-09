@@ -290,7 +290,7 @@ Docker 提供了几种方式来处理和管理容器的日志：
 
 **Docker 默认日志驱动**： 
 
-Docker 使用不同的日志驱动（如** json-file、journald、syslog** 等）。默认日志驱动是` json-file`，容器的日志被存储在宿主机的 `/var/lib/docker/containers/<container-id>/` 目录下
+Docker 使用不同的日志驱动（如**json-file、journald、syslog** 等）。默认日志驱动是` json-file`，容器的日志被存储在宿主机的 `/var/lib/docker/containers/<container-id>/` 目录下
 
 **配置日志驱动：**
 
