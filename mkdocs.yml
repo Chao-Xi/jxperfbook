@@ -156,6 +156,10 @@ nav:
     - '4 Linux 系统故障时': '2025/4Linux_tb.md'
     - '5 AWS 面试': '2025/5aws.md'
     - '6 监控生态面试通关秘籍': '2025/6monitor.md'
+    - '7 从容器到调度：准备好这些 CRI 面试题': '2025/7cri.md'
+    - '8 SAP面试': '2025/8sap.md'
+    - '9 数据库面试': '2025/9db_interview.md'
+    - '10 Prometheus面试': '2025/10prometheus.md'
 
 repo_url: https://github.com/Chao-Xi/jxperfbook.git
 repo_name: "jxperfbook"
