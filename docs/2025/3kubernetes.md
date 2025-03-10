@@ -1316,3 +1316,130 @@ Usage:
   kubectl [flags] [options]
 ```
 
+## VPA vs QOS
+
+### How VPA Works
+
+**1. Resource Recommendations:**
+
+* VPA monitors the resource usage (CPU and memory) of Pods over time.
+* It provides recommendations for adjusting the resource **requests (and optionally limits)** of Pods to better match their actual usage.
+
+**2.Pod Updates:**
+
+* VPA can automatically update the Pod's resource requests by recreating the Pod with the new values.
+* Alternatively, it can provide recommendations that you manually apply.
+
+### Impact on QoS Classes
+
+Kubernetes assigns a **QoS class** to each Pod based on its resource requests and limits:
+
+**Guaranteed:**
+
+Both CPU and memory requests and limits are set, and they are equal.
+
+Highest priority.
+
+**Burstable:**
+
+At least one resource (CPU or memory) has a request set, but the request and limit are not equal.
+
+Medium priority.
+
+**BestEffort:**
+
+No resource requests or limits are set.
+
+Lowest priority.
+
+### How VPA Affects QoS
+
+* **Changing Requests:**
+
+	* VPA modifies the resource **requests** of Pods based on usage.
+	* If VPA increases or decreases the requests, it can change the Pod's QoS class:
+		* A Pod might move from **Burstable to Guaranteed** if VPA sets equal requests and limits.
+		* A Pod might move from **Guaranteed to Burstable** if VPA adjusts requests to be different from limits.
+
+* **Changing Limits:**
+	* If VPA is configured to update **limits (not just requests)**, it can also affect the QoS class.
+	* For example, if VPA sets limits equal to requests, the Pod will move to Guaranteed.
+
+* BestEffort Pods:
+	* VPA does not directly affect BestEffort Pods because they have no resource requests or limits.
+	* However, if VPA adds **requests to a BestEffort Pod**, it will transition to Burstable.
+
+	
+### Key Considerations
+
+**QoS Class Changes:**
+
+* If VPA modifies resource requests or limits, the Pod's QoS class might change, which can affect its scheduling and eviction behavior.
+
+* For example, Guaranteed Pods are less likely to be evicted under resource pressure compared to Burstable or BestEffort Pods.
+
+**Pod Restarts:**
+
+VPA typically recreates Pods to apply new resource requests or limits. This can cause temporary downtime.
+
+**Resource Limits:**
+
+By default, **VPA only adjusts requests. If you want it to adjust limits, you need to enable the `--vpa-update-mode=Auto` or `--vpa-update-mode=Recreate` flag and configure it accordingly**.
+
+**Performance Impact:**
+
+* If VPA reduces resource requests too aggressively, Pods might experience resource contention or throttling.
+* If VPA increases resource requests, it might lead to over-provisioning and higher cluster costs
+
+
+### Example Scenario
+
+Suppose you have a Pod with the following resource configuration:
+
+```
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "200m"
+    memory: "256Mi"
+```
+
+This Pod is classified as Burstable because the requests and limits are not equal.
+
+**If VPA adjusts the requests to:**
+
+```
+resources:
+  requests:
+    cpu: "200m"
+    memory: "256Mi"
+  limits:
+    cpu: "200m"
+    memory: "256Mi"
+```
+
+**The Pod will now be classified as Guaranteed because the requests and limits are equal.**
+
+### **Best Practices**
+
+**Monitor QoS Changes:**
+
+Keep an eye on the QoS class of your Pods after VPA adjustments to ensure they align with your performance and reliability requirements.
+
+**Use VPA with Caution:**
+
+* Test VPA in a non-production environment before enabling it in production.
+
+* Use the `--vpa-update-mode=Off` flag to get recommendations without automatically applying them.
+
+**Set Resource Limits:**
+
+Explicitly set resource limits to prevent VPA from over-provisioning resources.
+
+**Combine with HPA:**
+
+Use VPA in conjunction with the Horizontal Pod Autoscaler (HPA) for a more comprehensive scaling strategy.
+
+Yes, VPA can affect the QoS class of Pods by modifying their resource requests and limits. This can change the Pod's priority and behavior under resource pressure. To avoid unexpected issues, carefully monitor VPA's recommendations and test its impact on your workloads. 
