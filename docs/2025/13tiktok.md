@@ -421,3 +421,14 @@ JedisSentinelPool pool = new JedisSentinelPool("mymaster", sentinels);
 1. 通过 `perf top` 定位热点函数。
 2. 优化 SQL 查询（添加索引、减少全表扫描）。
 3. 调整 MySQL 配置（如 `innodb_buffer_pool_size`）。
+
+## 7 Kubernetes
+
+### 7-1. pod 频繁重启
+
+1. kubctl describe pod  查看容器退出码，根据退出码查看退出原因
+2. POD的资源限制 request and limit
+3. 探针失败，配置探针的不合理
+4. 看一下宿主机上的资源配置是否合理，以及其他pod是否重启
+
+

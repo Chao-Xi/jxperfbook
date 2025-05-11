@@ -98,8 +98,9 @@ nav:
   - 'Linux 常用命令':
     - '0 Shell命令行一些快捷键组合': 'chap8/0shell_cmd.md'
     - '0 Linux常用命令': 'chap8/0shell_linux.md'
-    - 'Linux 实用运维命令 - Update': 'chap8/16linux_ops.md'
+    - '0 Linux 实用运维命令 - Update': 'chap8/16linux_ops.md'
     - '1 Shell 分析服务器日志命令': 'chap8/1shell_logs.md'
+    - '1 Log: 用 awk + grep + sed搞定日志处理神器组合拳': 'chap8/1log_man.md'
     - '2 Linux 系统下查找文件命令总结': 'chap8/2linux_locate.md'
     - '3 Basic Shell Scripting for Devops': 'chap8/3devops_shell.md'
     - '4 基本 shell 脚本 系统+文件+卷+时间': 'chap8/4Basic_shell.md'
