@@ -1,16 +1,14 @@
 ## 1.Introduction
 
-I’m Jacob. I graduated from Stevens Institute of technology in Hoboken New Jersey. And got my master’s
-degree of Computer Science. My major was data science and data system.
+I’m Jacob. I graduated from Stevens Institute of technology in Hoboken New Jersey. And got my master’s degree of Computer Science. My major was data science and data system.
 
-After I graduated, I took a contract job in startup company named Wrevel in New York city, working as
-backend developer to build the company website with PHP and MYSQL database.
+After I graduated, I took a contract job in startup company named Wrevel in New York city, working as backend developer to build the company website with PHP and MYSQL database.
 
 And then after one year, I finished my project and made my decision to came back to Shanghai and working as DevOps engineer in Blackboard. The Blackboard is a company which provides online teaching and learning SAAS system for universities and companies. 
 
 **My projects mainly include migrating the old CI/CD tool jenkins servers and jobs from on-premsie servers lab to AWS cloud**, include AWS infrastructure and jenkins servers build with AWS Cloudformation and ansible playbook an IAC tool. Move jenkins master from servers to Docker, design and **built new pipeline jobs to replace old multi-branch and free-style jobs**, convert all old and manually created jenkins jobs to groovy and script code. And I also created and moved part of jenkins servers and jobs from ec2 and dockers to kubernets cluster, try to achieve the dynamic spinning up and removing jenkins agents based on buildout requirement. And beside of this. **My daily operation job like covered scheduled release jobs to update client site with Chef cookbook and Jenkins pipeline job.**
 
-**After that I landed my new opportunity in SAP Jam and Workzone team and working as Senior DevOps engineer. **
+**After that I landed my new opportunity in SAP Jam and Workzone team and working as Senior DevOps engineer.**
 
 ***Jam is more like company version content management system and social system. Compared to the job before, I have more opportunities to manage and operate on on-premises data centers, we have like more than 30 DCs globally.*** 
 
@@ -40,6 +38,36 @@ Woked with global team to migrate global research analyst platform to China regi
 And aprart from this project. And now I'm work in gobal team to manage and operate the global systems. Like helped and setup OpenAI service in Azure cloud with terraform code, Azure Devops pipeline to automate the setup process. And Helped setup Azure translate service in HCI AKS cluster for Chinese-Eng translate service specific for China platform
 
 Recently I working on NEW project with Vault, Azure AD and PWM API to help automate password rotaion process to replace any manul jobs to rorate account password in yearly basis
+
+Besides these, I passed AWS solutions architect test and azure solution expert test az305 and Certified Istio service mesh and gitlab CICD test, 
+
+I also create multiple tutorial books for my colleague this year mainly about Azure ,AWS, Elasticsearch, Reddis, Chef & Ansible, Istio So that’s all about me these couple years.
+
+### Quick version
+
+I’m Jacob. I graduated from Stevens Institute of technology in Hoboken New Jersey. And got my master’s degree of Computer Science. My major was data science and data system.
+
+After I graduated, I took a contract job in startup company named Wrevel in New York city, working as backend developer to build the company website with PHP and MYSQL database.
+
+And then after one year, I finished my project and made my decision to came back to Shanghai and working as DevOps engineer in Blackboard. The Blackboard is a company which provides online teaching and learning SAAS system for universities and companies
+
+**My projects mainly include migrating the old CI/CD tool jenkins servers and jobs from on-premsie servers lab to AWS cloud**,  **built new pipeline jobs to replace old multi-branch and free-style jobs**, And beside of this. **My daily operation job like covered scheduled release jobs to update client site with Chef cookbook and Jenkins pipeline job.**
+
+**After that I landed my new opportunity in SAP Jam and Workzone team and working as Senior DevOps engineer.**
+
+**Jam is more like company version content management system and social system. Compared to the job before, I have more opportunities to manage and operate on on-premises data centers, we have like more than 30 DCs globally.** 
+
+My most important project is build our Jam application with Kubernetes on AWS and Azure from scratch and convert part of monolithic services to micro service. Use HELM Chart and kustomise, with GitOps way and ArgoCD as CD tool to deploy all JAM components into Kubernetes Cluster
+
+**When I was wokring new Product called DWZ(Digital Work ZONE). And also trying to move part of our service components from **Self maintenance like objectstore**, **rabbitmq and Log service** to SAP BTP platform.** 
+
+And In UBS, I worked in two branch companies.  I worked in AM(Assesst management) team firstly, I mainly work as Cloud archiect, design and setup the hybrid cloud infra for the WIND market data service which helps onboard the service on Azure public cloud as upstram data resource and send the data to on-premise downstream AM trading system. 
+
+And after that, I was internal transfered to Global Investmen bank research team as Senior Devops Engineer.
+
+Woked with global team to migrate global research analyst platform to China region mainly like, setup on-premise datacenter for different envionments with Gilab-CI as CI pipeline and designed new puppet modules as CD pipeline. To automate all buildout step to avoid any manual jobs
+
+And aprart from this project. And now I'm work in gobal team to manage and operate the global systems. Like helped and setup OpenAI service in Azure cloud with terraform code, Azure Devops pipeline to automate the setup process. And Helped setup Azure translate service in HCI AKS cluster for Chinese-Eng translate service specific for China platform
 
 Besides these, I passed AWS solutions architect test and azure solution expert test az305 and Certified Istio service mesh and gitlab CICD test, 
 
