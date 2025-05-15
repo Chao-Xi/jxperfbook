@@ -8,14 +8,13 @@ backend developer to build the company website with PHP and MYSQL database.
 
 And then after one year, I finished my project and made my decision to came back to Shanghai and working as DevOps engineer in Blackboard. The Blackboard is a company which provides online teaching and learning SAAS system for universities and companies. 
 
-My projects mainly include migrating the old CI/CD tool jenkins servers and jobs from on-premsie servers lab to AWS cloud, include AWS infrastructure and jenkins servers build with AWS Cloudformation and ansible playbook an IAC tool. Move jenkins master from servers to Docker, design and **built new pipeline jobs to replace old multi-branch and free-style jobs**, convert all old and manually created jenkins jobs to groovy and script code. And I also created and moved part of jenkins servers and jobs from ec2 and dockers to kubernets cluster, try to achieve the dynamic spinning up and removing jenkins agents based on buildout requirement. And beside of this. My daily operation job like covered scheduled release jobs to update client site with Chef cookbook and Jenkins pipeline job.
+**My projects mainly include migrating the old CI/CD tool jenkins servers and jobs from on-premsie servers lab to AWS cloud**, include AWS infrastructure and jenkins servers build with AWS Cloudformation and ansible playbook an IAC tool. Move jenkins master from servers to Docker, design and **built new pipeline jobs to replace old multi-branch and free-style jobs**, convert all old and manually created jenkins jobs to groovy and script code. And I also created and moved part of jenkins servers and jobs from ec2 and dockers to kubernets cluster, try to achieve the dynamic spinning up and removing jenkins agents based on buildout requirement. And beside of this. **My daily operation job like covered scheduled release jobs to update client site with Chef cookbook and Jenkins pipeline job.**
 
-After that I landed my new opportunity in SAP Jam and Workzone team and working as Senior DevOps engineer. 
+**After that I landed my new opportunity in SAP Jam and Workzone team and working as Senior DevOps engineer. **
 
-Jam is more like company version content management system and social system. Compared to the job before, I have more opportunities to manage and operate on on-premises data centers, we have like more than 30 DCs globally. 
+***Jam is more like company version content management system and social system. Compared to the job before, I have more opportunities to manage and operate on on-premises data centers, we have like more than 30 DCs globally.*** 
 
-Our application is build with ruby on rails in Docker, besides writing code and operate our DCs with
-Chef-solo. My most important project is build our Jam application with Kubernetes on AWS and Azure from scratch and convert part of monolithic services to micro service. 
+Our application is build with ruby on rails in Docker, besides writing code and operate our DCs with Chef-solo. **My most important project is build our Jam application with Kubernetes on AWS and Azure from scratch and convert part of monolithic services to micro service.** 
 
 The whole procedures like, containerize our infrastructure components like Elasticsearch,
 RabbitMQ and Haproxy etc. Set up Kubernetes Cluster on Azure via AKS and on AWS with EKS with Terraform Code. Build out Cloud Infrastructure like CDN, S3(Storage account), RDS MySQL, Aurora, or Azure DBs and VNet with Terraform code. 
@@ -28,9 +27,9 @@ Get application log, operational log and audit log by EFK. And I also enabled Se
 cluster. Install Istio and enable envoy sidecar inject in our main namespace and track the network
 tracing with Kiali & Jaeger and enable mutual X509 TLS service call from internal and external.
 
-And after that, I’m trying to adopt security as service like **hadolint**, and apply it to pipeline, mainly help us to do the docker image scan in CI pipeline. 
+**And after that, I’m trying to adopt security as service like hadolint, and apply it to pipeline, mainly help us to do the docker image scan in CI pipeline.**
 
-When I was wokring new Product called DWZ(Digital Work ZONE). And also trying to move part of our service components from **Self maintenance like objectstore**, **rabbitmq and Log service** to SAP BTP platform. 
+**When I was wokring new Product called DWZ(Digital Work ZONE). And also trying to move part of our service components from **Self maintenance like objectstore**, **rabbitmq and Log service** to SAP BTP platform.** 
 
 And In UBS, I worked in two branch companies.  I worked in AM(Assesst management) team firstly, I mainly work as Cloud archiect, design and setup the hybrid cloud infra for the WIND market data service which helps onboard the service on Azure public cloud as upstram data resource and send the data to on-premise downstream AM trading system. 
 
@@ -42,7 +41,7 @@ And aprart from this project. And now I'm work in gobal team to manage and opera
 
 Recently I working on NEW project with Vault, Azure AD and PWM API to help automate password rotaion process to replace any manul jobs to rorate account password in yearly basis
 
-Besides these, I passed AWS solutions architect test and azure administrator test 104 and Certified Istio service mesh and gitlab CICD test, 
+Besides these, I passed AWS solutions architect test and azure solution expert test az305 and Certified Istio service mesh and gitlab CICD test, 
 
 I also create multiple tutorial books for my colleague this year mainly about Azure ,AWS, Elasticsearch, Reddis, Chef & Ansible, Istio So that’s all about me these couple years.
 
@@ -55,7 +54,7 @@ I also create multiple tutorial books for my colleague this year mainly about Az
 * I really enjoyed our  initial conversation learning from company, although I wasn't actively looking for new change at the time,it really felt like this new role entails exciting challenges that I would like to be a part of. i'm truly intrigued by this career development at your firm and believe that my skill set largely align with what you are looking for 
 * After spend 3 amount of year in this industry, I have dicovered my passion in financial tech industry. And I truly belive that there is much more to explore in this industray rather in BAU job and want to double down on this descision to pursue it further 
 * Although I enjoy my work alone with the my current team, while I have thrived in more collaborative environments. I have leaned that this company function exactly with that model. from what I have been told people learn from each other here
-* I always want improve my career into a new level. I think this opportunity at your firm would be more leveled. and better match what I can bring to the table. I'm loking for new challenges and equied to dive right in
+* I always want improve my career into a new level. I think this opportunity at your firm would be more leveled up. and better match what I can bring to the table. I'm looking for new challenges and equied to dive right in
 
 
 ## Project blocker and resolver
