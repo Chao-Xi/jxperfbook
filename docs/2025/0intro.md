@@ -75,14 +75,17 @@ I also create multiple tutorial books for my colleague this year mainly about Az
 
 ## Why left the current team
 
-1. I working in a global team, this team actually based in LDN. So I have to work with them like meetings, discussion, troubleshootings every day late night, that's the main resaon. I don't think it's good to my health to stay here any longer
+1. I working in a global team, this team actually based in LDN. So I have to work with them like meetings, discussion, troubleshootings every day late night. And since I'm only one here in Shanghai. Although I enjoy my work alone with the my current team, while I have thrived in more collaborative environments. from what I have more chance to learn from each other here 
+2. After spend 3 years in this financial industry, I have dicovered my passion in financial tech a lot. And I truly belive that there is much more to explore in this industray rather in daily BAU operational job and want to double down on this descision to pursue it further
+3. I always want improve my career into a new level. I think this opportunity at your firm would be more leveled up. and better match what I can bring to the table. I'm looking for new solution architect job
+
+
 2. In the financial company, I dont see my future here. Cause, comparing to new techs, codes or new solutions, they are more concern about procedures. Every day, I spend more times on writing documents, go-through steps, meeting with compliance team than working on my codes and my operations jobs. And I dont' even have any chance to learn new techs here. Thus I feel like I gonna be wasted in this team for longer time. 
 
 
 * I really enjoyed our  initial conversation learning from company, although I wasn't actively looking for new change at the time,it really felt like this new role entails exciting challenges that I would like to be a part of. i'm truly intrigued by this career development at your firm and believe that my skill set largely align with what you are looking for 
-* After spend 3 amount of year in this industry, I have dicovered my passion in financial tech industry. And I truly belive that there is much more to explore in this industray rather in BAU job and want to double down on this descision to pursue it further 
-* Although I enjoy my work alone with the my current team, while I have thrived in more collaborative environments. I have leaned that this company function exactly with that model. from what I have been told people learn from each other here
-* I always want improve my career into a new level. I think this opportunity at your firm would be more leveled up. and better match what I can bring to the table. I'm looking for new challenges and equied to dive right in
+
+
 
 
 ## Project blocker and resolver
