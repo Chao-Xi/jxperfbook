@@ -51,23 +51,27 @@ After I graduated, I took a contract job in startup company named Wrevel in New 
 
 And then after one year, I finished my project and made my decision to came back to Shanghai and working as DevOps engineer in Blackboard. The Blackboard is a company which provides online teaching and learning SAAS system for universities and companies
 
-**My projects mainly include migrating the old CI/CD tool jenkins servers and jobs from on-premsie servers lab to AWS cloud**,  **built new pipeline jobs to replace old multi-branch and free-style jobs**, And beside of this. **My daily operation job like covered scheduled release jobs to update client site with Chef cookbook and Jenkins pipeline job.**
+**My projects mainly include migrating the old CI/CD tool jenkins servers and jobs from on-premsie servers lab to AWS cloud**.
 
 **After that I landed my new opportunity in SAP Jam and Workzone team and working as Senior DevOps engineer.**
 
-**Jam is more like company version content management system and social system. Compared to the job before, I have more opportunities to manage and operate on on-premises data centers, we have like more than 30 DCs globally.** 
+My most important project is build our Jam application with Kubernetes on AWS and Azure from scratch and convert part of monolithic services to micro service. 
 
-My most important project is build our Jam application with Kubernetes on AWS and Azure from scratch and convert part of monolithic services to micro service. Use HELM Chart and kustomise, with GitOps way and ArgoCD as CD tool to deploy all JAM components into Kubernetes Cluster
+**When I was wokring new Product called DWZ(Digital Work ZONE). And also trying to move part of our service components from **Self maintenance service** to SAP BTP platform.** 
 
-**When I was wokring new Product called DWZ(Digital Work ZONE). And also trying to move part of our service components from **Self maintenance like objectstore**, **rabbitmq and Log service** to SAP BTP platform.** 
+And In UBS, I worked in two branch companies.  I worked in AM(Assesst management) team firstly, I mainly work as Cloud archiect, work with Wind infra team and Microsoft Design and setup the hybrid cloud infra for the WIND market data service which helps onboard the service on Azure public cloud as upstram data resource and send the data to on-premise downstream AM trading system.  
 
-And In UBS, I worked in two branch companies.  I worked in AM(Assesst management) team firstly, I mainly work as Cloud archiect, design and setup the hybrid cloud infra for the WIND market data service which helps onboard the service on Azure public cloud as upstram data resource and send the data to on-premise downstream AM trading system. 
+And working as Project manager, work with different teams like infra T, db T and network T, successfully finish AM new data center buildout. 
+
+Besides of this I also worked with AM Traders to finish a project called Transaction Cost Analysis (TCA) which can show best execution has been achieved for a set of orders over a specifed time period, disigned for trader performance evalutation. I start this project from business analysis, arch design, avaialability accessment to impelmentation in Prod environment.
 
 And after that, I was internal transfered to Global Investmen bank research team as Senior Devops Engineer.
 
-Woked with global team to migrate global research analyst platform to China region mainly like, setup on-premise datacenter for different envionments with Gilab-CI as CI pipeline and designed new puppet modules as CD pipeline. To automate all buildout step to avoid any manual jobs
+Worked with global team to migrate global research analyst platform to China region mainly like, setup on-premise datacenter for different envionments with new designed Gilab-CI as CI pipeline and designed new puppet modules as CD pipeline. To automate all buildout step to avoid any manual jobs
 
-And aprart from this project. And now I'm work in gobal team to manage and operate the global systems. Like helped and setup OpenAI service in Azure cloud with terraform code, Azure Devops pipeline to automate the setup process. And Helped setup Azure translate service in HCI AKS cluster for Chinese-Eng translate service specific for China platform
+And aprart from this project. And now I'm work in gobal team to manage and operate the global systems. Like helped and setup OpenAI service in Azure cloud with terraform code, Azure Devops pipeline to automate the setup process.
+
+And right now I'm working with Micsoft azure team to build out Azure congnitive AI translate service in HCI AKS cluster for Chinese-Eng translate servicefor China platform
 
 Besides these, I passed AWS solutions architect test and azure solution expert test az305 and Certified Istio service mesh and gitlab CICD test, 
 
@@ -76,11 +80,11 @@ I also create multiple tutorial books for my colleague this year mainly about Az
 ## Why left the current team
 
 1. I working in a global team, this team actually based in LDN. So I have to work with them like meetings, discussion, troubleshootings every day late night. And since I'm only one here in Shanghai. Although I enjoy my work alone with the my current team, while I have thrived in more collaborative environments. from what I have more chance to learn from each other here 
-2. After spend 3 years in this financial industry, I have dicovered my passion in financial tech a lot. And I truly belive that there is much more to explore in this industray rather in daily BAU operational job and want to double down on this descision to pursue it further
+2. After spend 3 years in this financial industry, I have dicovered my passion in financial tech a lot. And I truly belive that there is much more to explore in this industray rather in daily BAU operational job and want to double down on this descision to pursue it further. So I want have more opprtunity to get touch with new projects 
 3. I always want improve my career into a new level. I think this opportunity at your firm would be more leveled up. and better match what I can bring to the table. I'm looking for new solution architect job
 
 
-2. In the financial company, I dont see my future here. Cause, comparing to new techs, codes or new solutions, they are more concern about procedures. Every day, I spend more times on writing documents, go-through steps, meeting with compliance team than working on my codes and my operations jobs. And I dont' even have any chance to learn new techs here. Thus I feel like I gonna be wasted in this team for longer time. 
+*  In the financial company, I dont see my future here. Cause, comparing to new techs, codes or new solutions, they are more concern about procedures. Every day, I spend more times on writing documents, go-through steps, meeting with compliance team than working on my codes and my operations jobs. And I dont' even have any chance to learn new techs here. Thus I feel like I gonna be wasted in this team for longer time. 
 
 
 * I really enjoyed our  initial conversation learning from company, although I wasn't actively looking for new change at the time,it really felt like this new role entails exciting challenges that I would like to be a part of. i'm truly intrigued by this career development at your firm and believe that my skill set largely align with what you are looking for 
