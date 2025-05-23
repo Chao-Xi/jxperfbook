@@ -463,3 +463,42 @@ I'd also verify that the load balancers are evenly distributing traffic and cons
 * **Load Balancing**: Distribute traffic evenly across available instances.
 * **Database Optimization**: Ensure your database is properly configured and optimized for performance.
 * **Monitoring**: Closely monitor system metrics to identify bottlenecks and adjust resources accordingly
+
+#### 41. If traffic is currently handled on a single instance, how would you upgrade for high availability  in AWS?
+
+* To upgrade for high availability, I would:
+	* **Deploy multiple** instances across different Availability Zones (AZs) using an Auto Scaling Group.
+	* **Set up a Load Balancer (ALB or NLB)** to distribute traffic across these instances.
+	* **Configure health checks** to ensure traffic is only routed to healthy instances.
+	* **Use Multi-AZ deployments** for databases like RDS to ensure data availability
+
+#### 42. When auto-scaling instances, how do you manage the backend RDS database?
+
+* To manage the backend RDS database during auto-scaling:
+	* **Enable Multi-AZ** for high availability and automatic failover.
+	* **Use RDS Read Replicas to handle read-heavy traffic**, reducing the load on the primary database.
+	* **Scale RDS vertically** (instance size) or horizontally (read replicas) based on the database workload.
+	* **Monitor performance** using Amazon CloudWatch and adjust as necessary
+	
+#### 43. Have you ever set up cross-account access for S3? For example, if the QA team needs access to the production database.
+
+Yes, I've set up cross-account access by:
+
+* **Creating an IAM role** in the production account with the necessary S3 permissions.
+* **Establishing a trust relationship** to allow the QA account to assume that role.
+* **Using S3 bucket policies** to grant access from the QA account.
+	* QA team members can then assume the role using AWS STS (Security Token Service) to access the production S3 bucket.
+
+#### 44. How can an S3 account in Account A access an S3 account in Account B?
+
+Account A can access Account B’s S3 bucket by:
+
+* **Setting up a bucket policy** in Account B that grants Account A the necessary permissions.
+* **Creating an IAM role** in Account B with permissions for S3 and allowing Account A to assume that role via a trust policy.
+* **Using AWS STS** to assume the role from Account A and access the S3 bucket in Account B.
+
+#### 45. Can you differentiate between IAM policies and IAM roles?
+
+**IAM Policies:** These are sets of permissions attached to users, groups, or roles, defining what actions are allowed or denied
+
+**IAM Roles**: These are i**dentities with specific permissions** that can be assumed by entities like users, applications, or AWS services. Roles are often used for temporary access or cross-account access.
