@@ -35,7 +35,7 @@ And after that, I was internal transfered to Global Investmen bank research team
 
 Woked with global team to migrate global research analyst platform to China region mainly like, setup on-premise datacenter for different envionments like servers, LBers, NAS storage, and deployed middlewares and service like postgres, ES, kafka, nginx, tomcat etc with Gilab-CI as CI pipeline and designed new puppet modules as CD pipeline. To automate all buildout step to avoid any manual jobs
 
-And aprart from this project. And now I'm work in gobal team to manage and operate the global systems. Like helped and setup OpenAI service in Azure cloud with terraform code, Azure Devops pipeline to automate the setup process. And Helped setup Azure translate service in HCI AKS cluster for Chinese-Eng translate service specific for China platform
+And aprart from this project. And now I'm work in gobal team to manage and operate the global systems. Like helped and setup OpenAI service in Azure cloud with terraform code, Azure Devops pipeline to automate the setup process. And Helped setup Azure translate service in HCI AKS cluster for Chinese-Eng translate service specific for China analyst
 
 Recently I working on NEW project with Vault, Azure AD and PWM API to help automate password rotaion process to replace any manul jobs to rorate account password in yearly basis
 
@@ -59,11 +59,11 @@ My most important project is build our Jam application with Kubernetes on AWS an
 
 **When I was wokring new Product called DWZ(Digital Work ZONE). And also trying to move part of our service components from **Self maintenance service** to SAP BTP platform.** 
 
-And In UBS, I worked in two branch companies.  I worked in AM(Assesst management) team firstly, I mainly work as Cloud archiect, work with Wind infra team and Microsoft Design and setup the hybrid cloud infra for the WIND market data service which helps onboard the service on Azure public cloud as upstram data resource and send the data to on-premise downstream AM trading system.  
+And In UBS, I worked in two branch companies.  I worked in AM(Assesst management) team firstly, I mainly work as Cloud archiect, work with Wind infra team and Microsoft team. Design and setup the hybrid cloud infra for the WIND market data service which helps onboard the service on Azure public cloud as upstram data resource and send the data to on-premise downstream AM trading system.  
 
 And working as Project manager, work with different teams like infra T, db T and network T, successfully finish AM new data center buildout. 
 
-Besides of this I also worked with AM Traders to finish a project called Transaction Cost Analysis (TCA) which can show best execution has been achieved for a set of orders over a specifed time period, disigned for trader performance evalutation. I start this project from business analysis, arch design, avaialability accessment to impelmentation in Prod environment.
+Besides of this I also worked with AM Traders to finish a project called Transaction Cost Analysis (TCA) which can show best execution has been achieved for a set of orders over , disigned for Trader performance evalutation. I start this project from business analysis, arch design, avaialability accessment to impelmentation in Prod environment.
 
 And after that, I was internal transfered to Global Investmen bank research team as Senior Devops Engineer.
 
@@ -71,7 +71,7 @@ Worked with global team to migrate global research analyst platform to China reg
 
 And aprart from this project. And now I'm work in gobal team to manage and operate the global systems. Like helped and setup OpenAI service in Azure cloud with terraform code, Azure Devops pipeline to automate the setup process.
 
-And right now I'm working with Micsoft azure team to build out Azure congnitive AI translate service in HCI AKS cluster for Chinese-Eng translate servicefor China platform
+And right now I'm working with Micsoft azure team to build out Azure congnitive AI translate service in HCI AKS cluster for Chinese-Eng translate servicefor China analyst
 
 Besides these, I passed AWS solutions architect test and azure solution expert test az305 and Certified Istio service mesh and gitlab CICD test, 
 
