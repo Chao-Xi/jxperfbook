@@ -90,7 +90,9 @@ I also create multiple tutorial books for my colleague this year mainly about Az
 * I really enjoyed our  initial conversation learning from company, although I wasn't actively looking for new change at the time,it really felt like this new role entails exciting challenges that I would like to be a part of. i'm truly intrigued by this career development at your firm and believe that my skill set largely align with what you are looking for 
 
 
+### Ask back
 
+“SWIFT’s solutions emphasize security and trust. How does the team approach integrating emerging technologies (e.g., cloud-native architectures, AI) 
 
 ## Project blocker and resolver
 
