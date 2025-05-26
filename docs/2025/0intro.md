@@ -92,7 +92,9 @@ I also create multiple tutorial books for my colleague this year mainly about Az
 
 ### Ask back
 
-“SWIFT’s solutions emphasize security and trust. How does the team approach integrating emerging technologies (e.g., cloud-native architectures, AI) 
+* “SWIFT’s solutions emphasize security and trust. How does the team approach integrating emerging technologies (e.g., cloud-native architectures, AI) 
+* “What learning or development opportunities does SWIFT provide for Solution Architects to stay ahead in areas like cybersecurity, API ecosystems, or fintech trends?
+* “How do customers in this region typically balance adopting new technologies like AI/blockchain with compliance requirements, and how does SWIFT guide them?
 
 ## Project blocker and resolver
 
