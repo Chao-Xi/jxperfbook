@@ -11,7 +11,7 @@
 ### 2 How have you injected the secrets in ConfigMaps
 
 * Secrets should not be injected in ConfigMaps as ConfigMaps are not designed for  sensitive data. 
-* Instead, Kubernetes Secrets should be used. **Secrets can be injected into pods via environment variables or mounted as file**s.
+* Instead, Kubernetes Secrets should be used. **Secrets can be injected into pods via environment variables or mounted as files**.
 
 ### 3 How do you find which pod is taking more system resources across nodes using kubectl?
 
@@ -863,3 +863,131 @@ DevOps Tools Proficiency
 * **Monitoring and Logging**: Prometheus, Grafana, ELK Stack.
 * **Configuration Management**: Ansible, Puppet, Chef.
 * **Version Control**: Git.
+
+#### 81. Can you describe the CI/CD workflow in your project?
+
+**CI/CD Workflow Description**
+
+Example: In a recent project, our CI/CD workflow involved:
+
+1. **Code Commit**: Developers commit code changes to a Git repository.
+2. **Build and Test**: A CI server (e.g., Jenkins, GitLab CI) automatically builds the application, runs unit tests, and performs code quality checks.
+3. **Artifact Storage**: Successful builds are stored as artifacts in a repository (e.g., S3).
+4. **Deploymen**t: The CD server (e.g., AWS CodeDeploy) deploys the artifact to the target 
+environment (development, testing, production).
+5. **Monitoring**: Continuous monitoring tools (e.g., Prometheus, Grafana) track application 
+health and performance.
+
+### 82. How do you handle the continuous delivery (CD) aspect in your projects?
+
+**Continuous Delivery (CD) Handling**
+
+Methods:
+
+* **Automated Deployments**: Use tools like AWS CodeDeploy to automate deployments to different environments.
+* **Blue-Green Deployments**: Deploy new versions of the application alongside the existing version, allowing for seamless switchover.
+* **Canary Deployment**s: Gradually roll out new versions to a small subset of users, monitoring for issues before full deployment.
+* **Feature Flags**: Use feature flags to enable or disable features in the application without code changes, allowing for controlled releases.
+
+#### 83. What methods do you use to check for code vulnerabilities?
+
+Code Vulnerability Checks
+
+Methods:
+
+* **Static Code Analysis**: Use tools like **SonarQube or Snyk to analyze code for vulnerabilities** and security issues.
+* **Dynamic Code Analysis**: Use tools like Burp Suite or ZAP to test the application in 
+runtime for vulnerabilities.
+* **Security Scanning**: Use tools like AWS Inspector or Qualys to scan infrastructure and 
+applications for vulnerabilities.
+
+#### 84. What AWS services are you proficient in?
+
+**AWS Service Proficiency**
+
+Services:
+
+* **Compute**: EC2, Lambda, ECS, EKS.
+* **Storage**: S3, EBS, EFS.
+* **Networking**: VPC, Route S3, Load Balancers.
+* **Database**: RDS, DynamoDB, Redshift.
+* **CI/CD**: CodePipeline, CodeBuild, CodeDeploy.
+* **Security**: IAM, Security Groups, KMS
+* **Monitoring**: CloudWatch,
+
+#### 85. How would you access data in an S3 bucket from Account A when your application is running on an  EC2 instance in Account B?
+
+**Accessing S3 from Account B**
+
+Method: Use IAM roles and cross-account permissions:
+
+1. **Create Role**: In Account A, create an IAM role with permissions to access the S3 bucket.
+2. **Assume Role**: In Account B, configure the EC2 instance to assume the role created in 
+Account A.
+3. **Access S3**: The EC2 instance can now access the S3 bucket using the assumed role's 
+credentials.
+
+#### 86. How do you provide access to an S3 bucket, and what permissions need to be set on the bucket side? S3 Bucket Access and Permissions
+
+Access: You can provide access to an S3 bucket using:
+
+* IAM Policies: Attach policies to users, groups, or roles to grant specific permissions.
+* Bucket Policies: Define access control rules directly on the bucket.
+
+
+**Permissions: Common permissions include:**
+
+
+* **Read**: Allows users to read objects from the bucket.
+* **Write**: Allows users to write objects to the bucket.
+* **Delete**: Allows users to delete objects from the bucket.
+* **List**: Allows users to list objects in the bucket.
+
+
+87.How can Instance 2, with a static IP, communicate with Instance 1, which is in a private subnet and  mapped to a multi-AZ load balancer?
+Instance Communication with Private Subnet
+
+* **Method: Use a NAT gateway or a bastion host**
+	* **NAT Gateway**: A managed service that provides internet access for instances in a private subnet.
+	* **Bastion Host**: A secure server in a public subnet that allows access to private instances.
+
+	
+88.For an EC2 instance in a private subnet, how can it verify and download required packages from the  internet without using a NAT gateway or bastion host? Are there any other AWS services that can  facilitate this?
+
+**EC2 Instance in Private Subnet Accessing Internet**
+
+Method: Use a private DNS hostname:
+
+1. **Private DNS**: Configure a private DNS zone within your VPC.
+2. **Private Hostname**: Assign a private hostname to the EC2 instance.
+3. **DNS Resolution**: The EC2 instance can resolve the private hostname to access internet 
+resources.
+
+89.What is the typical latency for a load balancer, and if you encounter high latency, what monitoring steps would you take?
+
+**Load Balancer Latency and Monitoring**
+
+**Typical Latency**: Load balancer latency typically ranges from a few milliseconds to a few hundred  milliseconds, depending on factors like network conditions and load.
+
+Monitoring Steps:
+
+* **CloudWatch Metrics**: Monitor load balancer latency using CloudWatch metrics.
+* **Network Tracing**: Use tools like AWS X-Ray to trace requests through the load balancer 
+and identify bottlenecks.
+* **Performance Testing**: Run load tests to simulate real-world traffic and identify 
+performance issues.
+
+
+90.If your application is hosted in S3 and users are in different geographic locations, how can you reduce  latency?
+
+**Reducing Latency for S3 Hosted Application**
+
+Methods:
+
+* **Edge Locations**: Use AWS CloudFront to cache content at edge locations closer to users, 
+reducing latency.
+* **Regional Buckets**: Store data in S3 buckets in the same region as the users, minimizing 
+network hops.
+* **Content Delivery Networks (CDNs)**: Use a CDN to distribute content across multiple 
+locations, reducing latency for users worldwide.
+* Which services can be integrated with a CDN (Content Delivery Network)?
