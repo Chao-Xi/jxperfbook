@@ -1030,3 +1030,139 @@ Method: Use the `--var` flag with the terraform import command to pass arguments
 terraform import aws_vpc.example "vpc-1234567890abcdef0" --
 var="cidr_block=10.0.0.0/16"
 ```
+
+#### 95. What is the master-slave architecture in Jenkins?
+
+A master-slave architecture in Jenkins allows you to distribute build tasks across multiple nodes (slaves). This provides:
+
+* **Parallel Execution**: Run builds concurrently on multiple nodes, reducing build times.
+* **Resource Optimization**: Utilize different hardware configurations for different build tasks.
+* **Scalability**: Scale your Jenkins infrastructure by adding more slave nodes
+
+
+#### 96. How do you integrate LDAP with AWS and Jenkins?
+
+A: You can integrate LDAP with AWS and Jenkins by:
+
+1. **Configuring LDAP**: Set up an LDAP server and configure it to authenticate users.
+2. **AWS IAM**: Create an IAM role with permissions to access the LDAP server.
+3. **Jenkins Configuration**: Configure Jenkins to use the LDAP server for authentication
+
+#### 97. What are some key features of GitHub?
+
+* ● **Version Control**: Track changes to code over time.
+* ● **Collaboration**: Facilitate collaboration among developers.
+* ● **Pull Requests**: Enable code reviews and approvals.
+* ● **Issues**: Track bugs, feature requests, and other tasks.
+* ● **Projects**: Organize and manage work items.
+
+#### 98. What are some key features of Jenkins?
+
+* ● **Continuous Integration (CI)**: Automate build, test, and deployment processes.
+* ● **Continuous Delivery (CD)**: Deploy applications to different environments.
+* ● **Pipeline as Code:** Define pipelines using code (Jenkinsfile).
+* ● **Plugins**: Extend Jenkins functionality with a wide range of plugins.
+* ● **Master-Slave Architecture**: Distribute build tasks across multiple nodes.
+
+#### 99.  What are the benefits and uses of CI/CD?
+
+* **Faster Delivery**: Reduce the time it takes to deliver new features and updates.
+* **Improved Quality**: Catch bugs and errors early in the development process.
+* **Increased Efficiency:** Automate repetitive tasks, freeing up developers to focus on innovation.
+* **Reduced Risk**: Deploy changes more frequently and with less risk
+
+Uses of CI/CD:
+
+* **Software Development**: Automate build, test, and deployment processes.
+* **Infrastructure Management**: Provision and configure infrastructure automatically.
+* **Data Pipelines**: Automate data processing and analysis tasks
+
+#### 100. What is a GitHub workflow, and how is it used?
+
+A: A GitHub workflow is a set of automated tasks that are triggered by events in a GitHub repository. You 
+use workflows to:
+
+* **Build and Test Code**: Automate build and test processes.
+* **Deploy Application**s: Deploy applications to different environments.
+* **Run Code Analysis**: Perform code quality checks and security scans
+
+#### 101 How do you handle merge conflicts in Git?
+
+1. **Identifying Conflicts**: Git will identify conflicts when merging branches.
+2. **Resolving Conflicts**: Manually resolve conflicts by editing the affected files.
+3. **Staging Changes**: Stage the resolved files using git add.
+4. **Committing Changes**: Commit the changes with a descriptive message using git commit
+
+
+#### 102. What steps do you take when a build fails in Jenkins?
+
+A: When a build fails in Jenkins, you should:
+
+1. **Analyze Logs**: Review the build logs to identify the cause of the failure.
+2. **Troubleshoot**: Investigate the issue and try to resolve it.
+3. **Fix Code:** If the failure is due to a code error, fix the code and rebuild.
+4. **Update Configuration**: If the failure is due to a configuration issue, update the Jenkins 
+configuration.
+5. **Rollback**: If necessary, roll back to a previous working version of the application
+
+#### 103 How do you execute jobs in AWS?
+
+A: You can execute jobs in AWS using:
+
+* **AWS Batch:** A fully managed batch computing service for running large-scale, compute-intensive jobs.
+* **AWS Lambda**: A serverless computing service for running code in response to events.
+* **AWS ECS**: A container orchestration service for deploying and managing containerized applications.
+
+#### 104. What are Ansible roles, and how do you use them?
+
+A: Ansible roles are a way to organize and reuse Ansible playbooks. 
+
+They encapsulate tasks, variables, and dependencies related to a specific component or service. You use roles to
+
+* **Modularize Playbooks**: Break down complex playbooks into smaller, reusable units.
+* **Simplify Deployment**: Deploy multiple components or services with a single role.
+* **Improve Maintainability**: Make it easier to manage and update Ansible configurations.
+
+#### 105  How do you ensure data persistence with Docker volumes?
+
+A: Use Docker volumes to persist data outside the container:
+
+* **Named Volumes**: Create named volumes that can be shared between containers.
+* **Data Volume**s: Mount data volumes from the host machine into the container.
+* **Bind Mounts**: Mount directories from the host machine into the container.
+
+#### 106 What are the key differences between Docker and Kubernetes?
+
+* **Scope**: Docker focuses on containerization, while Kubernetes focuses on container orchestration.
+* **Management**: Docker manages individual containers, while Kubernetes manages clusters of containers.
+* **Scalability**: Kubernetes provides advanced features for scaling and managing large-scale  deployments.
+* **Networking**: Kubernetes offers more sophisticated networking capabilities for container communication
+
+
+#### 107 How do you securely store credentials in GitHub?
+
+A: You can securely store credentials in GitHub using:
+
+* **GitHub Secrets**: Use GitHub Secrets to store sensitive information securely.
+* **Environment Variables**: Set environment variables in your GitHub workflow to access credentials.
+* **GitHub Actions**: Use GitHub Actions to manage credentials and access them within your workflow.
+
+#### 108  Where is the Jenkinsfile typically stored?
+
+* **GitHub Secrets**: Use GitHub Secrets to store sensitive information securely.
+* **Environment Variables:** Set environment variables in your GitHub workflow to access credentials.
+* **GitHub Actions**: Use GitHub Actions to manage credentials and access them within your workflow.
+
+#### 109 Where is the Jenkinsfile typically stored?
+
+A: The Jenkinsfile is typically stored in the root directory of your Git repository
+
+#### 110 How do you execute a shell script within a Python script?
+
+**Use the subprocess module:**
+
+```
+import subprocess
+
+subprocess.run(["/path/to/script.sh"])
+```
