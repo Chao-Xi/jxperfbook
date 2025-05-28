@@ -991,3 +991,42 @@ network hops.
 * **Content Delivery Networks (CDNs)**: Use a CDN to distribute content across multiple 
 locations, reducing latency for users worldwide.
 * Which services can be integrated with a CDN (Content Delivery Network)?
+
+#### 91. Which services can be integrated with a CDN (Content Delivery Network)?
+
+**CDN Integration**
+
+Services: CDNs can integrate with various services, including:
+
+* **Web Servers**: Apache, Nginx, IIS.
+* **Content Management Systems (CMS)**: WordPress, Drupal, Joomla.
+* **Cloud Storage**: AWS S3, Google Cloud Storage, Azure Blob Storage.
+* **Streaming Services**: Netflix, YouTube, Twitch.
+* **API Gateways**: AWS API Gateway, Google Cloud Endpoints.
+
+
+#### 92.How do you dynamically retrieve VPC details from AWS to create an EC2 instance using IaC?
+
+**Dynamically Retrieving VPC Details**
+
+**Method: Use Terraform's data sources:**
+
+1. **`aws_vpc` Data Source**: Retrieve details of a specific VPC by its ID or name.
+2. **`aws_subnet` Data Source**: Retrieve details of subnets within a VPC.
+3. `aws_security_group` Data Source: Retrieve details of security groups associated with a 
+VPC.
+4. `aws_instance` Data Source: Retrieve details of existing EC2 instances within a VPC
+
+#### 93. Managing Unmanaged Resources in Terraform
+
+**Approach**: Use Terraform import command to bring existing unmanaged resources under 
+Terraform's control. This allows you to manage them alongside your IaC code
+
+#### 94. Passing Arguments to VPC During Import
+
+Method: Use the `--var` flag with the terraform import command to pass arguments:
+
+```
+terraform import aws_vpc.example "vpc-1234567890abcdef0" --
+var="cidr_block=10.0.0.0/16"
+```
