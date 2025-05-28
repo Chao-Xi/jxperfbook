@@ -1166,3 +1166,66 @@ import subprocess
 
 subprocess.run(["/path/to/script.sh"])
 ```
+
+#### 111 How do you communicate with a Jenkins server and a Kubernetes cluster?
+
+A: You can communicate with a Jenkins server and a Kubernetes cluster using:
+
+* **Jenkins Plugins**: Use Jenkins plugins like the Kubernetes plugin to interact with a Kubernetes 
+cluster.
+* **API Calls**: Use the Kubernetes API to interact with the cluster programmatically.
+* **kubectl**: Use kubectl commands from within Jenkins to manage Kubernetes resources
+
+#### 112 Do you only update Docker images in Kubernetes, or do you also update replicas, storage levels, and CPU allocation?
+
+A: You can update various Kubernetes resources, including:
+
+* ● **Docker Images**: Update the container image used by a deployment.
+* ● **Replicas**: Scale up or down the number of replicas for a deployment.
+* ● **Storage Levels**: Adjust storage capacity for persistent volumes.
+* ● **CPU Allocation**: Modify CPU and memory resource requests and limits for containers.
+
+#### 113. Can you define environment variables inside your Jenkins pipeline?
+
+A: Yes, you can define environment variables inside your Jenkins pipeline using:
+
+* **Pipeline Script**: Use the environment directive within your Jenkinsfile to define environment variables. 
+* **Global Variables**: Configure global environment variables in Jenkins settings.
+* **Credentials**: Store sensitive information as credentials and access them within the pipeline
+
+#### 114 What is the role of artifacts in Jenkins, and why do we need to push them to Nexus instead of building and storing them locally?
+
+A: Artifacts are the output of a build process, such as compiled code, container images, or test reports. 
+Pushing artifacts to Nexus (a repository manager) provides:
+
+* **Version Control**: Track different versions of artifacts.
+* **Dependency Management**: Manage dependencies between projects.
+* **Security**: Control access to artifacts and ensure their integrity
+
+**115. If you’re developing a Python-based application, how do you separate the packages needed for your 
+local deployment to avoid interfering with globally installed packages**
+
+A: Use virtual environments:
+
+1. Create Virtual Environment: Use `python -m venv <env_name>` to create a virtual environment.
+2. Activate Environment: Activate the environment using `source <env_name>/bin/activate`.
+3. Install Packages: Install packages specific to your project using `pip install <package_name>`.
+
+#### **116 What are the prerequisites before importing a VPC in Terraform?**
+
+A: Before importing a VPC, you need:
+
+* Terraform Configuration: A Terraform configuration file defining the VPC resource you want to import.
+* Resource ID: The unique identifier (ID) of the VPC in AWS.
+* Resource Type: The correct Terraform resource type (e.g., `aws_vpc`)
+
+
+### 117. If an S3 bucket was created through Terraform but someone manually added a policy to it, how do you handle this situation using IaC?
+
+A: You can use Terraform's terraform plan command to detect differences between the current state of 
+the S3 bucket and your IaC configuration. This will highlight the manually added policy. You can then:
+
+* **Update IaC**: Modify your Terraform configuration to include the manually added policy, ensuring 
+consistency.
+* **Ignore**: If the policy is acceptable, use the ignore_changes option in Terraform to exclude it from 
+future plans.
