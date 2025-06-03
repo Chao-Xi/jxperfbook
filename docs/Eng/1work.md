@@ -84,3 +84,31 @@
 *🌶 “Just to confirm, when you say ‘final version,’ do you mean the one with all revisions or the draft from last week?”*
 
 🧠 不假设、不装懂，反而展现出你细致、注重成果质量的专业态度。欧美职场中，沟通清楚远比“怕显得不懂”重要。
+
+### 20250630 -  若有进展，我会通知你
+
+* development / update / progress   **进展**
+
+
+* contact sb  联系某人
+* inform sb  通知某人
+* inform sb of sth 通知某人某事
+* reach out to sb 联系某人
+* **be in touch/stay in touch /keep in touch 保持联系**
+* **keep sb posted 随时通知某人最新情况**
+* **keep sb in loop 让某人知情**
+
+* immediatgly/ promptly 立即马上
+* as soon as 马上
+
+**If there are any developments, I'll contact you immediately 如果有任何进展，我会立即联系你**
+
+**If there are any updates, I'll reach out to you promptly 如果有任何进展，我会联系你**
+
+**I'll keep you posted if there's any progress   如果有任何进展，我会马联系你**
+
+**I'll keep you in the loop if there's any update  如果有任何进展，我会马联系你**
+
+**I'll be in touch, as soon as there's any progress 一旦有任何进展我就联系你**
+
+**I'll stay in touch and inform you of any updates**
