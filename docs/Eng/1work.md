@@ -133,3 +133,15 @@
 **Looking back at our initial plan, we can see how much has changed**
 
 回顾最初的计划， 我们可以看到发生了多少变化
+
+#### reflect on 反思回顾
+
+**It's important to reflect on our mistakes so that we can improve in the future**
+
+反思我们的错误很重要 这样我们才能开始改进
+
+#### go over 再过一遍
+
+**Before the meeting, let's go over the presentation one last time**
+
+在会议前，让我们最后再过一遍演示内容
