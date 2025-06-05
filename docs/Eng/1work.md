@@ -85,7 +85,7 @@
 
 🧠 不假设、不装懂，反而展现出你细致、注重成果质量的专业态度。欧美职场中，沟通清楚远比“怕显得不懂”重要。
 
-### 20250630 -  若有进展，我会通知你
+### 20250530 -  若有进展，我会通知你
 
 * development / update / progress   **进展**
 
@@ -112,3 +112,24 @@
 **I'll be in touch, as soon as there's any progress 一旦有任何进展我就联系你**
 
 **I'll stay in touch and inform you of any updates**
+
+
+### 20250605 - 回顾一下
+
+#### **recap**  概述，回顾总结
+
+**Before we wrap up, let's recap the key decisions we made today**
+
+在结束之前，让我们回顾我们今天做出的关键决策
+
+#### review 审查，回顾
+
+**Before we sign the contract, let's review the terms one more time**
+
+在签署合同之前，让我们再回顾一下条款
+
+#### look back 回顾过去
+
+**Looking back at our initial plan, we can see how much has changed**
+
+回顾最初的计划， 我们可以看到发生了多少变化
