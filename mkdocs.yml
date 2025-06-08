@@ -166,6 +166,10 @@ nav:
   - 'SRE':
     - '1 SRE Interview Questions and Answers': '2025/1SRE.md'
     - '2 2025 最新字节跳动运维云原生面经分享': '2025/13tiktok.md'
+    - '3 Ansible Interview Question': '2025/2Ansible.md'
+    - '4 250 Linux Scenario Based Interview': '2025/3linux.md'
+    - '5 Kubernetes SRE part1': '2025/3kubernetes_sre.md'
+    - '6 Kubernetes SRE part2': '2025/3kubernetes_sre2.md'
   - '英语学习':
     - '1 职场英语': 'Eng/1work.md'
 

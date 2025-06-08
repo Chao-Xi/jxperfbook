@@ -673,3 +673,161 @@ Helps reduce MTTR and improve uptime.
 * Rollback plan: Tested and ready
 * Observability checks: Dashboards, alerts verified
 * On-call rotation: Adjusted for event
+
+## SRE Incident Response & Troubleshooting
+
+#### 1 You discover that a recent config change was deployed without proper testing. The system is unstable. How do you respond?
+
+First, identify the change using version control or deployment logs to understand what was altered. Communicate with stakeholders immediately to inform them of the issue. **Attempt a rollback if the change is reversible and known to be the cause.** 
+
+If rollback is not feasible, **deploy a hotfix to stabilize the system**. Implement a temporary mitigation to reduce impact while a permanent fix is developed. 
+
+After the incident, **conduct a post-mortem to reinforce pre-deployment validation, code reviews, and automated testing policies**
+
+
+#### 2 Your service is intermittently returning 403 errors to authenticated users. How do you debug and resolve this?
+
+Start by verifying authentication and authorization systems: 
+
+* check if access tokens are valid and haven't expired.
+* Review logs for 403 errors and identify affected users.
+* Inspect access control logic in code or policies to ensure correct permissions are applied.
+* Investigate **recent changes in IAM roles, reverse proxy configurations, and WAF rules**.
+* Use A/B testing or rollback to validate if a recent change caused the issue.
+
+#### 3 A traffic spike is causing cascading failures in your microservices. How do you stabilize the system?
+
+- Begin by activating rate limiting to control incoming traffic and avoid overloading services.
+- **Enable circuit breakers to prevent overworked services from impacting others.** 
+- Temporarily scale up critical services or use caching/CDNs to offload traffic. 
+- **Use a load balancer to shed non-essential load**. 
+- Once stabilized, perform root cause analysis and implement auto-scaling rules and service isolation to prevent recurrence
+
+#### 4 You receive alerts during a region-wide cloud provider outage. What’s your course of action?
+
+- Immediately verify the extent of the outage via status pages and logs. 
+- If multi-region support is in place, initiate failover to an unaffected region. 
+- **Communicate with customers about the outage and mitigation steps**. 
+- **Update DNS configurations or use traffic director services to reroute traffic**. 
+- **After restoration, audit disaster recovery plans and ensure better redundancy**.
+
+#### 5 A rollback didn’t resolve a production issue. What’s your next step?
+
+- Validate that the rollback was successful and all related components were included.
+- Investigate logs for any new or persisting errors. 
+- Consider non-code causes like corrupted data, environment mismatches, or background jobs. 
+
+Escalate the incident with a war room approach, involving cross-functional teams. 
+Use observability tools to trace the problem and plan a new remediation strategy.
+
+#### 6 Your CDN is returning stale content after a deployment. How do you troubleshoot?
+
+- **Purge the CDN cache manually or via its API**. 
+- Review cache-control headers and ensure they are correctly configured. 
+- Verify if content versioning is used; if not, implement it using file hashes or query strings. 
+- **Monitor the CDN for cache hit/miss rates to validate the fix**.
+
+#### 7 An internal service has exceeded its API rate limits. How do you resolve it and prevent recurrence?
+
+* Throttle or queue requests to reduce load on the API.
+* If external, contact the API provider for temporary relief.
+* Implement exponential backoff and retry logic.
+* **Monitor usage patterns and apply quotas to internal clients**.
+* **Long-term, work on optimizing request frequency and introducing caching where possible.**
+
+#### 8 A monitoring tool itself has gone down. How do you ensure visibility during the incident?
+
+- Fallback to alternative monitoring **like cloud-native metrics, system logs, or backup observability stacks**. 
+- **Deploy lightweight agents that push logs/metrics to a temporary dashboard**. 
+- Prioritize restoring the main monitoring system and ensure its future availability by **setting up redundancy and health checks.**
+
+#### 9 Your application suddenly has a spike in retries and timeouts. What’s your investigative strategy?
+
+- Start by analyzing metrics and logs to pinpoint where the timeouts occur. 
+- **Use distributed tracing to identify slow or failing dependencies**. 
+- **Validate network performance and DNS resolution**.
+- **Check if retries are causing a feedback loop**.
+- Investigate recent deployments or changes that could be affecting latency.
+
+### 2 Reliability & Performance Optimization
+
+#### 1 Your system is hitting database connection pool limits. How do you investigate and mitigate?
+
+- Start by examining application logs and DB metrics to confirm connection exhaustion. 
+- **Use connection pool monitoring tools to identify connection leaks or long-running querie**s.
+- **Optimize queries and database indexing. If appropriate, increase pool size, and introduce caching to reduce load**. 
+- Consider horizontal scaling (read replicas) to distribute read traffic
+
+#### 2 A regional failover succeeded, but users reported increased latency. What improvements would you make?
+
+- **Review DNS TTLs and global routing policies**. 
+- Evaluate whether the backup region’s infrastructure is warm or cold-start. 
+- **Pre-warm instances, replicate caches, and sync data to reduce failover time**. 
+- Implement geo-based routing or anycast to serve users from the nearest healthy location.
+
+#### 3 A memory-intensive process is causing GC thrashing. How would you fix this?
+
+- **Use profiling tools to analyze heap usage and identify memory leaks or excessive object creation.** 
+- Tune JVM/GC parameters or experiment with different garbage collectors.
+- Refactor the code to reduce memory pressure and optimize object lifecycle management
+
+#### 4 Your app needs to support zero-downtime deployments, but users experience brief disruptions. How do you fix that?
+
+- **Switch to deployment strategies like blue-green or canary releases**. 
+- Ensure proper load balancer configuration to drain connections before shutting down old instances. 
+- **Configure readiness and liveness probes to avoid routing traffic to unhealthy pods/instances during rollout**.
+
+#### 5 How would you introduce chaos testing into a mission-critical environment?
+
+- Begin in non-production environments to validate resilience. Use tools like Chaos Mesh or Gremlin. 
+- Start with basic failure scenarios like network latency or service termination. 
+- Gain stakeholder buy-in, then gradually expand chaos coverage in production with strict guardrails and observability.
+
+#### 6 You need to migrate a high-availability service to a new cloud provider. What’s your plan?
+
+- Plan a phased migration starting with infrastructure setup in the new provider. 
+- Use tools for data replication and live sync. Validate performance and failover readiness before DNS cutover. 
+- Ensure rollback mechanisms are in place. 
+- Use blue-green or shadow traffic testing to validate live behavior before the switch.
+
+#### 7 A background job is starving the main thread of resources. How do you diagnose and resolve it?
+
+- Use performance profilers to inspect thread and CPU usage. 
+- Isolate the background job to a separate process or thread pool. 
+- Throttle its execution or reduce its priority. 
+- Optimize its resource consumption to prevent interference with critical user-facing processes.
+
+#### 8 Your system is slow under load, but resource metrics look fine. What’s your next move?
+
+- Investigate lock contention, thread starvation, or database queuing using profiling tools. 
+- Use APM to trace slow transactions and measure application-level bottlenecks. 
+- Consider synthetic load tests to simulate real traffic and identify bottlenecks not visible via CPU or memory metrics.
+
+#### 9 Your application caches are not invalidating properly. How do you handle cache staleness?
+
+- Check if the cache keys and TTLs are correctly defined. 
+- Use cache versioning or add event-based invalidation via message queues. 
+- Monitor cache hit/miss ratio and design fallbacks for stale data scenarios. 
+- Use distributed cache tools that support advanced eviction strategies.
+
+## 10 Monitoring, Observability & Automation
+
+
+#### 1 Your alerts are not capturing a slow memory leak that causes a crash after days of uptime. How do you refine observability?
+
+- Introduce trend-based alerting by analyzing memory usage over long time windows.
+- Increase metric collection granularity. Capture heap snapshots and perform differential
+- analysis. Consider integrating continuous profiling tools to detect leaks early.
+
+#### 2 You need to create SLOs for a service with varying usage patterns. How do you define them?
+
+- Segment the user base or request types and define custom SLOs for each segment. 
+- Use percentile-based metrics like p95/p99 latency.
+- Calculate error budgets aligned with business priorities. 
+- Regularly revisit SLOs based on evolving usage patterns
+
+#### 3 A team reports inconsistent metrics between dashboards. How do you validate data sources?
+
+- Audit the data collection agents, aggregation intervals, and label configurations. 
+- Verify if the dashboards use the same queries and time windows. 
+- Compare metrics directly from source (e.g., Prometheus) to rule out UI-related issues.
