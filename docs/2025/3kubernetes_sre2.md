@@ -251,3 +251,305 @@ Look for cert or path issues in annotations.
 - Store credentials in Kubernetes Secrets.
 - **Use external secret managers like AWS Secrets Manager or HashiCorp Vault.**
 - **Rotate credentials using a sidecar or sync controller (e.g., External Secrets Operator)**.
+
+## Part 2
+
+#### 1. What is the difference between ClusterIP and ExternalName service types?
+
+* ***ClusterIP (default): Exposes the service on an internal IP, accessible only within the cluster.**
+* ExternalName: **Maps a service to an external DNS name via CNAME, no internal proxying**.
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+	name: external-service
+spec:
+ type: ExternalName
+ externalName: api.external.com
+```
+
+**Use when you want to reference external services (e.g., AWS RDS) via DNS.**
+
+#### 2. How does Kubernetes handle failed liveness probes over time?
+
+Kubernetes uses liveness probes to check if a container is healthy. If the probe fails for a number of attempts (failureThreshold), it restarts the container.
+
+```
+livenessProbe:
+  httpGet:
+   path: /healthz
+   port: 8080
+initialDelaySeconds: 10
+periodSeconds: 5
+failureThreshold: 3
+```
+
+If the container fails 3 checks (over 15 seconds), it will be restarted automatically.
+
+#### 3. How do you set up Pod Anti-Affinity rules?
+
+Use anti-affinity to avoid scheduling similar pods on the same node for high availability.
+
+```
+affinity:
+  podAntiAffinity:
+  requiredDuringSchedulingIgnoredDuringExecution:
+  - labelSelector:
+      matchExpressions:
+      - key: app
+        operator: In
+        values:
+        - frontend
+topologyKey: "kubernetes.io/hostname"
+```
+
+#### 4. Explain how Kubernetes RBAC integrates with third-party identity providers.
+
+Use OIDC (OpenID Connect) integration with identity providers like Google, Azure AD, or Okta.
+
+**1. Enable OIDC in the API server:**
+
+```
+--oidc-issuer-url=https://accounts.google.com \
+--oidc-client-id=your-client-id
+```
+
+
+#### 5. How does Kubernetes handle node scaling with Cluster Autoscaler?
+
+**Cluster Autoscaler (CA) automatically scales node groups in cloud environments (e.g., AWS ASG, GKE node pools).**
+
+```
+helm repo add autoscaler https://kubernetes.github.io/autoscaler
+ helm install cluster-autoscaler autoscaler/cluster-autoscaler \
+ --set autoDiscovery.clusterName=<your-cluster> \
+ --set awsRegion=<region>
+```
+
+CA monitors unschedulable pods and scales nodes up/down accordingly.
+
+
+#### 10. How do you handle stuck finalizers during resource deletion?
+
+Resources with finalizers won't delete until cleanup logic runs.
+
+**View the finalizers:**
+
+**`kubectl get <resource> -o json`**
+
+**Remove finalizers (carefully):**
+
+```
+kubectl patch <resource> --type merge -p '{"metadata":{"finalizers":[]}}'
+```
+
+Only use this when the cleanup controller is failing
+
+
+#### 11. What are ephemeral containers and how do you use them for debugging?
+
+**Ephemeral containers are temporary containers added to a running pod for debugging without affecting the original container’s state or lifecycle.**
+
+Use Case: Debugging a crashed pod or an image without debugging tools.
+
+```
+kubectl debug -it <pod-name> --image=busybox --target=<container-name>
+```
+
+Note: Requires Kubernetes v1.18+ and EphemeralContainers feature enabled.
+
+#### 12. Explain the role of kube-dns or CoreDNS in service discovery.
+
+- CoreDNS is the default DNS service for Kubernetes.
+- It resolves internal service names like `my-service.my-namespace.svc.cluster.local` to ClusterIP.
+- Uses /etc/resolv.conf in pods, pointing to kube-dns or coredns.
+
+#### 14. What are some potential performance bottlenecks in Kubernetes workloads?
+
+- CPU/Memory limits too low (throttling or OOMKilled)
+- Disk I/O bottlenecks (especially for stateful apps)
+- Network bottlenecks
+- Node pressure (insufficient resources)
+- High API server load due to misconfigured controllers or operators
+
+Monitor with:
+ 
+- Prometheus + Grafana
+- kubectl top pod, top node
+
+#### 15. How do you handle network segmentation in a multi-tenant Kubernetes cluster?
+
+- Namespaces for logical isolation.
+- Network Policies to control traffic.
+
+```
+kind: NetworkPolicy
+spec:
+  podSelector: 
+  matchLabels: 
+    role: 
+      backend
+ingress:
+- from:
+  - podSelector:
+      matchLabels: 
+       role: 
+         frontend
+```
+
+- Use Calico/Cilium for advanced segmentation.
+- Use RBAC to restrict access to namespace resource
+
+#### 16. What is the difference between ephemeral volumes and persistent volumes?
+
+- Ephemeral Tied to the pod lifecycle. Data lost after pod restarts.
+- Persistent Backed by PersistentVolume, survives pod restarts.
+
+**Ephemeral Volume Example:**
+
+```
+volumes:
+- name: temp-storage
+  emptyDir: {}
+```
+
+**Persistent Volume Example:**
+
+```
+volumeMounts:
+ - mountPath: /data
+   name: data-storage
+volumes:
+ - name: data-storage
+    persistentVolumeClaim:
+      claimName: my-pv
+```
+
+#### 17. How do you manage dynamic secrets in Kubernetes for applications?
+
+
+* HashiCorp Vault with Vault Agent Injector.
+* AWS Secrets Manager + CSI Driver
+* External Secrets Operator
+
+
+**Vault injects secrets into pods using sidecar.**
+
+-  Vault injects secrets into pods using sidecar.
+-  Use annotations:
+
+```
+annotations:
+  vault.hashicorp.com/agent-inject: "true"
+  vault.hashicorp.com/role: "my-app"
+```
+
+
+#### 18. How would you perform a rolling update of a ConfigMap without downtime?
+
+**ConfigMaps are not automatically updated in running pods.**
+
+Use a checksum annotation to trigger rollout:
+
+```
+annotations:
+  configmap-checksum: "{{ sha256sum .Values.configmap | trunc 63 }}"
+```
+
+Process:
+
+1. **Update ConfigMap**.
+2. **Re-deploy Deployment with new annotation**.
+3. Kubernetes rolls pods gracefully.
+
+#### 19. What is kubectl kustomize and how does it compare with Helm?
+
+**Kustomize**: Template-free customization of Kubernetes YAML.
+
+**Helm: Uses Go templates. Supports packaging, versioning, and dependencies.**
+
+#### 20. How would you detect and recover from node pressure scenarios automatically?
+
+Monitor node conditions:
+
+```
+kubectl describe node <node> | grep -A5 Conditions
+```
+
+Recover strategies:
+
+Enable Eviction Thresholds in kubelet:
+
+```
+--eviction-hard=memory.available<500Mi,nodefs.available<10%
+```
+
+- Use Cluster Autoscaler to add more nodes.
+- Alert on NodePressure, DiskPressure, MemoryPressure via Prometheus.
+
+### 21. How do PodDisruptionBudgets (PDBs) interact with cluster upgrades?
+
+PDBs limit how many pods can be unavailable during voluntary disruptions (e.g., upgrades).
+
+```
+spec:
+  minAvailable: 80%
+```
+
+
+- During kubectl drain, nodes won't evict pods beyond the PDB limits, delaying upgrade.
+- Adjust or temporarily remove PDBs for smooth upgrades.
+
+#### 23. How would you migrate workloads between clusters?
+
+1. Backup workloads:
+
+```
+kubectl get all --export -n <ns> -o yaml > backup.yaml
+```
+
+2. Backup PVs (via Velero or cloud snapshots).
+3. Restore in new cluster:
+
+```
+kubectl apply -f backup.yaml
+```
+
+Tools: Velero, Heptio Ark, Cluster API, GitOps tools (e.g., ArgoCD).
+
+#### 24. How do you detect pod-level DNS issues?
+
+1. Use nslookup or dig inside pod:
+
+```
+kubectl exec -it <pod> -- nslookup myservice
+```
+
+2. Check CoreDNS logs:
+
+```
+kubectl logs -n kube-system -l k8s-app=kube-dns
+```
+
+3. Validate /etc/resolv.conf inside the pod.
+
+#### 25. How does container resource throttling work in Kubernetes?
+
+- Throttling occurs when CPU usage exceeds the **CPU limit**.
+- Memory is not throttled; instead, container gets **OOMKilled**.
+
+```
+kubectl top pod <pod>
+kubectl describe pod <pod>
+```
+
+- Set proper CPU/memory requests and limits.
+- Monitor with Prometheus/Node Exporter.
+
+```
+helm diff upgrade my-release ./chart
+
+ Use Helm test hooks to verify deployments.
+ Run in staging first, then promote to production using GitOps.
+```
