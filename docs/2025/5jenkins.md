@@ -139,4 +139,69 @@ CVS / Git / Perforce / AccuRev / Subversion / Clearcase
 Answer: Trigger in Jenkins defines the way in which the pipeline should be executed frequently. PollSCM, Cron, etc are the currently available Triggers
 
 
-Q #21) What is the difference between Maven, Ant, and Jenkins?
+###  What is the difference between Maven, Ant, and Jenkins?
+
+Maven is a build tool like Ant. It consists of a pom.xml file which is specified in Jenkins to run the code. 
+
+
+Whereas, Jenkins is used as a continuous integration tool and automates the deployment process. The reports of the builds can be used to set a mark for continuous delivery as well.
+
+
+### How will you define Post in Jenkins?
+
+Post is a section that contains several additional steps that might execute after the completion of the pipeline. The execution of all the steps within the condition block depends upon the completion status of the pipeline.
+
+The condition block includes the following conditions – **changed success, always, failure, unstable and aborted.**
+
+
+### How can you secure Jenkins?
+
+Answer: Securing Jenkins is a little lengthy process, and there are two aspects of securing Jenkins:
+
+i) Access Control which includes authenticating users and giving them an appropriate set of permissions, which can be done in 2 ways.
+
+* ***Security Realm** determines a security Realm determines a user or a group of users with their passwords.
+* **Authorization Strategy** defines what should be accessible to which user. In this case, there might be different types of security based on the permissions granted to the user such as Quick and simple security with easy setup, Standard security setup, Apache front-end security, etc
+
+**(ii) Protecting Jenkins users from outside threats.**
+
+
+### How to create a backup and copy files in Jenkins?
+
+**In Jenkins, all the settings, build logs and configurations are stored in the `JENKINS_HOME` directory. **
+
+**Whenever you want to create a backup of your Jenkins you can back up `JENKINS_HOME` directory frequently.**
+
+It consists of all the job configurations and slave node configurations. Hence, regularly copying this directory allows us to keep a backup of Jenkins.
+
+
+### What are the various ways in which the build can be scheduled in Jenkins?
+
+1. After the completion of other builds.
+2. By source code management (modifications) commit.
+3. At a specific time.
+4. By requesting manual builds.
+
+### Give any simple example of Jenkins script.
+
+```
+agent
+ stages {
+  stage('Building your first asset') {
+  agent
+   steps {
+    echo 'Build asset'
+  }
+}
+stage('Test') {
+  agent
+   steps {
+    echo 'Building project 1'
+    }
+  }
+  }
+}
+```
+
+### Why is Jenkins called a Continuous Delivery Tool?
+

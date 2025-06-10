@@ -170,6 +170,7 @@ nav:
     - '4 250 Linux Scenario Based Interview': '2025/3linux.md'
     - '5 Kubernetes SRE part1': '2025/3kubernetes_sre.md'
     - '6 Kubernetes SRE part2': '2025/3kubernetes_sre2.md'
+    - '7 Git Scenario-Based Questions': '2025/14git.md'
   - '英语学习':
     - '1 职场英语': 'Eng/1work.md'
 
