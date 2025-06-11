@@ -145,3 +145,60 @@
 **Before the meeting, let's go over the presentation one last time**
 
 在会议前，让我们最后再过一遍演示内容
+
+
+### 20250611 经常用上的法语表达
+
+#### wrap up 结束
+
+let's wrap up the meeting and get back to work 让我们结这个会议，继续工作吧
+
+I think it's time to wrap up this conversation 是时候结束这个对话了
+
+
+#### sort ourt 解决问题；弄清楚一件事
+
+**the company is working to sort out the supply chain issues**
+
+公司正在努为解决供应链问
+
+
+let's meet and sort out the details for our project
+
+让我们见面讨论一下项目的细节
+
+
+#### chase up 跟进
+
+could you please chase up the payment for the invoice we sent? 
+
+你能不进一下我们发出的发票的付款情况吗？
+
+#### slack off 偷懒；摸鱼
+
+don't slack off just because it's Friday afternoon. we still have work to do
+
+别因沩是星期五下午就懒散起来。 我们还有工作要做
+
+
+he got fired because he was always slacking off
+
+他被解雇了，因为他总是偷懒。没有认真做好自己的工作
+
+#### pile up 堆积；积累
+
+the paperwork is starting to pile up on my desk
+
+文书工作开始在我的桌子上积累起来
+
+
+if we don't address the issue now, it will pile up and become a bigger problem later on
+
+如果我们现在不解决问题， 也会积累起来，以后会变成更大的问题
+
+
+#### iron out 敲定。解决细节问题
+
+we need to iron out the details of the contract before we can sign it
+
+我们需要敲定合同的细节，然后才能签署
