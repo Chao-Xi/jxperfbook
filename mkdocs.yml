@@ -173,8 +173,8 @@ nav:
     - '6 Kubernetes SRE part2': '2025/3kubernetes_sre2.md'
     - '7 Git Scenario-Based Questions': '2025/14git.md'
   - 'SRE':
-    - '1 SRE 面试': '2025/sre/0interview.md' 
-    - '2 SRE Linux All': '2025/sre/1linux.md' 
+    - '1 SRE 面试2025': '2025/sre/0interview.md' 
+    - '2 SRE Linux All2025': '2025/sre/1linux.md' 
     - '3 Ansible 从入门到放弃': '2025/sre/2ansible.md' 
     - '4 2025 Apple SRE PRP': '2025/15Apple_SRE_prp.md'
   - '英语学习':
