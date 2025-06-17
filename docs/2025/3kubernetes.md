@@ -1648,7 +1648,7 @@ spec:
     name: recommendation-service
   updatePolicy:
     updateMode: "Auto"
- ```
+```
  
 #### 3. 内存泄漏根治
 
