@@ -15,7 +15,7 @@ kill / kill -9
 
 ### 2 硬链接and软连接
 
-* ***硬链接 是同一个文件不同的访问入口** 所有的链接都共享一个**inode 和同一个数据块**
+* **硬链接 是同一个文件不同的访问入口 所有的链接都共享一个inode 和同一个数据块**
 
 
 * 软连接更像一个文件的快捷访问，存储源文件的绝对路径，一旦源文件删掉，软连接就失效
@@ -197,7 +197,7 @@ Pending  running succeeded Failed Unknown
 - 通过Node节点的本地网络进行通信
 - pod的IP地址进行通信
 
-1.不同的pod在不同的节点（Naode)
+1.不同的pod在不同的节点（Node)
 
 - pod的IP地址进行通信
 - 通过service 通信
@@ -379,46 +379,286 @@ ACID
 
 
 
+### 第一部分：PostgreSQL 基础
+
+#### 1 PostgreSQL 的关键特性有哪些？
+
+ACID 合规性、MVCC（多版本并发控制）、JSON/BSON 支持、全文搜索、自定义数据类型、索引（GIN, GiST, BRIN）、复制、分区、逻辑与物理备份。
+
+#### 2 PostgreSQL 支持哪些数据类型？
+
+数值型、文本型、日期/时间型、几何型、JSON/JSONB、UUID、数组、范围类型、复合类型、自定义类型。
+
+#### 3 PostgreSQL 中的 MVCC 如何工作？
+
+- 每个事务看到数据库在特定时间点的快照。
+- **修改会写入新版本，Vacuum 进程负责清理旧版本**。
 
 
+### 第二部分：管理与性能
+
+#### 1 如何监控 PostgreSQL 性能？
+
+使用 `pg_stat_activity`、`pg_stat_user_tables`、`auto_explain`、`pgBadger` 及外部工具如 Prometheus、Grafana。
+
+#### 2 什么是 Autovacuum？为何重要？
+
+自动清理死元组（Dead Tuples），防止表膨胀并维持性能。
+
+#### 3 如何检查表膨胀？
+
+使用 `pg_stat_user_tables`、`pgstattuple` 或工具如 `pg_bloat_check`。
+
+#### 4 如何优化 PostgreSQL 性能？
+
+调整 `shared_buffers`、`work_mem`、`maintenance_work_mem`、`effective_cache_size` 和 `wal_buffers`。
+
+**有效使用索引并定期执行 VACUUM/ANALYZE。**
+
+#### 5 什么是 WAL 文件？
+
+**预写日志（Write-Ahead Logs）：通过先将更改写入磁盘再应用到数据文件，确保数据持久性。**
+
+### 第三部分：备份与恢复
+
+#### 1 PostgreSQL 的备份类型有哪些？
+
+SQL 转储（`pg_dump`）、文件系统级备份、持续归档（WAL）、基础备份（`pg_basebackup`）。
+
+#### 2. 如何对数据库进行逻辑备份？
+
+**使用 `pg_dump` 或 `pg_dumpall`。**
+
+#### 3. 如何从转储文件恢复数据库？
+
+**使用 psql 或 `pg_restore`（取决于备份格式）**
+
+#### 4 什么是 PITR（时间点恢复）？
+
+**使用基础备份 + WAL 文件将数据库恢复到特定时间点。**
 
 
+#### 5 如何设置 PITR 的持续归档？
+
+**启用 `archive_mode = on`，并配置 `archive_command` 将 WAL 文件复制到安全位置。**
+
+### 第四部分：复制与高可用
+
+#### 1. 什么是流复制？
+
+一种通过网络连接将 WAL 实时发送到副本的方法。
+
+#### 2. 物理复制与逻辑复制的区别？
+
+- 物理复制字节级变更（基础备份 + WAL），
+- 逻辑复制在表级别使用 SQL 语句复制变更。
+
+#### 3. 如何设置流复制？
+
+**使用 `pg_basebackup` 复制数据目录，配置` primary_conninfo` 并使用复制槽。**
+
+#### 4. 什么是复制槽？
+
+一种保留 WAL 文件直到被副本消费的机制，防止异步复制中的数据丢失。
+
+#### 5. 什么是 pg_hba.conf？
 
 
+PostgreSQL 的客户端认证配置文件。
+
+#### 6. 如何监控复制延迟？
+ 
+**通过查询 `pg_stat_replication` 视图（如 `write_lag`, `replay_lag` 字段）。**
+
+#### 7. 能否仅复制特定表？
+
+可以，使用逻辑复制及发布/订阅模型。
+
+#### 8. 如何故障转移到备库？
+
+使用 pg_ctl promote 提升备库，或通过 Patroni、repmgr、Pacemaker 等工具配置。
+
+#### 9. 什么是 repmgr？
+
+**用于 PostgreSQL 复制管理的工具，支持自动故障转移、监控和管理。**
+
+### 第五部分：多数据中心与分布式部署
+
+#### 1. 如何跨数据中心部署 PostgreSQL？
+
+**使用异步复制并处理网络延迟**。工具如 BDR、Citus 或 Bucardo 可用于多主或分片架构。
+
+#### 2. 多数据中心复制的挑战？
+
+网络延迟、数据一致性、故障转移协调与冲突解决。
+
+#### 3. 什么是 BDR（双向复制）？
+
+支持 PostgreSQL 多主复制的扩展。
+
+#### 5. 如何处理复制冲突？
+
+在逻辑复制或 BDR 中需定义冲突解决规则，或设计无冲突模式。
+
+#### 6. 如何确保分布式架构的高可用？
+
+结合复制、监控、故障转移编排及基于 DNS 或代理的重定向。
+
+### 第六部分：安全与访问控制
+
+#### 1. 如何管理用户角色？
+
+使用 CREATE ROLE、GRANT、REVOKE 命令。
+
+#### 2. 如何进行用户认证？
+
+通过 `pg_hba.conf` 配置认证方式（如 md5, scram-sha-256, peer, trust, 证书认证）。
+
+#### 3. 什么是行级安全（RLS）？
+
+通过 CREATE POLICY 控制用户对行的访问权限。
+
+#### 5. 如何启用 SSL 连接？
+
+配置 `ssl = on`，并提供 `ssl_cert_file` 和 `ssl_key_file`。
+
+#### 6. 如何审计数据库活动？
+
+使用日志（`log_statement, log_duration`）或扩展如 pgAudit。
+
+### 第七部分：故障排查与维护
+
+#### 1. 如何识别慢查询？
+   
+使用 `pg_stat_statements、EXPLAIN ANALYZE、auto_explain` 或日志工具。
+
+#### 2. VACUUM 的作用？
+
+**清理死元组并释放空间。ANALYZE 更新查询计划的统计信息。**
+
+#### 3. VACUUM FULL 与常规 VACUUM 的区别？
+   
+**VACUUM FULL 重写表并回收磁盘空间，但会锁表。**
+
+#### 4. 死锁的成因与预防？
+
+多个事务相互等待资源。通过一致的锁顺序和短事务预防。
+
+#### 7. 如何查看当前锁？
+
+查询 `pg_locks` 并与 `pg_stat_activity` 关联。
 
 
+### 第八部分：高级主题
+
+#### 1. 如何实现并行查询？
+
+对适用查询使用多工作进程（基于优化器决策）。
+
+#### 2. 什么是分区？
+
+按范围/列表/哈希规则将大表拆分为小表。
+
+#### 3. 如何分析与优化查询？
+
+**使用 EXPLAIN 和 EXPLAIN ANALYZE，检查索引并考虑重写。**
+
+#### 4. 什么是 CTE？有何作用？
+ 
+公共表表达式（Common Table Expressions）；用于编写可读的子查询和递归查询。
+
+#### 5. 如何升级 PostgreSQL？
+
+使用 `pg_upgrade` 原地升级，或通过转储/恢复迁移。
+
+## 🛠️ PostgreSQL（SRE 专项）
+
+#### 1. 如何设计高可用集群？
+
+**说明主-备流复制、复制槽、同步/异步模式及自动故障转移工具**（如 repmgr、Patroni 或自定义脚本）。
+
+#### 2. 如何监控和缓解复制延迟？
+
+**监控指标（`pg_stat_replication` → `write_lag`, `replay_lag`）**、告警阈值、连接优化、跨数据中心网络延迟。
+
+#### 3. 多数据中心如何实现 PITR？
+   
+基础备份 + 通过 `archive_command` 归档 WAL，按时间戳恢复，考虑网络因素。
+
+#### 4. 如何在线变更表结构（如加列/索引）？
+
+使用非阻塞操作：`ALTER TABLE ... ADD COLUMN`、`CREATE INDEX CONCURRENTLY`，并在副本滚动更新。
+
+#### 5. 如何预防表/索引膨胀？
+   
+**调优 Autovacuum、手动执行 VACUUM/ANALYZE**、通过 `pg_stat_user_tables` 监控、使用 `pg_bloat_check` 工具。
+
+#### 6. 如何排查生产环境慢查询？
+   
+使用 `EXPLAIN ANALYZE`、`pg_stat_statements`、检查索引、I/O 等待、优化器误判；建议日志记录与分析策略。
+
+#### 7. 描述备份与灾难恢复流程
+
+**逻辑备份（`pg_dump`）、物理备份（`pg_basebackup`）、WAL 归档、跨数据中心备份、恢复脚本、灾备演练**。
+
+#### 8. 逻辑复制的价值？如何用于分片？
+
+发布/订阅模型、表过滤、模式同步影响，使用 pglogical 或内置逻辑复制。
+
+#### 9 如何最小化停机升级？
+
+使用 `pg_upgrade --link`、通过复制逻辑升级、或基于副本的蓝绿部署。
+
+#### 10. Prometheus/Grafana 监控哪些指标？
+
+复制延迟、活跃连接数、锁、长查询、索引使用率、磁盘 I/O、`pg_stat_connections`、`pg_stat_bgwriter`。
 
 
+### 🌐 HTTP（SRE 专项）
 
+#### HTTP 请求的生命周期？
 
+DNS 解析 → TCP 握手 → TLS 握手 → HTTP 请求/响应 → 连接关闭或保持（Keep-Alive）。
 
+#### SRE 需关注的 HTTP 状态码？
 
+**2xx（成功）、3xx（重定向循环）、4xx（客户端错误）、5xx（服务端错误），及其触发条件。**
 
+#### HTTP Keep-Alive 与连接池的作用？
 
+复用 TCP/TLS 连接降低延迟与资源消耗；禁用 Keep-Alive 的场景。
 
+#### 如何监控 HTTP 端点性能？
 
+使用 APM、合成监控、真实用户监控、延迟百分位（p95/p99）、错误预算跟踪。
 
+#### HTTP/2 的优势与 SRE 关注点？
 
+多路复用、头部压缩、服务端推送；
 
+需警惕队头阻塞（HOL blocking）和资源优先级问题。
 
+#### 如何调试 HTTP 性能退化？
 
+使用请求追踪、分布式追踪、慢响应日志、瀑布流分析。
 
+#### REST 与 gRPC 的 SRE 视角对比？
 
+REST：人类可读、客户端开销大；
 
+gRPC：二进制传输、基于 HTTP/2、强契约；需权衡性能、工具链和可观测性。
 
+#### HTTP 的重试与幂等性？
 
+幂等方法（GET/PUT）的安全重试（含退避机制），非幂等请求的处理策略。
 
+#### 如何保护生产环境 HTTP 流量？
 
+TLS 终止、HSTS 策略、证书轮换、漏洞扫描、安全头部（CSP, X-Frame-Options 等）。
 
+#### SRE 需防御哪些 HTTP 层攻击？
 
-
-
-
-
-
-
-
-
+**DDoS 攻击、速率限制、流量整形、熔断机制、WAF（Web 应用防火墙）、异常检测。**
 
 
 
