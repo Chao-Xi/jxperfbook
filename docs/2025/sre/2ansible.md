@@ -1538,3 +1538,362 @@ template 模块也可以使用变量，使用方法和上边一样。
 事实变量
 
 顾名思义事实变量就是根据事实定义的变量。比方说被控主机的配置信息，如 cpu、内存、硬盘、IP 和系统版本等信息。
+
+### 默认的事实变量
+
+**`ansible_facts` 是 Ansible 的事实变量。**
+
+```
+ansible localhost -m ansible.builtin.setup
+```
+
+通过 ansible.builtin.setup 可以查看受控主机的事实变量。
+
+```
+ansible localhost -m ansible.builtin.setup -a 'filter=ansible_distribution'
+ansible localhost -m ansible.builtin.setup -a 'filter=ansible_distribution_file_variety'
+ansible localhost -m ansible.builtin.setup -a 'filter=ansible_distribution_major_version'
+ansible localhost -m ansible.builtin.setup -a 'filter=ansible_distribution_version'
+```
+
+**通过 `-a 'filter=ansible_distribution’`` 来进行过滤，所有 `ansible.builtin.setup` 模块看到的变量都可以引用。**
+
+> 通过 `-a 'filter=ansible_distribution’` 来进行过滤，所有 `ansible.builtin.setup` 模块看到的变量都可以引用。
+
+举个例子：
+
+```
+[root@awx-1 ansible]# ansible localhost -m ansible.builtin.setup -a 'filter=ansible_python'
+localhost | SUCCESS => {
+    "ansible_facts": {
+        "ansible_python": {
+            "executable": "/usr/bin/python3.11",
+            "has_sslcontext": true,
+            "type": "cpython",
+            "version": {
+                "major": 3,
+                "micro": 5,
+                "minor": 11,
+                "releaselevel": "final",
+                "serial": 0
+            },
+            "version_info": [
+                3,
+                11,
+                5,
+                "final",
+                0
+            ]
+        }
+    },
+    "changed": false
+}
+[root@awx-1 ansible]# ansible localhost -m ansible.builtin.setup -a 'filter=ansible_python.version'
+localhost | SUCCESS => {
+    "ansible_facts": {},
+    "changed": false
+}
+[root@awx-1 ansible]# ansible localhost -m ansible.builtin.setup -a 'filter=ansible_python.version'
+localhost | SUCCESS => {
+    "ansible_facts": {},
+    "changed": false
+}
+[root@awx-1 ansible]# ansible localhost -m ansible.builtin.debug -a 'var=ansible_python.version'
+localhost | SUCCESS => {
+    "ansible_python.version": {
+        "major": 3,
+        "micro": 5,
+        "minor": 11,
+        "releaselevel": "final",
+        "serial": 0
+    }
+}
+```
+
+
+**自定义事实变量**
+
+```
+cat /etc/ansible/facts.d/install.fact
+[install]
+install_date=2024-8-4
+
+cat /etc/ansible/facts.d/uptime.fact
+{
+  "uptime": {
+    "time": "10d",
+    "health": "true"
+  }
+}
+
+```
+
+
+在受控主机创建 `/etc/ansible/facts.d/`，在 `/etc/ansible/facts.d/` 目录下创建变量文件（必须以 .fact 结尾），如 `/etc/ansible/facts.d/install.fact`，文件内容可以是 INI 格式，也可以是 JSON 格式。
+
+
+```
+ansible localhost -m setup -a 'filter=ansible_local'
+localhost | SUCCESS => {
+    "ansible_facts": {
+        "ansible_local": {
+            "install_vars": {
+                "install": {
+                    "install_date": "2024-8-4"
+                }
+            },
+            "uptime_vars": {
+                "uptime": {
+                    "health": "true",
+                    "time": "10d"
+                }
+            }
+        }
+    },
+    "changed": false
+}
+```
+
+通过 `-a 'filter=ansible_local' `可以查找自定义事实变量，`ansible_local` 表示自定义事实变量，`install_vars` 和自定义事实变量文件名对应，install 对应文件里的 `[install]，"install_date": "2024-8-4”` 对应文件里的 `install_date=2024-8-4`
+
+```
+ansible localhost -m ansible.builtin.debug -a 'msg="{{ ansible_local.uptime_vars.uptime.time }}"'
+ansible localhost -m ansible.builtin.debug -a 'var=ansible_local.uptime_vars.uptime.time'
+```
+
+> 打印变量的时候使用 ansible.builtin.debug 模块打印比较方便.
+
+### 魔法变量
+
+https://docs.ansible.com/ansible/latest/reference_appendices/special_variables.html#magic-variables
+
+
+Ansible 魔法变量是反映当前的一些状态的变量，如配置文件位置、Ansible 版本、Python 版本、当前主机在主机清单中的名字和所属主机组，这些变量的值都是随着配置文件或主机清单等来确定的，可以用 `ansible all -m debug -a 'var=hostvars’ ` 来查看所有魔法变量
+
+```
+#查看所有魔法变量
+ansible all -m debug -a 'var=hostvars'
+
+#查看主机清单中设置的主机名
+ansible all -m debug -a 'var=inventory_hostname'
+
+#查看主机所属组
+ansible all -m debug -a 'var=group_names'
+```
+
+上边列出几个查看的例子，其他的以此类推。
+
+### 魔法变量和事实变量的区别
+
+我自己的理解，事实变量记录着当前受控主机的相关信息，比如CPU、内存、硬盘，当前主机的 python 版本，这些变量都是从受控主机采集的信息，所以它们的值会随着受控主机的改变而改变，Ansible 是没有办法在 server2 主机上使用 server1 的事实变量的。
+
+但是魔法变量不一样，如受控主机在主机清单的名字、主机组名字、Ansible 的配置文件、控制节点的 python 路径等，这些都是受 Ansible 配置文件或主机清单来配置的，因为在 Ansible 配置文件和主机清单确定之后，魔法变量的值也都确定了，所以是可以在 server2 上使用 server1 的魔法变量的，例如：
+
+```
+ansible server1,server2 -m debug -a 'var=hostvars.server1.inventory_hostname'
+```
+
+这个命令会在 server1 和 server2 都输出 server1。
+
+**再举一个例子：**
+
+```
+[root@awx-1 ansible]# cat hosts
+servera ansible_ssh_host=127.0.0.1 ansible_ssh_user=root ansible_ssh_password=redhat
+[root@awx-1 ansible]# ansible servera -i hosts -m ansible.builtin.debug -a 'var=hostvars.servera.inventory_hostname'
+servera | SUCCESS => {
+    "hostvars.servera.inventory_hostname": "servera"
+}
+[root@awx-1 ansible]# ansible servera -i hosts -m ansible.builtin.debug -a 'var=ansible_hostname'
+servera | SUCCESS => {
+    "ansible_hostname": "awx-1"
+}
+```
+
+主机清单里有 servera 主机，通过 servera 主机查看魔法变量就能看到 servera，这个变量就是通过主机清单定义的，跟被控主机的配置没有任何关系。
+
+## 10 Ansible 变量的优先级、判断和循环
+
+优先级是从高到低
+
+1. 命令行设置的变量优先级最高
+2. role 中的 vars 变量
+3. playbook 中定义的变量其次
+4. `host_vars` 目录和 `group_vars` 目录的变量（`host_vars` 优先于 `group_vars`）
+5. inventory 变量
+6. role 中的 default 变量
+
+- • 变量名相同，高优先级会覆盖低优先级变量
+- • 变量名相同，主机变量会覆盖主机组变量
+- • 变量名相同，子组覆盖嵌套组的变量
+
+> 感觉只要变量不重名应该就不涉及优先级问题。
+
+### 变量的条件判断
+
+
+**判断的类型**
+
+针对变量有以下判断方法：
+
+```
+等于（字符串）	
+ansible_machine == "x86_64"
+
+等于（数字）	
+ansible_distribution_major_version == 8
+
+小于	
+ansible_memfree_mb < 1024
+
+大于	
+ansible_memfree_mb > 1024
+
+小于等于	
+ansible_memfree_mb <= 1024
+
+大于等于	
+ansible_memfree_mb >= 1024
+
+不等于	
+ansible_memfree_mb != 1024
+
+变量存在	
+custom_var is defined
+
+变量不存在	
+custom_var is not defined
+
+布尔变量为 True。True、Yes 或 1	
+ansible_selinux_python_present
+
+布尔变量为 False。False、No 或 0	
+not ansible_selinux_python_present
+
+第一个变量存在，且在第二个变量的列表里	
+ansible_distribution in supported_distros
+
+变量是否为空	
+custom_var == ""
+
+变量是否不为空	
+custom_var != ""
+
+变量是路径时的文件类型	
+custom_var is file (directory、link、mount、exists)
+```
+
+> 通过 ansible -e 或 ansible-playbook -e 设置的变量为字符串。
+>
+> 布尔变量需要用 var=true 和 var=false 设置。
+>
+> 数字需要通过 json 方式设置：'{ "var": 100 }'。
+
+判断可以组合使用，比如：
+
+
+```
+custom_var is defined and custom_var == "RedHat"
+
+ansible_distribution == "Rocky" or (custom_var is defined and custom_var == "Linux")
+```
+
+**多个判断可以用列表**
+
+
+```
+when:
+  - my_var is defined
+  - my_var == 'abc'
+```
+
+例子
+
+```
+---
+- name: test
+  hosts: localhost
+  tasks:
+  - name: test
+    debug:
+      msg:
+      - "{{ ansible_facts.hostname }}"
+    when: ansible_distribution == "Rocky" or (custom_var is defined and custom_var == "Linux")
+```
+
+### 列表变量和字典变量
+
+列表变量和字典变量
+
+#### 列表
+
+列表是一个有序的元素集合，元素可以是数字、字符串、字典、甚至是另一个列表。可以通过下标访问列表的元素。
+
+以下是列表变量定义的方式：
+
+```
+list_var1:
+- var1
+- var2
+- var3
+
+list_var2: [ "var4", "var5", "var6" ]
+```
+
+
+#### 字典
+
+字典是一个无序的键值对集合，每个键都有对应的值。字典可以嵌套，键和值的类型可以是任何数据类型。
+
+以下是字典变量定义的方式
+
+```
+dict_var1:
+  var7: 7
+  var8: "eight"
+
+dict_var2: { var9: "nine", var10: 10 }
+```
+
+#### 列表和字典的混合
+
+```
+list_var:
+- var1: 1
+- var2: "two"
+dict_var:
+  var3:
+  - var3_1
+  - var3_2
+  var4: "four"
+```
+
+### 遍历变量
+
+遍历变量通过 loop 实现，以下是一个在 Playbook 遍历变量的例子：
+
+```
+---
+- name: test
+  hosts: localhost
+  vars:
+    user_list:
+    - name: "root"
+      password: "redhat"
+      host: "192.168.1.1"
+    - name: "admin"
+      password: "redhat"
+      host: "192.168.1.2"
+  tasks:
+  - name: loop list
+    debug:
+      msg: "{{ item }}"
+    loop: "{{ user_list }}"
+  - name: loop list.name
+    debug:
+      msg: "{{ item.name }}"
+    loop: "{{ user_list }}"
+```
+
+**早版本的 Ansible 可能会有 `with_items` 或 `with_dict`，不过已经被淘汰了（可能还支持），新版本统一用 loop。**
+
