@@ -377,6 +377,233 @@ ACID
 3. 对不同账号角色分配最小的权限
 4. 保证正常的使用， 对日常操作的日志全部保留下来，定期审计
 
+### A Kubernetes pod is not starting up and is going in a pending state, how will you troubleshoot this?
+
+**1. Check Pod Events & Details**
+
+```
+kubectl describe pod <pod-name> -n <namespace>
+```
+
+Focus on the Events section. Common causes include:
+
+- **Insufficient CPU/Memory**: "0/X nodes available: Insufficient cpu/memory"
+- **Node Selector Mismatch**: "node(s) didn't match Pod's node affinity"
+- **Taints/Tolerations**: "node(s) had untolerated taint {taint-key}"
+- **PVC Issues**: "waiting for persistentvolumeclaim <pvc-name> to be bound"
+
+**2. Verify Node Availability**
+
+```
+kubectl get nodes
+```
+
+Ensure nodes are Ready. If not:
+
+- Check node status: `kubectl describe node <node-name>`
+- Investigate node issues (e.g., disk pressure, network errors, kubelet failures).
+
+**3. Check Resource Quotas**
+
+```
+kubectl get resourcequotas -n <namespace>
+kubectl describe resourcequota <quota-name> -n <namespace>
+```
+
+Ensure the pod isn't blocked by CPU/memory/storage quotas.
+
+**4. Inspect Persistent Volume Claims (PVCs)**
+
+```
+kubectl get pvc -n <namespace>
+kubectl describe pvc <pvc-name> -n <namespace>
+```
+
+- If PVC is Pending, check storage class/provisioner issues.
+- Verify sufficient storage capacity.
+
+**5. Validate Node Affinity/Taints**
+
+- Node Selector/Affinity:
+	- Match pod's nodeSelector/affinity rules to node labels.
+
+- Taints & Tolerations:
+	- Ensure pod tolerations match node taints (e.g., for dedicated nodes).
+
+**6. Check Resource Requests/Limits**
+
+```
+kubectl get pod <pod-name> -o yaml -n <namespace>
+```
+
+Verify CPU/memory requests aren’t exceeding node capacity.
+
+Compare pod requests to node allocatable resources:
+
+```
+kubectl describe node <node-name> | grep -A 10 "Allocated resources"
+```
+
+**7. Review Scheduler Logs**
+
+Access scheduler logs for scheduling errors:
+
+```
+kubectl logs -n kube-system <kube-scheduler-pod-name>
+```
+
+Look for warnings like:
+
+* PodFitsResources failed → Resource starvation.
+* PodFitsHostPorts → Port conflict.
+
+**8. Check for Cluster Autoscaler Issues**
+
+If using autoscaling (e.g., AWS/GCP), verify:
+
+- Autoscaler pod is running: kubectl get pods -n kube-system
+- Cluster has capacity to scale (e.g., max nodes not reached).
+
+**9. Validate Pod Security Policies (PSP) or Admission Controllers**
+
+- If PSP is enabled, ensure the pod has necessary permissions.
+- Check for admission controller errors in scheduler logs.
+
+**10. Debug with Ephemeral Containers (Kubernetes ≥v1.23)**
+
+Attach a debug container to inspect the pod's environment:
+
+```
+kubectl debug -it <pod-name> --image=busybox --target=<container-name>
+```
+
+Common Solutions:
+
+- Resource Starvation: Scale nodes, reduce pod requests, or free up resources.
+- Taints/Tolerations: Add tolerations to pod spec or remove node taint.
+- PVC Stuck: Delete/recreate PVC, verify storage class exists.
+- Node Selector Mismatch: Adjust pod’s nodeSelector or label nodes properly.
+- Scheduler Issues: Restart kube-scheduler if logs indicate crashes
+
+**Final Checks:**
+
+- Kubernetes Version: Check for known bugs in your version.
+- Events Are Your Friend: Always start with kubectl describe pod.
+
+By systematically addressing these areas, you’ll resolve 95% of Pending pod issues. Start with pod events → resources → PVCs → scheduling constraints.
+
+好的，这是您提供的 Kubernetes Pod 处于 Pending 状态排查指南的中文翻译：
+
+---
+
+要排查 Kubernetes Pod 卡在 **Pending** 状态的问题，请遵循以下结构化步骤：
+
+### 1. **检查 Pod 事件和详情**
+   ```bash
+   kubectl describe pod <pod名称> -n <命名空间>
+   ```
+   **重点关注 `Events` 事件部分**。常见原因包括：
+   - **CPU/内存不足**: "0/X nodes available: Insufficient cpu/memory" (0/X 个节点可用：CPU/内存不足)
+   - **节点选择器不匹配**: "node(s) didn't match Pod's node affinity" (节点与 Pod 的节点亲和性不匹配)
+   - **污点/容忍度问题**: "node(s) had untolerated taint {污点键}" (节点存在未被 Pod 容忍的污点)
+   - **PVC (持久卷声明) 问题**: "waiting for persistentvolumeclaim <pvc名称> to be bound" (等待持久卷声明 <pvc名称> 完成绑定)
+
+---
+
+### 2. **验证节点可用性**
+   ```bash
+   kubectl get nodes
+   ```
+   确保所有节点状态为 **Ready (就绪)**。如果不是：
+   - 检查节点状态详情：`kubectl describe node <节点名称>`
+   - 调查节点问题（如磁盘压力、网络错误、kubelet 故障）。
+
+---
+
+### 3. **检查资源配额 (Resource Quotas)**
+   ```bash
+   kubectl get resourcequotas -n <命名空间>
+   kubectl describe resourcequota <配额名称> -n <命名空间>
+   ```
+   确保 Pod 没有被命名空间的 CPU/内存/存储配额所限制。
+
+---
+
+### 4. **检查持久卷声明 (PVCs)**
+   ```bash
+   kubectl get pvc -n <命名空间>
+   kubectl describe pvc <pvc名称> -n <命名空间>
+   ```
+   - 如果 PVC 状态为 **Pending**，检查存储类 (StorageClass) 或存储供应器 (Provisioner) 问题。
+   - 验证存储容量是否充足。
+
+---
+
+### 5. **验证节点亲和性 (Affinity)/污点 (Taints)**
+   - **节点选择器/亲和性 (Node Selector/Affinity)**:
+     检查 Pod 的 `nodeSelector` 或 `affinity` 规则是否与节点标签匹配。
+   - **污点与容忍度 (Taints & Tolerations)**:
+     确保 Pod 的容忍度 (`tolerations`) 能够匹配节点的污点 (例如专用节点上的污点)。
+
+---
+
+### 6. **检查资源请求/限制 (Requests/Limits)**
+   ```bash
+   kubectl get pod <pod名称> -o yaml -n <命名空间>
+   ```
+   - 验证 Pod 的 CPU/内存 `requests` (请求值) 是否超过了节点容量。
+   - 将 Pod 的资源请求与节点的可分配资源进行比较：
+     ```bash
+     kubectl describe node <节点名称> | grep -A 10 "Allocated resources" (已分配资源)
+     ```
+
+---
+
+### 7. **查看调度器日志 (Scheduler Logs)**
+   访问 Kubernetes 调度器日志以查找调度错误信息：
+   ```bash
+   kubectl logs -n kube-system <kube-scheduler-pod名称>
+   ```
+   查找类似如下的警告：
+   - `PodFitsResources failed` → 资源不足。
+   - `PodFitsHostPorts` → 端口冲突。
+
+---
+
+### 8. **检查集群自动伸缩器 (Cluster Autoscaler) 问题**
+   - 如果启用了集群自动伸缩 (例如 AWS/GCP)，请验证：
+     - 自动伸缩器 Pod 是否在运行：`kubectl get pods -n kube-system`
+     - 集群是否有容量进行扩展（例如，未达到最大节点数）。
+
+---
+
+### 9. **验证 Pod 安全策略 (PSP) 或准入控制器 (Admission Controllers)**
+   - 如果启用了 PSP (Pod Security Policies)，确保 Pod 具有必要的权限。
+   - 在调度器日志中检查准入控制器相关的错误。
+
+---
+
+### 10. **使用临时容器调试 (Kubernetes ≥v1.23)**
+   附加一个调试容器来检查 Pod 的环境：
+   ```bash
+   kubectl debug -it <pod名称> --image=busybox --target=<容器名称>
+   ```
+
+---
+
+### 常见解决方案：
+- **资源不足 (Resource Starvation)**: 扩展节点数量、降低 Pod 的资源请求、或释放现有资源。
+- **污点/容忍度 (Taints/Tolerations)**: 在 Pod 规约中添加容忍度 (`tolerations`) 或移除节点的污点 (`taint`)。
+- **PVC 卡住 (PVC Stuck)**: 删除并重新创建 PVC，确保引用的存储类 (`StorageClass`) 存在且可用。
+- **节点选择器不匹配 (Node Selector Mismatch)**: 调整 Pod 的 `nodeSelector` 或正确地为节点打标签。
+- **调度器问题 (Scheduler Issues)**: 如果日志显示调度器崩溃，尝试重启 kube-scheduler Pod。
+
+### 最后要点：
+- **Kubernetes 版本**: 检查您使用的版本是否存在已知的相关 Bug。
+- **事件是关键**: `kubectl describe pod` 命令输出的事件 (`Events`) 始终是最重要的起点。
+
+通过系统地排查这些方面，您将能解决 95% 的 Pod 卡在 Pending 状态的问题。排查顺序建议：**Pod 事件 → 资源问题 → PVC 问题 → 调度约束**。
+
 
 
 ### 第一部分：PostgreSQL 基础
@@ -711,4 +938,5 @@ Jenkins的构建过程通常包括以下几个步骤：
 * 测试（执行测试脚本，生成测试报告）、
 * 打包（将构建产物打包成可发布的格式，如JAR、WAR等）
 * 以及部署（将构建产物部署到目标环境
+
 

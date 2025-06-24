@@ -202,3 +202,57 @@ if we don't address the issue now, it will pile up and become a bigger problem l
 we need to iron out the details of the contract before we can sign it
 
 我们需要敲定合同的细节，然后才能签署
+
+
+### 20250623 经常用上的法语表达
+
+#### carry out 进行；开展；执行
+
+We need to carry out this work as soon as possible 我们需要尽快开展这项工作
+
+The building work was carried out by a local contractor 建筑工程由当地承包商进行
+
+#### take over 接管
+
+I just took over the job 我才接管这项工作
+
+I think you should take over the business 我觉得你应该乘接管公司
+
+
+#### knuckle down 开始认真工作，专注在工作上。
+
+Its time to knuckle dotm是时候要认真工作了
+
+#### hand in 上交，递交
+
+He's a ready handed in his report  他已经梯不飛他的部出
+
+
+#### knock off 结束工作，下班，收工
+
+Let's knock off early tonight 我们今晚提前收工吧
+
+Latts knock off for lunch 我们收工吃午饭
+
+
+#### call out 引起注意，提出值得注意的地方
+
+I want to call out this problem for all of you 
+
+I have to call out the risk of this project  我须要提出这个项自风险
+
+
+#### call off 取消
+
+She just called off the meeting 她则刚把叁秘取消了
+
+#### slack off 偷懒；摸鱼
+
+Workers usually slack off on Fridays 员工们通常周末回摸鱼
+
+#### work out 如期发生；进展顺利
+
+This solution didn't work out 这个解决办法没有用
+
+
+Things have worked out for us  堇情对我们莱说溯属顺利
