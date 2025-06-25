@@ -256,3 +256,58 @@ This solution didn't work out 这个解决办法没有用
 
 
 Things have worked out for us  堇情对我们莱说溯属顺利
+
+### 20250625 “如下所示
+
+#### 通用表达
+
+**As follows 如下所示**
+
+
+The steps to complete the project are as follows  完成该项目的步骤如
+
+#### 强调屏示内容
+
+* ***As shown below 如下所示**
+* **As illustrated below 如下所示**
+* As presented below 如下所示
+
+
+The results of the survey are as shown below  调查结果如下所示
+
+The process can be summarized as illustrated below  该过程可以总结如下所示
+
+#### 详细展示内容
+
+- As detailed below 具体如下
+
+- As described below 具体如下
+
+
+The plan is as detailed below 计划具体如下所下
+
+The procedure is as described below 步骤如下所下
+
+
+#### 强调提及内容
+
+As mentioned below 如下面提到的
+
+As indicated below 如下所示
+
+The key points are as mentioned below 关键点如下所述
+
+the data is as indicated below 数据如下所示
+
+
+#### 强调规范要求
+
+As outlined below 如下所述
+
+As specified below 如下所明确
+
+The meeting agenda is as outlined below 会议议程如下所示
+
+The requirements are as specified below 要求如下所示
+
+
