@@ -311,3 +311,33 @@ The meeting agenda is as outlined below 会议议程如下所示
 The requirements are as specified below 要求如下所示
 
 
+
+### 20250630 “我没听清“
+
+#### 网络问题
+
+**I apologize, but your voice is breaking up. Can you say that again?**  抱歉，但你的声音断断续续。你能再说一遍吗？
+
+
+**I'm sorry, but it seems like the connection is a bit unstable. Can you explain it again?** 抱歉！但你的连接似乎有点木稳定。你能在解释一下吗
+
+**It looks like the internet is lagging, I'm missing some of what you're saying. Could you repeat it?**
+
+网络好像有延迟； 我错过了你说的一些内容，你能再说一次吗？
+
+**I'm sorry, but your voice is a bit soft, could you please speak a little louder?**  抱歡，但你的声音有点小；您能说得大声一点吗？
+
+#### 理解问题
+
+**I apologize, but I didn't quite catch that. Could you please repeat it?** 抱歉，我没有听清。 您能再说一遍吗？
+
+
+**I'm sorry, but I missed that part. Could you clarify what you just said?** 拖歉，那部分我没听清。你能说得更清楚一些吗
+
+
+**I'm not sure if I followed that. If you don't mind, could you go over that again?** 我不太确定我有没有跟上。 如果你不介意的话，可以再讲一遍吗
+
+
+**Could you please elaborate on that? I want to make sure I got it right**. 你能详细说明一下吗？我想确保我理解正确
+
+
