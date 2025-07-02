@@ -340,4 +340,38 @@ The requirements are as specified below 要求如下所示
 
 **Could you please elaborate on that? I want to make sure I got it right**. 你能详细说明一下吗？我想确保我理解正确
 
+### 20250702  欧美职场常用表达
 
+#### 1 jump the gun 行动过早；操之过急
+
+We might jump the gun if we launch the campaign without a clear target audience
+
+如果在没有明确目标受众的情况下， 启动这个活动，我们可能会操之过急
+
+Let's not jump the gun by ordering materials before the design is finalized
+
+设计定稿前我们不要急于订购材料
+
+#### 2 in the pipeline 正在进行中
+
+Our expansion into the Asian market is in the pipeline
+
+我们进车亚洲市场的计划正在推进中
+
+We have several new products in the pipeline hat we plan to launch next quarter
+
+我们有几款新产品正在开发中，计划在下个季度推出
+
+#### 3 in the long run 从长远来看
+
+Building strong client relationships **will benefit us in the long run**  建立稳固的客户关系从长远来看对我们有益
+
+
+Streamlining our supply chain will reduce costs in the long run 简介我们的供应链从长远来看会降低成本
+
+
+#### 4 on the radar 在关注范围内；被注意到
+
+This opportunity is definitely on the radar for future projects 这个机会绝对在我们未来项目的考虑范围内
+
+We need to keep this issue on the radar 我们需要将这个问题保持在关注范围内
