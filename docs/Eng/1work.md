@@ -375,3 +375,41 @@ Streamlining our supply chain will reduce costs in the long run 简介我们的�
 This opportunity is definitely on the radar for future projects 这个机会绝对在我们未来项目的考虑范围内
 
 We need to keep this issue on the radar 我们需要将这个问题保持在关注范围内
+
+
+### 20250707  "连续三天"
+
+- for 3 days in a row 连续3天
+- for 3 weeks in a row 连续3周
+- for a few days in a row 连续几天
+
+I've been reviewing reports **for 3 days in a row to ensure everything is correct** 
+
+我已经连续3天在审查报告，以确保一切都正确
+
+**For 3 days in a row**, we've been receiving positive feedback from the clients
+
+连续3天，我们收到了来自客户的积极反馈
+
+- for 3 days straight 连续3天
+- for 3 weeks straight 连续3周
+- For a few days straight 连续几天
+
+We've been putting in extra hours for 3 days straight to meet the deadline
+
+我们为了赶上截止日期，连续3天都在加班
+
+She's been in meetings for 3 days straight, trying to resolve the issue with the clients
+
+她连续3天都在开会，试图解决客户的问题
+
+### for 3 consecutive days 连续3天
+
+
+The team has been conducting interviews for 3 consecutive days to fill the open positions
+
+团队已经连续3天进行面试，以填补空缺职位
+
+The sales team exceeded their targets for 3 consecutive days
+
+销售团队连续3天超额完成目标
