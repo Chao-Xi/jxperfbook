@@ -403,7 +403,7 @@ She's been in meetings for 3 days straight, trying to resolve the issue with the
 
 她连续3天都在开会，试图解决客户的问题
 
-### for 3 consecutive days 连续3天
+#### for 3 consecutive days 连续3天
 
 
 The team has been conducting interviews for 3 consecutive days to fill the open positions
@@ -413,3 +413,38 @@ The team has been conducting interviews for 3 consecutive days to fill the open 
 The sales team exceeded their targets for 3 consecutive days
 
 销售团队连续3天超额完成目标
+
+
+### 20250708  "我临时有事"
+
+- **Something came up 我临时有事**
+
+Sorry, I can't make it to the meeting, something came up 对不起，我不能参加会议了，我临时有事
+
+I apologize for the sudden change 很抱歉突然改变计
+
+but something unexpected came up and I have to reschedule 但我临时有事，需要重新安排时间
+
+- urgent matter 紧急的事情
+- urgent issue 紧急的问题
+- urgent situation 紧急的情况
+
+- unexpected matter 突发事情
+- unexpected issue 突发问题
+- unexpected situation 突发情况
+
+- a last-minute matter 临时的事情
+- a last-minute issue 临时的问题
+- a last-minute situation 临时的情况
+
+**emergency 紧急的事情**
+
+
+#### **Attend to 处理 ；deal with处理 handle 处理； take care of 处理**
+
+- I have an urgent matter to attend to  我有紧急的事情要处理
+- I have an unexpected situation to deal with 我有突发情况需要处理
+- I need to handle an emergency 我需要处理紧急情况
+- I have a last-minute issue to take care of 我有一个临时的问题需要处理
+- I need to handle an unexpected issue 我需要处理一个突发问题
+- I have a last-minute issue to attend to 我临时有事要处理
