@@ -178,6 +178,8 @@ nav:
     - '3 Ansible 从入门到放弃': '2025/sre/2ansible.md' 
     - '4 2025 Apple SRE PRP': '2025/15Apple_SRE_prp.md'
     - '3 GIT CE TEST': '2025/3git.md'
+  - 'SRE_Linux':
+    - '1 Linux Fundamentals': '2025/sreln/2Linux_test.md'
   - '英语学习':
     - '1 职场英语': 'Eng/1work.md'
 
