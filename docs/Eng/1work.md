@@ -448,3 +448,30 @@ but something unexpected came up and I have to reschedule 但我临时有事，�
 - I have a last-minute issue to take care of 我有一个临时的问题需要处理
 - I need to handle an unexpected issue 我需要处理一个突发问题
 - I have a last-minute issue to attend to 我临时有事要处理
+
+### 复盘 20250709
+
+#### retro 复盘
+
+In tomorrow's retrospective, we'll discuss what we can improve in the next phase  在明天的复盘会上， 我们会讨论下一阶段可以改进的地方
+
+The retro provide valuable insights into how we can streamline our workflow  这次复盘为我们如何优化工作流程提供了有价值的见解。
+
+#### debrief 复盘
+
+We scheduled a debrief to go over the outcomes of the training session 我们安排了一次复盘，以回顾培训的结果
+
+The debrief helped us understand where we fell short and how to adjust next time 复盘让我们了解了不足之处，并知道如何在下次调整
+
+
+After the campaign, we'll debrief to see what strategies worked best 活动结束后，我们会复盘，看看哪些策略有效 
+
+
+#### review 复盘
+
+We need a detailed review to understand what caused the delays 我们需要一次详细的复盘来了解延误的原因
+
+
+The quarterly review showcased both achievements and challenges 这次复盘展示了成就与挑战
+
+We need to review last quarter's performance to identify areas for improvement 我们需要复盘上一季度的表现，以找出可以改进的地商
