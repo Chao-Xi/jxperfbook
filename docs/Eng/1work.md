@@ -475,3 +475,31 @@ We need a detailed review to understand what caused the delays 我们需要一�
 The quarterly review showcased both achievements and challenges 这次复盘展示了成就与挑战
 
 We need to review last quarter's performance to identify areas for improvement 我们需要复盘上一季度的表现，以找出可以改进的地商
+
+
+### “会议推迟到3点”  20250710
+
+#### postpone 推迟、
+
+The project **kick-off meeting has been postponed** to 3pm due to some technical issues 由于技来问题，项自启动会推迟到一卡年3点
+
+
+We have postponed the submission deadline until 3PM  我们把提交截止时间推迟到下午3点
+
+#### push back 推迟
+
+
+The staff meeting **has been pushed back** 3pm due to a scheduling conflict 由于时间冲突，员工会议已推迟到下午3点
+
+
+We need to push back the training workshop to 3pm to align with the trainer's schedule  培训研讨会已推迟到下年3点，以顾及讲师的时间安抖
+
+#### delay 推迟、
+
+The client meeting has been delayed until 3pm to allow for further preparation 为了进行更进一步的准备，客户会议已推迟到下午3点
+
+#### reschedule 修改时间
+
+We need to reschedule the team meeting to pm to accommodate everyone’s 3 pm to accommodate everyone's availability
+
+我们需要将团队会议时间推迟到下午3点， 以配合所有人的时间安排
