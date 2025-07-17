@@ -12,7 +12,7 @@
 
 Type **Ishw** from the terminal.
 
-**3. You must create a directory named **spreadsheets** in the **Documents** directory belonging to user steve. Your current working directory (PWD) is /home/steve. What command would you USE?**
+**3. You must create a directory nameaptd **spreadsheets** in the **Documents** directory belonging to user steve. Your current working directory (PWD) is /home/steve. What command would you USE?**
 
 **`mkdir Documents/spreadsheets`**
 
@@ -195,4 +195,45 @@ ls -d /etc/*/
 44 What command assigns others read, write, and execute (rwx) permissions to the file users.txt?
 
 **chmod o+rwx users.txt**
+
+45 What command clears the local APT-based repositories of retrieved package files on a Debian/Ubuntu system?
+
+**sudo apt-get clean**
+
+46 What User ID will the root account possess by default?  **0**
+
+47 What is the default nice setting for a new process in Linux?  **0**
+
+48 What command would you issue to display all the groups associated with the system?
+
+**cat /etc/group**
+
+49 You download the ISO file for the Linux distribution you want to install and use on a local PC or server. What is your next step?
+
+**Write the image to a DVD or USB drive.**
+
+50 After you update the system repository index (using apt update), what would you execute to apply the updates on Ubuntu?
+
+**sudo apt upgrade**
+
+51 What command would you issue to download and install VideoLAN Client (VLC) in Ubuntu
+
+**sudo apt-get install vlc**
+
+52 When would you install the Gnome Tweak Tool on your Linux system? 
+
+**When you want to customize your system's user interface**
+
+53 What is the most widely-used default boot loader for Linux systems?
+
+**Grand Unified Boot Loader (GRUB)**
+
+54 Which statement best explains what happens when you use a USB device to run a live image of Linux on your computer?
+
+**You can run a single session using a USB or optical drive without modifying your local system.**
+
+55 You must list the permission and ownership of the file users.txt. What would you do to accomplish this task?
+
+Issue ls -l users.txt
+
 
