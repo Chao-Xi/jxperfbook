@@ -21,7 +21,7 @@ Fix:
 ### 2. 504 Gateway Timeout in Microservices
 
 **Root Cause:**
- 
+
 * Readiness probes failing.
 * Inter-service networking issues.
 * Ingress timeout or service selector misconfiguration.
@@ -70,7 +70,7 @@ spec:
 ### 5. Deployment Rollout Stuck: ProgressDeadlineExceeded
 
 Root Cause:
-
+
 - **New pods fail readiness probes**.
 - **ImagePull errors or misconfigurations**.
 
@@ -110,7 +110,7 @@ Troubleshooting:
 
 
 Solution:
- 
+
 - Set appropriate resource requests/limits.
 - Use a memory profiler (Valgrind, pprof) inside containers.
 - Use HPA to scale pods if high usage is expected.
@@ -210,7 +210,7 @@ Fix:
 
 Debug Steps:
 
-- Use kubectl get networkpolicies -n <ns>
+- Use `kubectl get networkpolicies -n <ns>`
 - Check if egress/ingress rules block unintended pods.
 - Use netshoot or busybox pods to test connectivity.
 
@@ -285,7 +285,7 @@ periodSeconds: 5
 failureThreshold: 3
 ```
 
-If the container fails 3 checks (over 15 seconds), it will be restarted automatically.
+If the container fails 3 checks (over 15 seconds), it will be restarted automatically.
 
 #### 3. How do you set up Pod Anti-Affinity rules?
 
@@ -436,8 +436,8 @@ volumes:
 
 **Vault injects secrets into pods using sidecar.**
 
--  Vault injects secrets into pods using sidecar.
--  Use annotations:
+- Vault injects secrets into pods using sidecar.
+- Use annotations:
 
 ```
 annotations:
