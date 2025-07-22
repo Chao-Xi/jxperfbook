@@ -79,9 +79,18 @@ I also create multiple tutorial books for my colleague this year mainly about Az
 
 ## Why left the current team
 
+
 1. I working in a global team, this team actually based in LDN. So I have to work with them like meetings, discussion, troubleshootings every day late night. And since I'm only one here in Shanghai. Although I enjoy my work alone with the my current team, while I have thrived in more collaborative environments. from what I have more chance to learn from each other here 
 2. After spend 3 years in this financial industry, I have dicovered my passion in financial tech a lot. And I truly belive that there is much more to explore in this industray rather in daily BAU operational job and want to double down on this descision to pursue it further. So I want have more opprtunity to get touch with new projects 
 3. I always want improve my career into a new level. I think this opportunity at your firm would be more leveled up. and better match what I can bring to the table. I'm looking for new solution architect job
+
+
+#### Pursue New career path 
+
+While I deeply value my DevOps experience. It especially focus on automation, CI/CD, cloud migration, and new service collaboration. But I already work as devops eng over 8 years. I always want improve my career into a new level. I’m pursuing SRE because I’m passionate about quantifiable reliability engineering. 
+
+SRE balances speed with reliability targets (SLIs/SLOs). I thrive on systematically reducing toil, designing resilient systems through error budgets, and treating operations as a software problem. This role can help me specialize in maximizing uptime and user experience through data-driven engineering—which aligns perfectly with my skills in observability and incident management."
+
 
 
 *  In the financial company, I dont see my future here. Cause, comparing to new techs, codes or new solutions, they are more concern about procedures. Every day, I spend more times on writing documents, go-through steps, meeting with compliance team than working on my codes and my operations jobs. And I dont' even have any chance to learn new techs here. Thus I feel like I gonna be wasted in this team for longer time. 
@@ -90,11 +99,61 @@ I also create multiple tutorial books for my colleague this year mainly about Az
 * I really enjoyed our  initial conversation learning from company, although I wasn't actively looking for new change at the time,it really felt like this new role entails exciting challenges that I would like to be a part of. i'm truly intrigued by this career development at your firm and believe that my skill set largely align with what you are looking for 
 
 
-### Ask back
 
-* “SWIFT’s solutions emphasize security and trust. How does the team approach integrating emerging technologies (e.g., cloud-native architectures, AI) 
-* “What learning or development opportunities does SWIFT provide for Solution Architects to stay ahead in areas like cybersecurity, API ecosystems, or fintech trends?
-* “How do customers in this region typically balance adopting new technologies like AI/blockchain with compliance requirements, and how does SWIFT guide them?
+
+
+## Common Questions
+
+### What do you think of overtime work?
+
+I recognize that overtime can be necessary in certain situations, like urgent deadlines, and I'm committed to supporting the team when it truly adds value.
+
+**That said, I believe consistent overtime often indicates inefficiencies**. My focus is on maximizing productivity during core hours through prioritization, streamlined workflows, and clear planning. 
+
+This way, I deliver high-quality results efficiently while maintaining sustainable work rhythms.
+
+### What's your main consideration in your current job hunt?
+
+1. **growth opportunities**- I want work that challenges me just beyond my current skills, pushing me to learn (like taking on cross-functional projects or mastering new tools).
+2. **alignment with the company's mission**-I need to see how my role directly contributes to the bigger picture, so my work feels meaningful, not just task-oriented.
+3. **team culture**-a collaborative, supportive environment **where feedback flows freely and mistakes are seen as learning chances**. These factors help me grow sustainably and stay motivated long-term.
+
+### What's your biggest weakness?
+
+My biggest weakness is the fact that I don't yet have much experience in talking to large groups of people.
+
+This is something I'm very keen to improve on, so if any opportunities were to arise in this position to gain experience in this area, I would certainly want to take advantage of that.
+
+### Do you have any questions for us?
+
+1. What's the first thing you will need me to concentrate on in this role if I am successful?
+
+2. What opportunities are there for professional development and growth in this position?
+
+**3. Can you please tell me more about the team I would be a part of in this role?**
+
+4. What's the culture like within this organization?
+
+5. What are the biggest challenges your company is facing right now, and what could I do to help you overcome them?
+
+6. What would my success in the position look like in 12 months from now?
+
+7. What is it the top-performing employees do in this company to achieve success?
+
+**8. What are the next steps of the selection process, and when can I expect to hear from you?**
+
+### What do you see in Five years
+
+**1. In five years from now, I will hopefully still be working for you, either in this role or perhaps even having gained advancement to a higher level**.
+
+2. In five years, I will have developed into a trusted, loyal, and committed member of the company who can be relied upon to do a great job for you
+
+**3. I feel in five years' time, I will have sufficient experience and expertise to help train up newer members of the organization as and when they join**
+
+
+
+
+
 
 ## Project blocker and resolver
 
@@ -121,6 +180,17 @@ And after setup, I also brought in Loki, Grafana, promtail solution as Log aggre
 1. I consider myself as a good leaner, I’m willing to learn all new stuffs. I learn things efficiently and effectively. You can check my github, I push my tech articles into it almost everyday. And every time when I faced a project, there some techs I never touched before. I don’t just jump into this project, I’m willing to spend 2 or 3 days to explore this tech. **I can always deliver high quality project**
 2. I consider myself more extrovert than introvert, I prefer to work in a team rather than work alone. I’d like share my opinion and listen to others' advices on the job.
 3. Im pretty good at time management, Im never missed deadline. I don’t like procreations, if the jobs or tickets must be done in a sprint, I’d like do it right way, not holding it back to the due day. So I can alway deliver assigned issues on time no holding back at all
+
+### Describe yourself in 3 words.
+
+resilient, knowledgeable, and adaptable.
+
+1. I'm resilient because I never get stressed in difficult situations, and I can easily prioritize tasks regardless of how many I have.
+
+2. I am knowledgeable in this industry because I have applicable academic qualifications, and I also have experience in similar job-related roles.
+
+
+3. Finally, I am adaptable because I am the type of person who will always take on duties outside of my job description, and I will also help out your business at short notice as and when needed. So, for example, if you need me to work extra hours or duties, I will always do that, and I will be prepared to cover the work of co-workers who are ever off work sick.
 
 
 ## 3.What is Devops definition
