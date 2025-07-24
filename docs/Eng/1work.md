@@ -503,3 +503,42 @@ The client meeting has been delayed until 3pm to allow for further preparation �
 We need to reschedule the team meeting to pm to accommodate everyone’s 3 pm to accommodate everyone's availability
 
 我们需要将团队会议时间推迟到下午3点， 以配合所有人的时间安排
+
+
+### “卡住的”  20250724
+
+#### I'm frozen=我卡住了
+
+I'm frozen on my end. Is everything okay on your side? 我这边卡住了。你那边一切正常吗？
+
+I'm frozen and can't respond. Please give me a moment 我卡住了，无法回复。请给我一点时间
+
+My screen is frozen  我的屏幕卡住了
+
+My screen is frozen. Can you hear me? 我的屏幕卡住了。你们还能听到我
+
+
+#### break up 声音断断续续
+
+I'm breaking up 我卡住了
+
+Sorry, I think I'm breaking up. Let me move to a better spot 抱歉，我觉得我的声章断断续续的。 让我换个信号更好的地方
+
+I'm breaking up. Maybe it's the internet connection 我这適的声音断断续续的。可能是网络连接的问题
+
+sorry, you re breaking up. 抱歉，你卡主了， 你能再说一遍吗
+
+#### lag 延迟； 卡顿
+
+Im lagging 我卡住了； 我有延迟
+
+
+Sorry, I'm lagging. Let me try to restart my connection  抱歉，我有点卡。让我试试重启连接
+
+I'm lagging a bit. Give me a moment to catch up 我有点卡。给我一点时间跟上大家
+
+#### bad connection/poor connection 网络不好；卡住
+
+The connection is bad, I can't really hear you 网不好，我听不到你说什么
+
+The connection is poor, I might drop out unexpectedly 网很差，我可能会突然掉线
