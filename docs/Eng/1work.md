@@ -505,7 +505,7 @@ We need to reschedule the team meeting to pm to accommodate everyone’s 3 pm to
 我们需要将团队会议时间推迟到下午3点， 以配合所有人的时间安排
 
 
-### “卡住的”  20250724
+
 
 #### I'm frozen=我卡住了
 
@@ -542,3 +542,33 @@ I'm lagging a bit. Give me a moment to catch up 我有点卡。给我一点时�
 The connection is bad, I can't really hear you 网不好，我听不到你说什么
 
 The connection is poor, I might drop out unexpectedly 网很差，我可能会突然掉线
+
+### 20250725 In due course / By the book / Call the shots / Take it offline
+
+#### In due course 在适当的时候；在合适的时间
+
+All payments will be processed **in due course**, so please be patient 
+
+所有付款都会在适当的时间内处理，请耐心等待
+
+You will receive further details about the project **in due course**
+
+你将在适当的时候收到有关该项目的更多细节
+
+#### By the book 按规矩办事；遵循规定
+
+We need to do this by the book to avoid any legal issues  我们需要严格按照规章制度来做，以避免任何法律闻题
+
+He runs his team by the book, making sure all policies are followed 他严格按照规定管理团队，确保所有政策都被执行
+
+#### Call the shots 做最终决定；做决策
+
+In this project, she is the one calling the shots 在这个项目里，她是做决策的人
+
+If you want more responsibility, you need to show you can call the shots 如果你想承担更多责任，就要展现出你的决策能力
+
+#### Take it offline 私下讨论；线下讨论
+
+This discussion is getting too detailed, let's take it offline 这个讨论太细节了，我们私下再聊
+
+We'll take this issue offline and discuss it after the meeting 我们会在会议后私下讨论这个问题
