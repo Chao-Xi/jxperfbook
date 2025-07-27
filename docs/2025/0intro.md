@@ -57,25 +57,27 @@ And then after one year, I finished my project and made my decision to came back
 
 Our application is build with ruby on rails in Docker, besides writing code and operate our DCs with Chef-solo. My most important project is build our Jam application with Kubernetes on AWS and Azure from scratch and convert part of monolithic services to micro service.
 
-The whole procedures like, containerize our infrastructure components like Elasticsearch, RabbitMQ and Haproxy etc. Set up Kubernetes Cluster on Azure via AKS and on AWS with EKS with Terraform Code. Build out Cloud Infrastructure like CDN, S3(Storage account), RDS MySQL, Aurora, or Azure DBs and VNet with Terraform code.
+The whole procedures like, containerize our infrastructure components like Elasticsearch, RabbitMQ and Haproxy etc. Set up Kubernetes Cluster on Azure via AKS and on AWS with EKS with Terraform Code. Build out Cloud Infrastructure like CDN, S3(Storage account), RDS MySQL with Terraform code.
 
 Use HELM Chart and kustomise, with GitOps way and ArgoCD as CD tool to deploy all  components into Kubernetes Cluster.Use SealedSecret and ArgoCD to encrypt and deploy encrypted secrets
 
 Monitor Cluster with Prometheus Operator, writing or own ServiceMonitor and Metrics / Exporter and AlertManger to help us collect data from a variety of sources and report alert.
 
-Get application logs by EFK. And I also enabled Service Mesh inside the cluster. Install Istio and enable envoy sidecar inject in our main namespace and track the network tracing with Kiali & Jaeger and enable mutual X509 TLS service call from internal and external.
+Get application logs by EFK. And I also enabled Service Mesh inside the cluster. Install Istio and enable envoy sidecar inject in our main namespace and track the network tracing and enable mutual X509 TLS service call from internal and external.
 
 And In UBS Shanghai I worked in AM(Assesst management) team firstly, I mainly work as Cloud archiect, work with Wind infra team and Microsoft team. Design and setup the hybrid cloud infra for the WIND market data service which helps onboard the service on Azure public cloud as upstram data resource and send the data to on-premise downstream AM trading system.  
 
 And after that, I was internal transfered to Global IB research team as Senior Devops Engineer.
 
-Worked with global team to migrate global research analyst platform to China region mainly like, setup on-premise datacenter for different envionments with new designed Gilab-CI as CI pipeline and designed new puppet modules as CD pipeline. To automate all buildout step to avoid any manual jobs
+Worked with global team to migrate global research analyst platform to China region mainly like, setup on-premise datacenter for different envionments with new designed Gilab-CI as CI pipeline and designed new puppet modules as CD pipeline. To automate all buildout steps
 
 And aprart from this project. And now I'm work in gobal team to manage and operate the global systems. Like helped and setup OpenAI service in Azure cloud with terraform code, Azure Devops pipeline to automate the setup process.
 
-Recently I completed one PWM project with Vault, Azure AD and PWM API to help automate password rotation process to replace any manual jobs to rotate account password in yearly basis
+Recently I completed one PWM project with Vault, With Azure AD and PWM API to help automate password rotation process to replace any manual jobs 
 
-And right now I'm working with Micsoft azure team to build out Azure congnitive AI translate service in HCI AKS cluster for Chinese-Eng translate servicefor China analyst
+> to rotate account password in yearly basis
+
+And right now I'm working with Micsoft azure team to build out Azure congnitive AI translate service in HCI AKS cluster for Chinese-Eng translate service for China analyst
 
 Besides these, I passed AWS solutions architect test and azure solution expert test az305 and Certified Istio service mesh and gitlab CICD test, 
 
@@ -86,21 +88,22 @@ I also create multiple tutorial books for my colleague this year mainly about Az
 
 #### Pursue New career path 
 
-I already work as devops eng over 8 years. I always want improve my career into a new level. I’m pursuing SRE because I’m passionate about quantifiable reliability engineering. I deeply value my DevOps experience. It especially focus on automation, CI/CD, cloud migration, and new service collaboration. But
+I already work as devops eng over 8 years. I always want improve my career into a new level. I’m pursuing SRE because I’m passionate about reliability engineering. I deeply value my DevOps experience. It especially focus on automation, CI/CD, cloud migration, and new service collaboration. But SRE balances speed with reliability targets (SLIs/SLOs). I’d like to working on designing resilient systems to reducing error budgets, improve service performance, site reability and treating operations as a software problem. 
 
-SRE balances speed with reliability targets (SLIs/SLOs). I thrive on systematically reducing toil, designing resilient systems through error budgets, and treating operations as a software problem. This role can help me specialize in maximizing uptime and user experience through data-driven engineering—which aligns perfectly with my skills in observability and incident management."
-
-
-Still is I can say our research application is quite heavy service and old setup and the core service is using vendor service. Thus the service is still setting on on-premise data centers. So most of tech stacks are using traditional setup not container. Exp, in next on year, our most critical project is migrating services from redhat 7 to redhat 8 for all regions.   
+This role can help me specialize in maximizing uptime and user experience through data-driven engineering—which aligns perfectly with my skills in observability and incident management."
 
 
-I working in a global team, this team actually based in LDN. So I have to work with them like meetings, discussion, troubleshootings every day late night. And since I'm only one here in Shanghai. Although I enjoy my work alone with the my current team, while I have thrived in more collaborative environments. from what I have more chance to learn from each other here
+Still is I can say our research application is quite heavy service and old setup and the core service is using vendor service. Thus the service is still setting on on-premise data centers. So most of tech stacks are using traditional setup not container. Exp, in next couple years, our most critical project is migrating services from redhat 7 to redhat 8 for all regions. So I hope I can find any opportunity to work on some projects with trendy tech stacks like containerlization, cloud, service mesh etc
+
+
+I working in a global team, this team actually based in LDN.. And since I'm only one here in Shanghai. Although I enjoy my work alone with the my current team, while I have thrived in more collaborative environments. from what I have more chance to learn from each other here
+
+> So I have to work with them like meetings, discussion, troubleshootings every day late night
 
 
 
-
-3. After spend 3 years in this financial industry, I have dicovered my passion in financial tech a lot. And I truly belive that there is much more to explore in this industray rather in daily BAU operational job and want to double down on this descision to pursue it further. So I want have more opprtunity to get touch with new projects 
-4. I always want improve my career into a new level. I think this opportunity at your firm would be more leveled up. and better match what I can bring to the table. I'm looking for new solution architect job
+1. After spend 3 years in this financial industry, I have dicovered my passion in financial tech a lot. And I truly belive that there is much more to explore in this industray rather in daily BAU operational job and want to double down on this descision to pursue it further. So I want have more opprtunity to get touch with new projects 
+2. I always want improve my career into a new level. I think this opportunity at your firm would be more leveled up. and better match what I can bring to the table. I'm looking for new solution architect job
 
 
 
