@@ -51,7 +51,7 @@ After I graduated, I took a job in startup company named Wrevel in New York city
 
 And then after one year, I finished my project and made my decision to came back to Shanghai and working as DevOps engineer in Blackboard. The Blackboard is a company which provides online teaching and learning SAAS system for universities and companies
 
-**My projects mainly include migrating the old CI/CD tool jenkins servers and jobs from on-premsie servers lab to AWS cloud** including AWS infrastructure and jenkins servers build with AWS Cloudformation and ansible playbook. Move jenkins master from servers to Docker, design and built new pipeline jobs to replace old multi-branch and free-style jobs, convert all old and manually created jenkins jobs to groovy and script code.
+**My projects mainly include migrating the old CI/CD tool jenkins servers and jobs from on-premsie servers lab to AWS cloud** including AWS infrastructure and jenkins servers build with AWS Cloudformation and ansible playbook. Move jenkins master from servers to Docker, convert all old and manually created jenkins jobs to groovy and script code.
 
 **After that I landed my new opportunity in SAP Jam and Workzone team and working as Senior DevOps engineer.**
 
@@ -88,15 +88,13 @@ I also create multiple tutorial books for my colleague this year mainly about Az
 
 #### Pursue New career path 
 
-I already work as devops eng over 8 years. I always want improve my career into a new level. I’m pursuing SRE because I’m passionate about reliability engineering. I deeply value my DevOps experience. It especially focus on automation, CI/CD, cloud migration, and new service collaboration. But SRE balances speed with reliability targets (SLIs/SLOs). I’d like to working on designing resilient systems to reducing error budgets, improve service performance, site reability and treating operations as a software problem. 
-
-This role can help me specialize in maximizing uptime and user experience through data-driven engineering—which aligns perfectly with my skills in observability and incident management."
+First I already work as devops eng over 8 years. I always want improve my career into a new level. I’m pursuing SRE because I’m passionate about reliability engineering. I deeply value my DevOps experience. It especially focus on automation, CI/CD, cloud migration, and new service collaboration. But SRE balances speed with reliability targets (SLIs/SLOs). I’d like to working on designing resilient systems to reducing error budgets, improve service performance, site reability and treating operations as a software problem. 
 
 
-Still is I can say our research application is quite heavy service and old setup and the core service is using vendor service. Thus the service is still setting on on-premise data centers. So most of tech stacks are using traditional setup not container. Exp, in next couple years, our most critical project is migrating services from redhat 7 to redhat 8 for all regions. So I hope I can find any opportunity to work on some projects with trendy tech stacks like containerlization, cloud, service mesh etc
+Second Still is I can say our research application is quite heavy service and old setup and the core service is using vendor service. Thus the service is still setting on on-premise data centers. So most of tech stacks are using traditional setup not container. Exp, in next couple years, our most critical project is migrating services from redhat 7 to redhat 8 for all regions. So I hope I can find any opportunity to work on some projects with trendy tech stacks like containerlization, cloud, service mesh etc
 
 
-I working in a global team, this team actually based in LDN.. And since I'm only one here in Shanghai. Although I enjoy my work alone with the my current team, while I have thrived in more collaborative environments. from what I have more chance to learn from each other here
+Thrid I working in a global team, this team actually based in LDN.. And since I'm only one here in Shanghai. Although I enjoy my work alone with the my current team, while I'd like to work in more collaborative environments. from what I have more chance to learn from each other here
 
 > So I have to work with them like meetings, discussion, troubleshootings every day late night
 
