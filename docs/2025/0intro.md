@@ -65,7 +65,7 @@ Monitor Cluster with Prometheus Operator, writing or own ServiceMonitor and Metr
 
 Get application logs by EFK. And I also enabled Service Mesh inside the cluster. Install Istio and enable envoy sidecar inject in our main namespace and track the network tracing and enable mutual X509 TLS service call from internal and external.
 
-And then I came to UBS. In UBS Shanghai I worked in AM(Assesst management) team firstly, I mainly work as Cloud archiect, work with Wind infra team and Microsoft team. Design and setup the hybrid cloud infra for the WIND market data service which helps onboard the service on Azure public cloud as upstram data resource and send the data to on-premise downstream AM trading system.  
+And then I came to UBS. In UBS Shanghai I worked in china AM(Assesst management) team firstly, I mainly work as Cloud archiect, work with Wind infra team and Microsoft team. Design and setup the hybrid cloud infra for the WIND market data service which helps onboard the service on Azure public cloud as upstram data resource and send the data to on-premise downstream AM trading system.  
 
 And after that, I was internal transfered to Global IB research team as Senior Devops Engineer.
 
