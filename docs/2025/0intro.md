@@ -88,7 +88,7 @@ I also create multiple tutorial books for my colleague this year mainly about Az
 
 #### Pursue New career path 
 
-First I already work as devops eng over 8 years. I always want improve my career into a new level. I’m pursuing SRE because I’m passionate about reliability engineering. I deeply value my DevOps experience. It especially focus on automation, CI/CD, cloud migration, and new service collaboration. But SRE balances speed with reliability targets (SLIs/SLOs). I’d like to working on designing resilient systems to reducing error budgets, improve service performance, site reability and treating operations as a software problem. 
+First I already work as devops eng over 8 years. I always want improve my career into a new level. I’m pursuing SRE because I’m quite interesting about reliability engineering. I deeply value my DevOps experience. It especially focus on automation, CI/CD, cloud migration, and new service collaboration. But SRE balances speed with reliability targets (SLIs/SLOs). I’d like to working on designing resilient systems to reducing error budgets, improve service performance, site reability and treating operations as a software problem. 
 
 
 Second Still is I can say our research application is quite heavy service and old setup and the core service is using vendor service. Thus the service is still setting on on-premise data centers. So most of tech stacks are using traditional setup not container. Exp, in next couple years, our most critical project is migrating services from redhat 7 to redhat 8 for all regions. So I hope I can find any opportunity to work on some projects with trendy tech stacks like containerlization, cloud, service mesh etc

@@ -572,3 +572,29 @@ If you want more responsibility, you need to show you can call the shots 如果�
 This discussion is getting too detailed, let's take it offline 这个讨论太细节了，我们私下再聊
 
 We'll take this issue offline and discuss it after the meeting 我们会在会议后私下讨论这个问题
+
+
+###  20250726 我能插句话吗
+
+**Can I jump in for a second?  我能插句话吗？**
+
+Can I jump in for a second? I just want to clarity one point about the timeline 
+
+我能插句话吗？我只是说清时间安排的问题
+
+Can I jump in for a second? I have some relevant data that might help 我能插一句吗？我有一些相关数据可能会有帮助
+
+
+**Can I add something here? 我能补充一句吗？**
+
+Can I add something here? I think we might be overlooking a key risk 我能补充一句吗？我觉得我们可能忽略了一个关键风险点
+
+Can I add something here? We also need to consider the client's timeline 我可以补充一点吗？我们也需要考虑客户的时间安排
+
+
+**May I chime in? 我可以插句话吗？**
+
+
+May I chime in? l've handled a similar case before 我可以插一句吗？我以前处理过类似的情况
+
+May I chime in? I have a suggestion that could streamline the process 我可以插句话吗？我有一个建议可能可以简化这个流程
