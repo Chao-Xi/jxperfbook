@@ -621,3 +621,29 @@ Our marketing materials are designed to **attract prospective investors** 我们
 - perspective n. 看事情的角度/观点/看法
 
 - prospective adj. 未来的/ 潜在的
+
+###  20250805 compliment / complement / perspective
+
+#### compliment 名词/动词 
+
+**n.赞美，称赞 v.赞美/称赞 某人或某事物**
+
+She blushed when he gave her a genuine compliment 当他直诚地夸她时，她脸都红了
+
+The manager complimented the whole team for meeting the tight deadline 经理表扬了整个团队如期完成紧急住务
+
+I just wanted to compliment you on your outfit, it looks great! 我就是想夸一下你今关的穿搭，真的很好看
+
+#### complement 名词/动词
+
+n.补充；搭配； 互补
+
+v.与…搭配 与….互补
+
+His calm nature is the perfect **complement to her high energy** 他冷静的性格与她充沛的活力形成了完美原补
+
+This dish is the perfect complement to the red wine 这道菜是红酒的完美搭配
+
+Your strengths complement mine, that's why we work so well together 你的长处正好和我互补，所以我们配合得很默契
+
+Their personalities complement each other, she's outgoing, he's shy 他们的性格互补。她外向，他害羞
