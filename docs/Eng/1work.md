@@ -598,3 +598,26 @@ Can I add something here? We also need to consider the client's timeline 我可�
 May I chime in? l've handled a similar case before 我可以插一句吗？我以前处理过类似的情况
 
 May I chime in? I have a suggestion that could streamline the process 我可以插句话吗？我有一个建议可能可以简化这个流程
+
+
+###  20250804 我能插句话吗
+
+#### 1 perspective 看事情的角度/ 观点/看法
+
+We need to consider the user’s perspective when designing this feature  我们在设计这个功能时要考虑用户的视角
+
+Her international background brings a valuable perspective to our team 她的国际背景为我们的团队带来了宝贵的初角
+
+From a financial perspective this project carries too much risk 从财务角度来看，这个项目风险太高
+
+#### 2 prospective 未来的；潜在的；有可能成为的
+
+We're meeting a **prospective client** this afternoon 我们下午要见一个潜在客户
+
+The team is making a list of **prospective suppliers** for next quarter 团队正在做一份下季度可能合作的供应商名
+
+Our marketing materials are designed to **attract prospective investors** 我们的营销资料旨布队引潜在投资
+
+- perspective n. 看事情的角度/观点/看法
+
+- prospective adj. 未来的/ 潜在的
