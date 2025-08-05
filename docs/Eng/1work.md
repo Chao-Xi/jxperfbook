@@ -622,7 +622,7 @@ Our marketing materials are designed to **attract prospective investors** 我们
 
 - prospective adj. 未来的/ 潜在的
 
-###  20250805 compliment / complement / perspective
+###  20250805 compliment / complement 
 
 #### compliment 名词/动词 
 
@@ -647,3 +647,17 @@ This dish is the perfect complement to the red wine 这道菜是红酒的完美�
 Your strengths complement mine, that's why we work so well together 你的长处正好和我互补，所以我们配合得很默契
 
 Their personalities complement each other, she's outgoing, he's shy 他们的性格互补。她外向，他害羞
+
+###  20250805 If it weren't for...要不是因为
+
+**If it weren't for...要不是因为…..  因为这个人/这个原因，事情就不会变成这样**
+
+**在说一个“假设”，用虚拟语气**
+
+If it weren't for your support, we couldn't have closed the deal  如果不是你的支持，我们无法拿下这个订单
+
+If it weren't for Sarah's quick thinking, the whole project might have failed 要不是Sarah 反应快，这个项目可能就失败了
+
+If it weren't for my morning coffee, I wouldn't survive Mondays 耍不是早上的咖啡，我根本熬不过星期一
+
+If it weren't for my cat, my furniture would still be in good shape 要不是我家猫，我的家具现在还完好无损呢
