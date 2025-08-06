@@ -661,3 +661,35 @@ If it weren't for Sarah's quick thinking, the whole project might have failed �
 If it weren't for my morning coffee, I wouldn't survive Mondays 耍不是早上的咖啡，我根本熬不过星期一
 
 If it weren't for my cat, my furniture would still be in good shape 要不是我家猫，我的家具现在还完好无损呢
+
+###  20250806 敷衍
+
+#### brush off sb 敷衍
+
+He **brushed off the client's concerns**, saying everything was under control
+
+他敷衍了客户的担忧，说一切都在掌控之中
+
+I felt frustrated because my ideas were **constantly brushed off** in the meeting
+
+我感到沮丧，因为我的想法在会议上总是被敷衍对待
+
+#### Go through the motions 走过场；敷衍了事
+
+If you just go through the motions in customer service, clients will notice and lose trust
+
+如果你在客户服务中只是敷衍应付，客户会察觉并失去信任
+
+We **can't afford to go through the motions on this project**, **every detail matters**
+
+这个项目不能敷衍了事，每个细节都很重要
+
+#### Do the bare minimum 只做最低限度的事情；敷衍了事
+
+If you **just do the bare minimum,** don't expect to get promoted
+
+如果你只是敷衍了事，别指望能升职
+
+**The intern did the bare minimum on the report,** so I had to rewrite most of it
+
+实习生在报告上只是敷衍了事，所以我不得不重写大部分内容
