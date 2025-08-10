@@ -296,3 +296,93 @@ The correct answer is:
 **✅ 3 — to the owner of service**
 
 Cloud services are typically charged **to the service owner** who is responsible for managing costs, budgeting, and optimizing usage.
+
+1. If you are tasked as a Site Reliability Engineer to take on-call responsibilities, what activities would you do to optimize on-call processes?  
+
+**Add automation and context to alerts for more collaborative response from on-call responders**.  
+
+3. You have set up an alert that notifies the on-call SRE whenever the Heap utilization of a Java application rises above 85%. Over time, your team suffers from alert fatigue due to false positives. What changes would you make to stop the alert fatigue?
+
+Modify the alert to be based on the end-user experience such as degraded response time.
+
+2. What is an example of an incorrect alert setup that can result in alert fatigue?
+
+Configuring alerts that are not actionable or have narrow reset periods.
+
+4. The SLO (Service Level Objective) of an application you support is a 99.9% success rate over the past 30 days. In alignment with the SLO, you have defined an alert to trigger whenever the error rate exceeds 0.1%. Your alert window is 10 minutes. What can you say about the precision of this alert?
+
+The precision is low because the alert window is narrow.
+
+5. What is a service level objective (SLO)?  
+
+Service level objectives (SLOs) are an agreed target within a service level agreement that must be achieved for each activity to provide the best chance to achieve customer success.
+
+6. In the context of Site Reliability Engineering (SRE), what strategy can be used to reduce toil associated with equipment procurement where users submit requests through an online form?
+
+Providing self-service methods for users.
+
+7. What is an inherent problem with distributed systems?
+
+Nodes in a distributed system can randomly fail.
+
+8. The SLO (Service Level Objective) for an application you support is a 99.9% success rate in 30 days. Upon setting up an alert based on burn rate, you notice that the burn rate at times hits 1000; you also notice that this application receives only a small number of requests per hour, around 10. Given these facts, what would you do to fix the issue?
+
+Low-traffic applications can consume the error budget faster than high-traffic applications. Add synthetic traffic to compensate.
+
+9. What steps would you take to implement the standard plans to establish "psychological safety" within the Site Reliability Engineering (SRE) team, specifically by making explicit expectations?
+
+Start with a service level objective (SLO) to make expectations clear. You can ask for collective commitments to avoid assuming everyone agrees on urgency. 
+
+10. What is true of service level objectives (SLOs) in terms of achievability and its relation to the Site Reliability Engineering (SRE) team?  
+
+SLOs should be high enough to satisfy consumers but low enough for SRE to meet. System improvements can alter the SLO. SLOs should also reflect SRE team technology.
+
+11. What is the main key aspect of implementing Site Reliability Engineering (SRE) within an organization?
+
+Collaborate closely with developers to troubleshoot and resolve issues effectively when alerts are triggered.
+
+12. As part of the Site Reliability Engineering (SRE) team, what activities or methods would you use to effectively measure the set Service Level Objectives (SLOs)?
+
+Integrate SLOs into a unified monitoring platform that consolidates performance data and user experience metrics. Regularly evaluate the SLOs using a data-driven approach, and ensure that there is clear ownership and accountability for monitoring and reporting.
+
+13. What is an example of a service level indicator (SLI) for cloud-based software services?
+
+Availability rate
+
+
+14. In a multisite configuration (engineers located in multiple sites), what is the minimum recommended team size per site for on-call?
+
+Six
+
+15. Which work scenario is an example of a toil task that can be done by a Site Reliability Engineering (SRE) team?
+
+Reviewing non-critical monitoring alerts.
+
+16. As part of the Site Reliability Engineering (SRE) team of the organization, you have observed that your team is handling several production systems at a large scale. What would you do to help increase operational excellence in the organization?   
+
+You can take advantage of software engineering practices as they can be applied to your organization’s IT operations. 
+
+17. How will you use the SLO (Service Level Objective) of an application to eliminate toil?
+
+Decide if a toil can be rejected when the impact is kept within the SLO.
+
+18. You are working on creating a monitoring dashboard for an application. The audience for this dashboard is the SRE team and the senior leadership. What is an effective way to present information for both audiences?
+
+Create two different dashboards, one meant for SREs and the other for senior leadership with relevant graphs.
+
+19. As a Site Reliability Engineer, you configure the monitoring for an application to catch issues as soon as possible. The application generates large amounts of raw logs (multiple gigabytes per hour). How will you design your monitoring to see the problems without having to parse all the logs?
+
+Create alerts using metrics from your application.
+
+20. What is an example of progressive rollout?
+
+Rollout changes on one geographic region at a time.
+
+21. What is psychological safety in the context of Site Reliability Engineering (SRE)?  
+
+The shared belief held by the SRE team members that others on the team will not embarrass, reject, or punish any members for speaking up.  
+
+22. Your organization is considering implementing Site Reliability Engineering (SRE) to manage operational tasks and improve existing systems. You were tasked with convincing the management team to adopt SRE. What argument would most effectively support this recommendation?
+
+
+Implementing SRE will decrease the mean time to repair (MTTR) and increase the mean time between failures (MTBF), improving system reliability and allowing faster updates.
