@@ -182,6 +182,7 @@ nav:
     - '1 Linux Fundamentals': '2025/sreln/2Linux_test.md'
     - '1 Using Kubernetes as a Developer': '2025/sreln/1k8s_dev.md'
     - '3 Script Learning': '2025/sreln/3code.md'
+    - '4 SRE Test': : '2025/sreln/3code.md'
   - '英语学习':
     - '1 职场英语': 'Eng/1work.md'
 
