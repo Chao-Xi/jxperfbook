@@ -1,0 +1,5287 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Jacob's 系统性能&Linux调优技术与实战教程">
+      
+      
+        <meta name="author" content="Jacob Xi">
+      
+      
+        <link rel="canonical" href="https://chao-xi.github.io/jxperfbook/2025/8sap/">
+      
+      
+        <link rel="prev" href="../7cri/">
+      
+      
+        <link rel="next" href="../9db_interview/">
+      
+      
+      <link rel="icon" href="../../images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>8 SAP面试 - Jacob Performance&Linux Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="light-green" data-md-color-accent="light-green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-configmap-reloader" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="Jacob Performance&amp;Linux Book" class="md-header__button md-logo" aria-label="Jacob Performance&Linux Book" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Jacob Performance&Linux Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              8 SAP面试
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Chao-Xi/jxperfbook.git" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jxperfbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Jacob Performance&amp;Linux Book" class="md-nav__button md-logo" aria-label="Jacob Performance&Linux Book" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    Jacob Performance&Linux Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Chao-Xi/jxperfbook.git" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jxperfbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Welcome
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    系统基础设施优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            系统基础设施优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/1CPU_Cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 代码让CPU执行得更快 — CPU缓存
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/2Mem_Pool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 内存池提升内存分配的效率
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/3Hash_index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 哈希表利用索引管理亿级对象
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/4PageCache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 磁盘高效地传输文件零拷贝：PageCache
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/5Coroutine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 协程快速地实现高并发服务：Coroutine
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/6Locks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 据业务场景选择合适的锁
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    系统层网络优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            系统层网络优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/1broadcast_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 一对多通讯如何实现
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/2C10M/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 C10M是如何实现事件驱动
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/3tcp3shakehand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 提升TCP三次握手的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/4tcpshutdown/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 提升TCP四次挥手的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/5tcpchachepool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 TCP缓冲区兼顾并发数量与传输速度
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/6tcpcongestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 调整TCP拥塞控制的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    分布式系统优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            分布式系统优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/1Mon_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 通过监控找到性能瓶颈
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/2perf_cap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 舍弃一致性去换取性能的CAP理论
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/3perf_akf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 AKF立方体可扩展性来提高性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/4perf_nwr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 NWR算法修改读写模型以提升性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/5nginx_openresty/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 负载均衡：选择Nginx还是OpenResty
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/6hash_consistent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 一致性哈希的均衡负载
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/7cache_expire/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第七节 过期缓存防止缓存被流量打穿
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/8message_queue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第八节 消息队列基于异步消息提升性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/9map_reduce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第九节 MapReduce通过集群实现离线计算
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/10DB_choice/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第十节 权衡关系数据库与NoSQL数据库
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    IT运维面试问题总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            IT运维面试问题总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/1Linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 IT运维面试问题总结- Linux基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/2Linux_SVC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 IT运维面试问题总结-基础服务、磁盘管理、虚拟平台和系统管理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/3Linux_tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 IT运维面试问题总结-运维工具、开源应用(Ceph、Docker、Apache、Nginx等)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/4Linux_db_dia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 IT运维面试问题总结-数据库、监控、网络管理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/5k8s_OpenShift/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 IT运维面试问题总结-简述Etcd、Kubernetes、Lvs、HAProxy等
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/6Py_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 Python面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/7Pro_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第七节 prometheus：要点总结及面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/8Data_ana_interview1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L8 Data Analyst Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/8Data_ana_interview2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第八节 分析岗笔试/面试知识点
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/9Data_ML_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L9 Top 50 Machine Learning Interview Questions & Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/10Deep_learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L10 30 Frequently asked Deep Learning Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/11Redis_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L11 Redis 核心技术考题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/12ES_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L12 ES 期末考试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/13istio_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L13 Istio面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/14sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L14 SRE本质就是一个懂运维的资深开发
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/15prometheus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L15 Top Prometheus Interview Questions and Answers (2022)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/16jenkins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L16 Top Jenkins Interview Questions and Answers (2022)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/17devops_int2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L17 DevOps Engineer: 30+ Interview Questions and Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/18helm2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L18 Helm指南：Kubernetes包管理器简介
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Python 面试题与总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Python 面试题与总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/1Apple_3sum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1、Apple Interview(3Sum)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/2Python_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2、Python Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/3GS_longest_substr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3、Longest substring
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/4GS_remove_sort_list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4、Remove duplicate in Sort List
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/5Sort_list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5、Reverse Sort List
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/6RM_dup_dict/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6、Remove duplicate from dictionary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/7Find_max/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7、Find Maxmium number count in list and nth number
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/8gs_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8、GS Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/9Substring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9、Find substring inside String
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/10reverse_string/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10、Reverse String
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/11zeroinN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11、Count how many zero in N!
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/12JumpGame/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12、Jump Game
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/13Gs_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13、GS interview preparation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux 面试题与总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Linux 面试题与总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/1Linux_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L1 1min 内对 Linux 进行性能诊断
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/2Linux_load_avg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L2 当面试官问你load average时，怎么回答？
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/3Linux_inode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L3 文件系统inode
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/4Linux_ops_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L4 运维必须掌握的Linux面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/5Linux_network_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L5 常见网络编程面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/6Git_principle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L6 Git 实用技巧记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/7LoadBalancer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L7 深入浅出负载均衡
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/8Linux_all/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L8 Linux 面试题 合集CDN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/9Linux_five/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L9 Linux面试最高频的5个基本问题（CPU+COMMMAND)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/10haproxy_learn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L10 HAProxy从零开始到掌握
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/12Linux_vir_file/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L12 从 lsof 开始，深入理解 Linux 虚拟文件系统
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/linux_rew/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux review
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/13Linux_ts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L13 Linux故障排查思路及常用命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/14Linux_iptables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L14 Linux iptables命令详解
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/15linux_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L15 Linux网络基础与性能优化
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Companies Interview
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Companies Interview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/1Ms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Microsoft Interview2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/2Ms_al/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Microsoft Interview Algorithm 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/3ubs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 UBS interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/4MorganS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Morgan Stanly 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/5apple/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Apple 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/6aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 AWS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/7tesla/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Tesla
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/my/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    My Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/int_anws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    架构师面试合集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux 常用命令
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Linux 常用命令
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/0shell_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Shell命令行一些快捷键组合
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/0shell_linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Linux常用命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/16linux_ops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Linux 实用运维命令 - Update
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/1shell_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Shell 分析服务器日志命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/1log_man/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Log: 用 awk + grep + sed搞定日志处理神器组合拳
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/2linux_locate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Linux 系统下查找文件命令总结
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/3devops_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Basic Shell Scripting for Devops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/4Basic_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 基本 shell 脚本 系统+文件+卷+时间
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/5install_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Shell Package 安装+配置脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/6mon_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 监控 Shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/7net_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 网络+数据库 Shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/8secret_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8 Secret shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/9script_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9 Linux script 录播
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/10linux_unlink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10 使用 unlink 删除文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/11linux_ip_port/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11 如何在 Linux 下限制端口仅对指定 IP 开放访问
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/12socat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12 Linux 命令 socat
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/14linux_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14 Linux shell 脚本详解学习 2023
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/15grep_learn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15 使用grep分析日志
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/17file_opt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16 Linux File Operation (df/du/rsync/批量删除/定时备份)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/18linux_var/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17 Shell script中的8个常用的特殊变量
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/19curl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18 Curl的10个高级用法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/20shell_dir/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19 Shell脚本执行不再受限，不进入所在目录也能成功运行
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/21shell_eva/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20 Bash脚本多函数使用eval提高脚本编写效率！
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/22find/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21 使用find命令轻松查找文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/22find/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21 使用find命令轻松查找文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/24xargs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23 xargs命令的使用技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/25shell_script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24 快速提升Shell脚本能力
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/26linux_zombie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25 如何清理 Linux 僵尸进程？
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/27Inode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26 Linux inode 介绍与清理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/28vim/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27 Vim 技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/29awk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    28 Linux AWK 文本处理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/30nohup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    29 nohup命令：在Linux中轻松实现后台运行和守护进程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/31ln/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    30 文件系统中的“分身术”ln命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/32Linux_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    31 Linux 系统日志之深入解析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/33bash/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    32 Linux 中 `.bashrc`、`.bash-profile` 和 `.profile` 之间的区别
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/34linux_6logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    33 6大Linux命令线上日志排查
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/35port_detect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    34 未安装telnet 和 nc 等工具，如何测试端口是否开放
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/36dudf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    35 df命令显示磁盘空间不足而du命令显示还有很多空闲空间
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/37linux_cond/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    36 Shell脚本的流程控制知识点汇总(2024)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Bash Programming 技巧
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Bash Programming 技巧
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/1bash_prom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 简洁的 Bash Programming 技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/2bash_skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 简洁的 Bash Programming 技巧续篇
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/3bash_skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Bash Pitfalls: 编程易犯的错误（一）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/4bash_python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 在Python中执行Linux Shell脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    AutoSys
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            AutoSys
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/1autosys_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 AutoSys: A Beginner’s Guide AutoSys Workload Automation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/1Autosys_tot1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Autosys Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/2Autosys_jil/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Autosys JIL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/3Autosys_comp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Autosys Components, Configuration & Validation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/4Autosys_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Austosys command
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/5Autosys_job_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Manage Job in the Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/6autosys_vir_resouce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Autotsys virtual resource management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/7autosys_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Shell Script to check Autosys agent installed
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    2025 - 面试准备
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            2025 - 面试准备
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025-Intro
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 CI/CD 之路-GitOps 面试题合集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Docker面试10大必考题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Kubernetes 面试题精解：从入门到进阶(2025)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4Linux_tb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Linux 系统故障时
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 AWS 面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6monitor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 监控生态面试通关秘籍
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7cri/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 从容器到调度：准备好这些 CRI 面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    8 SAP面试
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    8 SAP面试
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-configmap-reloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Configmap reloader
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Configmap reloader">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      解决方案
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      自动更新
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      制定更新
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cm" class="md-nav__link">
+    <span class="md-ellipsis">
+      指定cm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kubernetes热更新
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-subpath-vs-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Subpath vs Path
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Subpath vs Path">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#subpath" class="md-nav__link">
+    <span class="md-ellipsis">
+      Subpath
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-configmap-change-at-the-same-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Configmap change at the same time
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1-concurrent-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 Concurrent Updates:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-conflict-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 Conflict Resolution:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-example-of-a-conflict" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 Example of a Conflict:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-how-to-handle-concurrent-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 How to Handle Concurrent Updates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#impact-on-pods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Impact on Pods
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../9db_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9 数据库面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10prometheus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10 Prometheus面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11istio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11 深度剖析 Istio (2025)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12 Python Interview - Full
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            SRE
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15Apple_SRE_prp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025 Apple SRE PRP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1SRE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 SRE Interview Questions and Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13tiktok/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 2025 最新字节跳动运维云原生面经分享
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2Ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Ansible Interview Question
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 250 Linux Scenario Based Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3kubernetes_sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Kubernetes SRE part1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3kubernetes_sre2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Kubernetes SRE part2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Git Scenario-Based Questions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            SRE
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/0interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 SRE 面试2025
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/1linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 SRE Linux All2025
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/2ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Ansible 从入门到放弃
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15Apple_SRE_prp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025 Apple SRE PRP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/3git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 GIT CE TEST
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE_Linux
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            SRE_Linux
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/2Linux_test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Linux Fundamentals
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/1k8s_dev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Using Kubernetes as a Developer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/3code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Script Learning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/4sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 SRE Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/5agile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Agile Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/6cloud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Cloud Native Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    英语学习
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16">
+            <span class="md-nav__icon md-icon"></span>
+            英语学习
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Eng/1work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 职场英语
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-configmap-reloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Configmap reloader
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Configmap reloader">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      解决方案
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      自动更新
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      制定更新
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cm" class="md-nav__link">
+    <span class="md-ellipsis">
+      指定cm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kubernetes热更新
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-subpath-vs-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Subpath vs Path
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Subpath vs Path">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#subpath" class="md-nav__link">
+    <span class="md-ellipsis">
+      Subpath
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-configmap-change-at-the-same-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Configmap change at the same time
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1-concurrent-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 Concurrent Updates:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-conflict-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 Conflict Resolution:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-example-of-a-conflict" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 Example of a Conflict:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-how-to-handle-concurrent-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 How to Handle Concurrent Updates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#impact-on-pods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Impact on Pods
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+  <h1>8 SAP面试</h1>
+
+<h2 id="1-configmap-reloader">1. Configmap reloader</h2>
+<p>Configmap或Secret使用有两种方式，</p>
+<ul>
+<li><strong>一种是<code>env</code>系统变量赋值，一种是<code>volume</code>挂载赋值</strong></li>
+<li>
+<p><strong><code>env</code>写入系统的<code>configmap</code>是不会热更新的，而<code>volume</code>写入的方式支持热更新</strong>！</p>
+</li>
+<li>
+<p><strong>对于env环境的，必须要滚动更新pod才能生效，也就是删除老的pod，重新使用镜像拉起新pod加载环境变量才能生效。</strong></p>
+</li>
+<li>对于volume的方式，虽然内容变了，但是需要我们的应用直接监控configmap的变动，或者一直去更新环境变量才能在这种情况下达到热更新的目的。</li>
+</ul>
+<p><strong>应用不支持热更新，可以在业务容器中启动一个sidercar容器，监控configmap的变动，更新配置文件，或者也滚动更新pod达到更新配置的效果。</strong></p>
+<h3 id="_1">解决方案</h3>
+<p>ConfigMap 和 Secret 是 Kubernetes 常用的保存配置数据的对象，你可以根据需要选择合适的对象存储数据。通过 Volume 方式挂载到 Pod 内的，kubelet 都会定期进行更新。但是通过环境变量注入到容器中，这样无法感知到 ConfigMap 或 Secret 的内容更新。</p>
+<p>目前如何让 Pod 内的业务感知到 ConfigMap 或 Secret 的变化，还是一个待解决的问题。但是我们还是有一些 Workaround 的。</p>
+<p><strong>如果业务自身支持 reload 配置的话，比如nginx -s reload，可以通过 inotify 感知到文件更新，或者直接定期进行 reload（这里可以配合我们的 readinessProbe 一起使用）。</strong></p>
+<p>Configmap或Secret使用有两种方式，一种是<code>env</code>系统变量赋值，一种是<code>volume</code>挂载赋值，<code>env</code>写入系统的<code>configmap</code>是不会热更新的，而<code>volume</code>写入的方式支持热更新！</p>
+<h3 id="_2"><strong>自动更新</strong></h3>
+<p><code>reloader.stakater.com/search</code> 和 <code>reloader.stakater.com/auto</code>并不在一起工作。</p>
+<p>如果你在你的部署上有一个 <code>reloader.stakater.com/auto : "true"</code>的注释，该资源对象引用的所有configmap或这secret的改变都会重启该资源，<strong>不管他们是否有 <code>reloader.stakater.com/match : "true"</code>的注释</strong>。</p>
+<pre><code>kind: Deployment
+metadata:
+  annotations:
+    reloader.stakater.com/auto: &quot;true&quot;
+spec:
+  template: metadata:
+</code></pre>
+<h3 id="_3"><strong>制定更新</strong></h3>
+<p>指定一个特定的configmap或者secret，只有在我们指定的配置图或秘密被改变时才会触发滚动升级，这样，它不会触发滚动升级所有配置图或秘密在部署，后台登录或状态设置中使用。</p>
+<p>一个制定<code>deployment</code>资源对象，在引用的<code>configmap</code>或者<code>secret</code>种，<strong>只有<code>reloader.stakater.com/match: "true"</code>为<code>true</code>才会出发更新，为<code>false</code>或者不进行标记，该资源对象都不会监视配置的变化而重启。</strong></p>
+<pre><code>kind: Deployment
+metadata:
+  annotations:
+    reloader.stakater.com/search: &quot;true&quot;
+spec:
+  template:
+</code></pre>
+<h3 id="cm"><strong>指定cm</strong></h3>
+<p><strong>例如：一个deploy有挂载<code>nginx-cm1</code>和<code>nginx-cm2</code>两个<code>configmap</code>，只想<code>nginx-cm1</code>更新的时候deploy才发生滚动更新，此时无需在两个cm中配置注解，只需要在deploy中写入<code>configmap.reloader.stakater.com/reload:nginx-cm1</code>，</strong>其中<code>nginx-cm1</code>如果发生更新，<code>deploy</code>就会触发滚动更新。</p>
+<p>如果多个cm直接用逗号隔开</p>
+<pre><code># configmap对象
+kind: Deployment
+metadata:
+  annotations:
+    configmap.reloader.stakater.com/reload: &quot;nginx-cm1&quot;
+spec:
+  template: metadata:
+</code></pre>
+<pre><code># secret对象
+kind: Deployment
+metadata:
+  annotations:
+    secret.reloader.stakater.com/reload: &quot;foo-secret&quot;
+spec:
+  template: metadata:
+</code></pre>
+<blockquote>
+<p>为了降低 <code>kube-apiserver</code> 的负担，Kubernetes 从 v1.19 开始自动开启了 <strong><code>ImmutableEphemeralVolumes</code> 特性，开启后禁止 Secret 和 ConfigMap 的自动更新</strong></p>
+</blockquote>
+<p>这些配置通常可以分为两类：一<strong>类是诸如运行环境和外部依赖等非敏感配置，另一类是诸如密钥和 SSH 证书等敏感配置。</strong></p>
+<p><strong>对 Kubernetes 应用来说，敏感配置推荐放到 Secret 中，而非敏感配置推荐放到 ConfigMap中</strong> 。</p>
+<p>Secret 相对于 ConfigMap 来说，提供了更多的数据安全保证机制从而更适合敏感数据配置：</p>
+<p>Pod 可以通过 Volume 和环境变量两种方式引用 ConfigMap 和 Secret，并且以 Volume 形式挂载后还支持热更新。这种热更新机制看起来非常好，但在实际 DevOps 流程中实际上也有不少的问题，需要使用的时候特别注意。</p>
+<h3 id="kubernetes"><strong>Kubernetes热更新</strong></h3>
+<p>使用 Secret 和 ConfigMap 最简单的方法是以 Volume 形式挂载到 Pod 中，这种方式也支持自动更新。</p>
+<p><strong>不过需要注意的是，在挂载时不要使用 <code>subPath</code>，因为使用 <code>subPath</code> 之后就不支持自动更新了。</strong></p>
+<p>为了降低 kube-apiserver 的负担，Kubernetes 从 v1.19 开始自动开启了 ImmutableEphemeralVolumes 特性，开启后禁止 Secret 和 ConfigMap 的自动更新：</p>
+<p>因为是文件的更新，容器应用可以用 inotify 机制监控文件的变化情况，进而再加载新配置。比如，对于 Go 应用来说，可以使用 fsnotify 库。</p>
+<p>当然，<strong>这种方法有很多限制</strong>：</p>
+<ul>
+<li>大量 ConfigMap 和 Secret 的 watch 请求会<strong>加重 kube-apiserver 的负载</strong>，影响 kube-apiserver 的性能。</li>
+<li>
+<ul>
+<li>不支持滚动更新，只要 Secret 和 ConfigMap 更新了，<strong>所有使用他们的容器都会全部更新</strong>。这会导致配置错误一下子更新到所有容器，而不是滚动更新，无法实现第一个 Pod 发现错误时停止后续的更新。</li>
+</ul>
+</li>
+</ul>
+<pre><code>kind: Deployment
+metadata:
+  annotations:
+    configmap.reloader.stakater.com/reload: &quot;foo-configmap&quot;
+     secret.reloader.stakater.com/reload: &quot;foo-secret&quot;
+spec:
+  template: metadata:
+</code></pre>
+<h2 id="2-subpath-vs-path">2. Subpath vs Path</h2>
+<p>Path refers to the absolute location within the container's filesystem where a volume or file will be mounted.</p>
+<p>It defines the destination directory or file path inside the container.</p>
+<pre><code>volumeMounts:
+  - name: my-volume
+    mountPath: /app/data
+</code></pre>
+<p>Here, the contents of the volume my-volume will be mounted at /app/data in the container.</p>
+<h3 id="subpath">Subpath</h3>
+<p><strong>Subpath is used to mount a specific file or subdirectory</strong> from a volume into a container, <strong>rather than mounting the entire volume</strong>.</p>
+<p>It allows you to selectively mount a portion of the volume into the container.</p>
+<pre><code>volumeMounts:
+  - name: my-volume
+    mountPath: /app/config/file.txt
+    subPath: config/file.txt
+</code></pre>
+<p><strong>Here, only the file <code>config/file.txt</code> from the volume my-volume is mounted at <code>/app/config/file.txt</code> in the container.</strong></p>
+<p>Key Differences</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: center;">Path</th>
+<th style="text-align: right;">Subpath</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Purpose</td>
+<td style="text-align: center;">Defines the mount location in the container.</td>
+<td style="text-align: right;">Selectively mounts a specific file or subdirectory from the volume</td>
+</tr>
+<tr>
+<td style="text-align: left;">Scope</td>
+<td style="text-align: center;">Mounts the entire volume.</td>
+<td style="text-align: right;">Mounts only a part of the volume.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Use Case</td>
+<td style="text-align: center;">When you want to mount the entire volume.</td>
+<td style="text-align: right;">When you need to mount a specific file or directory from the volume.</td>
+</tr>
+</tbody>
+</table>
+<p>Suppose you have a volume with the following structure:</p>
+<pre><code>my-volume/
+  ├── config/
+  │   └── file.txt
+  └── data/
+      └── datafile.txt
+</code></pre>
+<p>Using path:</p>
+<pre><code>volumeMounts:
+  - name: my-volume
+    mountPath: /app
+</code></pre>
+<p>This will mount the entire my-volume (including <code>config/</code> and <code>data/</code>) to <code>/app</code> in the container.</p>
+<p>Using <strong>subpath:</strong></p>
+<pre><code>volumeMounts:
+  - name: my-volume
+    mountPath: /app/config/file.txt
+    subPath: config/file.txt
+</code></pre>
+<p>This will mount only <code>config/file.txt</code> from my-volume to <code>/app/config/file.txt</code> in the container.</p>
+<h3 id="3-configmap-change-at-the-same-time">3. Configmap change at the same time</h3>
+<p><strong>Can Multiple People Change a ConfigMap?</strong></p>
+<p>Yes, multiple users or processes with the appropriate permissions can modify a ConfigMap. Kubernetes does not inherently restrict the number of users who can edit a ConfigMap, as long as they have the necessary RBAC (Role-Based Access Control) permissions.</p>
+<p><strong>How Changes to a ConfigMap Affect Pods</strong></p>
+<p>The behavior of a Pod when its associated ConfigMap is updated depends on how the ConfigMap is used:</p>
+<p><strong>1 ConfigMap Mounted as a Volume:</strong></p>
+<ul>
+<li>
+<p><strong>If the ConfigMap is mounted as a volume into a Pod, changes to the ConfigMap are eventually propagated to the Pod</strong>.</p>
+</li>
+<li>
+<p>The update delay depends on the kubelet sync interval (default is ~1 minute).</p>
+</li>
+<li>
+<p>The Pod will see the updated ConfigMap data, <strong>but existing processes inside the container</strong> will not automatically restart unless explicitly configured to do so (e.g., using a sidecar or custom logic).</p>
+</li>
+</ul>
+<p><strong>2.ConfigMap Used as Environment Variables</strong></p>
+<ul>
+<li>If the ConfigMap is used to populate environment variables in a Pod, <strong>changes to the ConfigMap will not affect the Pod</strong>.</li>
+<li>Environment variables are injected into the Pod at creation time and are not updated dynamically.</li>
+</ul>
+<p><strong>3.ConfigMap Used in subPath Mounts</strong></p>
+<p>If a ConfigMap is mounted using subPath, </p>
+<ul>
+<li>changes to the ConfigMap will not be propagated to the Pod. </li>
+<li>This is because subPath mounts are treated as static files at the time of Pod creation.</li>
+</ul>
+<h3 id="1-concurrent-updates">1 Concurrent Updates:</h3>
+<p>Kubernetes uses an optimistic concurrency control mechanism for resources like ConfigMaps.</p>
+<p><strong>When multiple users try to update the same ConfigMap at the same time, Kubernetes will process the updates one at a time.</strong></p>
+<p><strong>The first update will succeed, and subsequent updates will need to rebase their changes on the latest version of the ConfigMap.</strong></p>
+<h3 id="2-conflict-resolution">2 Conflict Resolution:</h3>
+<p>If two users try to update the same ConfigMap simultaneously, <strong>the second user's update will fail unless they explicitly handle conflicts</strong>.</p>
+<p><strong>Kubernetes uses a resource version field to track changes</strong>. If the resource version in the update request does not match the current version in the cluster, <strong>the update will be rejected with a conflict error</strong>.</p>
+<h3 id="3-example-of-a-conflict">3 Example of a Conflict:</h3>
+<ul>
+<li>User A fetches ConfigMap app-config with resource version 123.</li>
+<li>User B fetches ConfigMap app-config with resource version 123. </li>
+<li>User A updates the ConfigMap, and the resource version becomes 124.</li>
+<li>User B tries to update the ConfigMap but provides the old resource version (123). Kubernetes rejects the update with a conflict error.</li>
+</ul>
+<h3 id="4-how-to-handle-concurrent-updates"><strong>4 How to Handle Concurrent Updates</strong></h3>
+<p><strong>Retry Mechanism:</strong></p>
+<p>If a user's update fails due to a conflict, they can:</p>
+<ul>
+<li>Fetch the latest version of the ConfigMap.</li>
+<li>Reapply their changes.</li>
+<li>Retry the update.</li>
+</ul>
+<p><strong>Patch Instead of Replace:</strong></p>
+<p>Instead of replacing the entire ConfigMap, use a patch operation to update only specific fields. This reduces the likelihood of conflicts.</p>
+<pre><code>kubectl patch configmap app-config --patch '{&quot;data&quot;:{&quot;key&quot;:&quot;new-value&quot;}}'
+</code></pre>
+<h3 id="impact-on-pods">Impact on Pods</h3>
+<p>If multiple users successfully update the ConfigMap, the changes will propagate to the Pods depending on how the ConfigMap is used:</p>
+<ul>
+<li>
+<p><strong>Volume Mounts: Changes will eventually propagate to the Pod (after the kubelet sync interval)</strong>.</p>
+</li>
+<li>
+<p>Environment Variables: <strong>Changes will not affect the Pod unless it is restarted.</strong></p>
+</li>
+<li>
+<p>SubPath Mounts: Changes will not affect the Pod.</p>
+</li>
+</ul>
+<p>Yes, multiple users can attempt to change a ConfigMap at the same time, but Kubernetes will process the updates sequentially to avoid conflicts. If conflicts occur, users need to handle them by fetching the latest version and retrying their updates. Proper coordination and conflict resolution mechanisms are essential when multiple users are working with the same ConfigMap. Let me know if you need further clarification!</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2021-9999 Jacob Xi
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,6848 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Jacob's 系统性能&Linux调优技术与实战教程">
+      
+      
+        <meta name="author" content="Jacob Xi">
+      
+      
+        <link rel="canonical" href="https://chao-xi.github.io/jxperfbook/chap8/4Basic_shell/">
+      
+      
+        <link rel="prev" href="../3devops_shell/">
+      
+      
+        <link rel="next" href="../5install_shell/">
+      
+      
+      <link rel="icon" href="../../images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>4 基本 shell 脚本 系统+文件+卷+时间 - Jacob Performance&Linux Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="light-green" data-md-color-accent="light-green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#4-shell" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="Jacob Performance&amp;Linux Book" class="md-header__button md-logo" aria-label="Jacob Performance&Linux Book" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Jacob Performance&Linux Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              4 基本 shell 脚本 系统+文件+卷+时间
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Chao-Xi/jxperfbook.git" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jxperfbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Jacob Performance&amp;Linux Book" class="md-nav__button md-logo" aria-label="Jacob Performance&Linux Book" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    Jacob Performance&Linux Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Chao-Xi/jxperfbook.git" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jxperfbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Welcome
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    系统基础设施优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            系统基础设施优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/1CPU_Cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 代码让CPU执行得更快 — CPU缓存
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/2Mem_Pool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 内存池提升内存分配的效率
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/3Hash_index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 哈希表利用索引管理亿级对象
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/4PageCache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 磁盘高效地传输文件零拷贝：PageCache
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/5Coroutine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 协程快速地实现高并发服务：Coroutine
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/6Locks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 据业务场景选择合适的锁
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    系统层网络优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            系统层网络优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/1broadcast_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 一对多通讯如何实现
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/2C10M/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 C10M是如何实现事件驱动
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/3tcp3shakehand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 提升TCP三次握手的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/4tcpshutdown/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 提升TCP四次挥手的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/5tcpchachepool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 TCP缓冲区兼顾并发数量与传输速度
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/6tcpcongestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 调整TCP拥塞控制的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    分布式系统优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            分布式系统优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/1Mon_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 通过监控找到性能瓶颈
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/2perf_cap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 舍弃一致性去换取性能的CAP理论
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/3perf_akf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 AKF立方体可扩展性来提高性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/4perf_nwr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 NWR算法修改读写模型以提升性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/5nginx_openresty/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 负载均衡：选择Nginx还是OpenResty
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/6hash_consistent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 一致性哈希的均衡负载
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/7cache_expire/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第七节 过期缓存防止缓存被流量打穿
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/8message_queue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第八节 消息队列基于异步消息提升性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/9map_reduce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第九节 MapReduce通过集群实现离线计算
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/10DB_choice/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第十节 权衡关系数据库与NoSQL数据库
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    IT运维面试问题总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            IT运维面试问题总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/1Linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 IT运维面试问题总结- Linux基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/2Linux_SVC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 IT运维面试问题总结-基础服务、磁盘管理、虚拟平台和系统管理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/3Linux_tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 IT运维面试问题总结-运维工具、开源应用(Ceph、Docker、Apache、Nginx等)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/4Linux_db_dia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 IT运维面试问题总结-数据库、监控、网络管理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/5k8s_OpenShift/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 IT运维面试问题总结-简述Etcd、Kubernetes、Lvs、HAProxy等
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/6Py_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 Python面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/7Pro_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第七节 prometheus：要点总结及面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/8Data_ana_interview1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L8 Data Analyst Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/8Data_ana_interview2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第八节 分析岗笔试/面试知识点
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/9Data_ML_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L9 Top 50 Machine Learning Interview Questions & Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/10Deep_learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L10 30 Frequently asked Deep Learning Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/11Redis_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L11 Redis 核心技术考题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/12ES_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L12 ES 期末考试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/13istio_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L13 Istio面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/14sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L14 SRE本质就是一个懂运维的资深开发
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/15prometheus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L15 Top Prometheus Interview Questions and Answers (2022)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/16jenkins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L16 Top Jenkins Interview Questions and Answers (2022)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/17devops_int2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L17 DevOps Engineer: 30+ Interview Questions and Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/18helm2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L18 Helm指南：Kubernetes包管理器简介
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Python 面试题与总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Python 面试题与总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/1Apple_3sum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1、Apple Interview(3Sum)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/2Python_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2、Python Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/3GS_longest_substr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3、Longest substring
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/4GS_remove_sort_list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4、Remove duplicate in Sort List
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/5Sort_list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5、Reverse Sort List
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/6RM_dup_dict/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6、Remove duplicate from dictionary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/7Find_max/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7、Find Maxmium number count in list and nth number
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/8gs_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8、GS Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/9Substring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9、Find substring inside String
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/10reverse_string/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10、Reverse String
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/11zeroinN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11、Count how many zero in N!
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/12JumpGame/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12、Jump Game
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/13Gs_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13、GS interview preparation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux 面试题与总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Linux 面试题与总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/1Linux_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L1 1min 内对 Linux 进行性能诊断
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/2Linux_load_avg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L2 当面试官问你load average时，怎么回答？
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/3Linux_inode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L3 文件系统inode
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/4Linux_ops_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L4 运维必须掌握的Linux面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/5Linux_network_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L5 常见网络编程面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/6Git_principle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L6 Git 实用技巧记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/7LoadBalancer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L7 深入浅出负载均衡
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/8Linux_all/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L8 Linux 面试题 合集CDN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/9Linux_five/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L9 Linux面试最高频的5个基本问题（CPU+COMMMAND)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/10haproxy_learn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L10 HAProxy从零开始到掌握
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/12Linux_vir_file/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L12 从 lsof 开始，深入理解 Linux 虚拟文件系统
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/linux_rew/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux review
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/13Linux_ts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L13 Linux故障排查思路及常用命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/14Linux_iptables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L14 Linux iptables命令详解
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/15linux_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L15 Linux网络基础与性能优化
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Companies Interview
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Companies Interview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/1Ms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Microsoft Interview2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/2Ms_al/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Microsoft Interview Algorithm 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/3ubs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 UBS interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/4MorganS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Morgan Stanly 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/5apple/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Apple 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/6aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 AWS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/7tesla/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Tesla
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/my/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    My Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/int_anws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    架构师面试合集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux 常用命令
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Linux 常用命令
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0shell_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Shell命令行一些快捷键组合
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0shell_linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Linux常用命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16linux_ops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Linux 实用运维命令 - Update
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1shell_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Shell 分析服务器日志命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1log_man/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Log: 用 awk + grep + sed搞定日志处理神器组合拳
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2linux_locate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Linux 系统下查找文件命令总结
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3devops_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Basic Shell Scripting for Devops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    4 基本 shell 脚本 系统+文件+卷+时间
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 基本 shell 脚本 系统+文件+卷+时间
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-hello-world" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 编写hello world脚本
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、通过位置变量创建 Linux 系统账户及密码
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、备份日志
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 猜数字游戏
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-123456" class="md-nav__link">
+    <span class="md-ellipsis">
+      5 编写脚本:提示用户输入用户名和密码,脚本自动创建相应的账户及配置密码。如果用户不输入账户名,则提示必须输入账户名并退出脚本;如果用户不输入密码,则统一使用默认的 123456 作为默认密码。
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6 输入三个数并进行升序排序
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      7 石头、剪刀、布游戏
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      8 编写脚本,显示进度条
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      9、进度条,动态时针版本；定义一个显示进度的函数,屏幕快速显示| / ‐ \
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-99" class="md-nav__link">
+    <span class="md-ellipsis">
+      10 9*9 乘法表
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-usertxt-usertxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      11、使用 user.txt 文件中的人员名单,在计算机中自动创建对应的账户并配置初始密码本脚本执行,需要提前准备一个 user.txt 文件,该文件中包含有若干用户名信息
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      12、编写批量修改扩展名脚本
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      13、点名器脚本
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-100-1234100" class="md-nav__link">
+    <span class="md-ellipsis">
+      14 对 100 以内的所有正整数相加求和(1+2+3+4...+100)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15" class="md-nav__link">
+    <span class="md-ellipsis">
+      15 打印国际象棋棋盘
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      16 统计当前 Linux 系统中可以登录计算机的账户有多少个
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-varlog" class="md-nav__link">
+    <span class="md-ellipsis">
+      17 统计/var/log 有多少个文件,并显示这些文件名
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18" class="md-nav__link">
+    <span class="md-ellipsis">
+      18 自动为其他脚本添加解释器信息
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19" class="md-nav__link">
+    <span class="md-ellipsis">
+      19 自动对磁盘分区、格式化、挂载
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      20 自动优化 Linux 内核参数
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      21 将文件中所有的小写字母转换为大写字母
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      22 使用脚本自动创建逻辑卷
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      23 显示 CPU 厂商信息
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      24 删除某个目录下大小为 0 的文件
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      25 查找 Linux 系统中的僵尸进程
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#26" class="md-nav__link">
+    <span class="md-ellipsis">
+      26 提示用户输入年份后判断该年是否为闰年
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#27-shell-fork" class="md-nav__link">
+    <span class="md-ellipsis">
+      27 Shell 脚本的 fork 炸弹
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#28" class="md-nav__link">
+    <span class="md-ellipsis">
+      28 显示当前计算机中所有账户的用户名称
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#29-tar-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      29 制定目录路径,脚本自动将该目录使用 tar 命令打包备份到/data目录
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30" class="md-nav__link">
+    <span class="md-ellipsis">
+      30 显示进度条(回旋镖版)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#31-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      31 修改 Linux 系统的最大打开文件数量
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      32 自动修改计划任务配置文件
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33-111-999" class="md-nav__link">
+    <span class="md-ellipsis">
+      33 使用脚本循环创建三位数字的文本文件(111-999 的文件)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      34、统计 Linux 进程相关数量信息
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#35" class="md-nav__link">
+    <span class="md-ellipsis">
+      35 从键盘读取一个论坛积分,判断论坛用户等级
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#36" class="md-nav__link">
+    <span class="md-ellipsis">
+      36 判断用户输入的数据类型(字母、数字或其他)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#37" class="md-nav__link">
+    <span class="md-ellipsis">
+      37 显示进度条(数字版)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#38" class="md-nav__link">
+    <span class="md-ellipsis">
+      38 打印斐波那契数列
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#39-yes-no" class="md-nav__link">
+    <span class="md-ellipsis">
+      39 判断用户输入的是 Yes 或 NO
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#40-linux-uid-1000" class="md-nav__link">
+    <span class="md-ellipsis">
+      40 将 Linux 系统中 UID 大于等于 1000 的普通用户都删除
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      41 使用脚本开启关闭虚拟机
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#42-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      42 调整虚拟机内存参数的 shell 脚本
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      43 破解虚拟机密码,无密码登陆虚拟机系统
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#44-shell-ctrlc" class="md-nav__link">
+    <span class="md-ellipsis">
+      44 Shell 脚本对信号的处理,执行脚本后,按键盘 Ctrl+C 无法终止的脚本
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#45-vnc" class="md-nav__link">
+    <span class="md-ellipsis">
+      45 一键配置 VNC 远程桌面服务器(无密码版本)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#46-selinux" class="md-nav__link">
+    <span class="md-ellipsis">
+      46 关闭 SELinux
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#47-cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      47 查看所有虚拟机磁盘使用量以及CPU使用量信息
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#48-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      48 使用 shell 脚本打印图形
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#49" class="md-nav__link">
+    <span class="md-ellipsis">
+      49 根据计算机当前时间,返回问候语,可以将该脚本设置为开机启动
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#50" class="md-nav__link">
+    <span class="md-ellipsis">
+      50 读取用户输入的账户名称,将账户名写入到数组保存
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      51 判断文件或目录是否存在
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      52 打印各种格式的时间
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#53-egrep-mac" class="md-nav__link">
+    <span class="md-ellipsis">
+      53 使用 egrep 过滤 MAC 地址
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#54" class="md-nav__link">
+    <span class="md-ellipsis">
+      54 统计双色球各个数字的中奖概率
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#55-awkwc" class="md-nav__link">
+    <span class="md-ellipsis">
+      55 使用awk编写的wc程序
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5install_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Shell Package 安装+配置脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6mon_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 监控 Shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7net_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 网络+数据库 Shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8secret_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8 Secret shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../9script_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9 Linux script 录播
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10linux_unlink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10 使用 unlink 删除文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11linux_ip_port/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11 如何在 Linux 下限制端口仅对指定 IP 开放访问
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12socat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12 Linux 命令 socat
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14linux_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14 Linux shell 脚本详解学习 2023
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15grep_learn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15 使用grep分析日志
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17file_opt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16 Linux File Operation (df/du/rsync/批量删除/定时备份)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18linux_var/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17 Shell script中的8个常用的特殊变量
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19curl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18 Curl的10个高级用法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20shell_dir/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19 Shell脚本执行不再受限，不进入所在目录也能成功运行
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21shell_eva/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20 Bash脚本多函数使用eval提高脚本编写效率！
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22find/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21 使用find命令轻松查找文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22find/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21 使用find命令轻松查找文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24xargs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23 xargs命令的使用技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25shell_script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24 快速提升Shell脚本能力
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26linux_zombie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25 如何清理 Linux 僵尸进程？
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27Inode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26 Linux inode 介绍与清理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28vim/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27 Vim 技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29awk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    28 Linux AWK 文本处理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30nohup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    29 nohup命令：在Linux中轻松实现后台运行和守护进程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../31ln/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    30 文件系统中的“分身术”ln命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../32Linux_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    31 Linux 系统日志之深入解析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../33bash/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    32 Linux 中 `.bashrc`、`.bash-profile` 和 `.profile` 之间的区别
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../34linux_6logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    33 6大Linux命令线上日志排查
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../35port_detect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    34 未安装telnet 和 nc 等工具，如何测试端口是否开放
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../36dudf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    35 df命令显示磁盘空间不足而du命令显示还有很多空闲空间
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../37linux_cond/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    36 Shell脚本的流程控制知识点汇总(2024)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Bash Programming 技巧
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Bash Programming 技巧
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/1bash_prom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 简洁的 Bash Programming 技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/2bash_skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 简洁的 Bash Programming 技巧续篇
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/3bash_skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Bash Pitfalls: 编程易犯的错误（一）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/4bash_python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 在Python中执行Linux Shell脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    AutoSys
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            AutoSys
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/1autosys_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 AutoSys: A Beginner’s Guide AutoSys Workload Automation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/1Autosys_tot1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Autosys Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/2Autosys_jil/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Autosys JIL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/3Autosys_comp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Autosys Components, Configuration & Validation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/4Autosys_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Austosys command
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/5Autosys_job_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Manage Job in the Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/6autosys_vir_resouce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Autotsys virtual resource management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/7autosys_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Shell Script to check Autosys agent installed
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    2025 - 面试准备
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            2025 - 面试准备
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/0intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025-Intro
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/1cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 CI/CD 之路-GitOps 面试题合集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/2docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Docker面试10大必考题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/3kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Kubernetes 面试题精解：从入门到进阶(2025)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/4Linux_tb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Linux 系统故障时
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/5aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 AWS 面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/6monitor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 监控生态面试通关秘籍
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/7cri/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 从容器到调度：准备好这些 CRI 面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/8sap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8 SAP面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/9db_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9 数据库面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/10prometheus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10 Prometheus面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/11istio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11 深度剖析 Istio (2025)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/12python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12 Python Interview - Full
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            SRE
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/15Apple_SRE_prp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025 Apple SRE PRP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/1SRE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 SRE Interview Questions and Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/13tiktok/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 2025 最新字节跳动运维云原生面经分享
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/2Ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Ansible Interview Question
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/3linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 250 Linux Scenario Based Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/3kubernetes_sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Kubernetes SRE part1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/3kubernetes_sre2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Kubernetes SRE part2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/14git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Git Scenario-Based Questions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            SRE
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sre/0interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 SRE 面试2025
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sre/1linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 SRE Linux All2025
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sre/2ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Ansible 从入门到放弃
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/15Apple_SRE_prp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025 Apple SRE PRP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sre/3git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 GIT CE TEST
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE_Linux
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            SRE_Linux
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sreln/2Linux_test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Linux Fundamentals
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sreln/1k8s_dev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Using Kubernetes as a Developer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sreln/3code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Script Learning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sre/4sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 SRE Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sreln/5agile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Agile Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sreln/6cloud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Cloud Native Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    英语学习
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16">
+            <span class="md-nav__icon md-icon"></span>
+            英语学习
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Eng/1work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 职场英语
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-hello-world" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 编写hello world脚本
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、通过位置变量创建 Linux 系统账户及密码
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、备份日志
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 猜数字游戏
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-123456" class="md-nav__link">
+    <span class="md-ellipsis">
+      5 编写脚本:提示用户输入用户名和密码,脚本自动创建相应的账户及配置密码。如果用户不输入账户名,则提示必须输入账户名并退出脚本;如果用户不输入密码,则统一使用默认的 123456 作为默认密码。
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6 输入三个数并进行升序排序
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      7 石头、剪刀、布游戏
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      8 编写脚本,显示进度条
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      9、进度条,动态时针版本；定义一个显示进度的函数,屏幕快速显示| / ‐ \
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-99" class="md-nav__link">
+    <span class="md-ellipsis">
+      10 9*9 乘法表
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-usertxt-usertxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      11、使用 user.txt 文件中的人员名单,在计算机中自动创建对应的账户并配置初始密码本脚本执行,需要提前准备一个 user.txt 文件,该文件中包含有若干用户名信息
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      12、编写批量修改扩展名脚本
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      13、点名器脚本
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-100-1234100" class="md-nav__link">
+    <span class="md-ellipsis">
+      14 对 100 以内的所有正整数相加求和(1+2+3+4...+100)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15" class="md-nav__link">
+    <span class="md-ellipsis">
+      15 打印国际象棋棋盘
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      16 统计当前 Linux 系统中可以登录计算机的账户有多少个
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-varlog" class="md-nav__link">
+    <span class="md-ellipsis">
+      17 统计/var/log 有多少个文件,并显示这些文件名
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18" class="md-nav__link">
+    <span class="md-ellipsis">
+      18 自动为其他脚本添加解释器信息
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19" class="md-nav__link">
+    <span class="md-ellipsis">
+      19 自动对磁盘分区、格式化、挂载
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      20 自动优化 Linux 内核参数
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      21 将文件中所有的小写字母转换为大写字母
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      22 使用脚本自动创建逻辑卷
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      23 显示 CPU 厂商信息
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      24 删除某个目录下大小为 0 的文件
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      25 查找 Linux 系统中的僵尸进程
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#26" class="md-nav__link">
+    <span class="md-ellipsis">
+      26 提示用户输入年份后判断该年是否为闰年
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#27-shell-fork" class="md-nav__link">
+    <span class="md-ellipsis">
+      27 Shell 脚本的 fork 炸弹
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#28" class="md-nav__link">
+    <span class="md-ellipsis">
+      28 显示当前计算机中所有账户的用户名称
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#29-tar-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      29 制定目录路径,脚本自动将该目录使用 tar 命令打包备份到/data目录
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30" class="md-nav__link">
+    <span class="md-ellipsis">
+      30 显示进度条(回旋镖版)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#31-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      31 修改 Linux 系统的最大打开文件数量
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      32 自动修改计划任务配置文件
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33-111-999" class="md-nav__link">
+    <span class="md-ellipsis">
+      33 使用脚本循环创建三位数字的文本文件(111-999 的文件)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      34、统计 Linux 进程相关数量信息
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#35" class="md-nav__link">
+    <span class="md-ellipsis">
+      35 从键盘读取一个论坛积分,判断论坛用户等级
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#36" class="md-nav__link">
+    <span class="md-ellipsis">
+      36 判断用户输入的数据类型(字母、数字或其他)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#37" class="md-nav__link">
+    <span class="md-ellipsis">
+      37 显示进度条(数字版)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#38" class="md-nav__link">
+    <span class="md-ellipsis">
+      38 打印斐波那契数列
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#39-yes-no" class="md-nav__link">
+    <span class="md-ellipsis">
+      39 判断用户输入的是 Yes 或 NO
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#40-linux-uid-1000" class="md-nav__link">
+    <span class="md-ellipsis">
+      40 将 Linux 系统中 UID 大于等于 1000 的普通用户都删除
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      41 使用脚本开启关闭虚拟机
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#42-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      42 调整虚拟机内存参数的 shell 脚本
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      43 破解虚拟机密码,无密码登陆虚拟机系统
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#44-shell-ctrlc" class="md-nav__link">
+    <span class="md-ellipsis">
+      44 Shell 脚本对信号的处理,执行脚本后,按键盘 Ctrl+C 无法终止的脚本
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#45-vnc" class="md-nav__link">
+    <span class="md-ellipsis">
+      45 一键配置 VNC 远程桌面服务器(无密码版本)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#46-selinux" class="md-nav__link">
+    <span class="md-ellipsis">
+      46 关闭 SELinux
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#47-cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      47 查看所有虚拟机磁盘使用量以及CPU使用量信息
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#48-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      48 使用 shell 脚本打印图形
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#49" class="md-nav__link">
+    <span class="md-ellipsis">
+      49 根据计算机当前时间,返回问候语,可以将该脚本设置为开机启动
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#50" class="md-nav__link">
+    <span class="md-ellipsis">
+      50 读取用户输入的账户名称,将账户名写入到数组保存
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      51 判断文件或目录是否存在
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      52 打印各种格式的时间
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#53-egrep-mac" class="md-nav__link">
+    <span class="md-ellipsis">
+      53 使用 egrep 过滤 MAC 地址
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#54" class="md-nav__link">
+    <span class="md-ellipsis">
+      54 统计双色球各个数字的中奖概率
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#55-awkwc" class="md-nav__link">
+    <span class="md-ellipsis">
+      55 使用awk编写的wc程序
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="4-shell"><strong>4 基本 shell 脚本 系统+文件+卷+时间</strong></h1>
+<h3 id="1-hello-world"><strong>1 编写hello world脚本</strong></h3>
+<pre><code>#!/bin/bash
+
+# 编写hello world脚本
+
+echo &quot;Hello World!&quot;
+</code></pre>
+<h3 id="2-linux"><strong>2、通过位置变量创建 Linux 系统账户及密码</strong></h3>
+<pre><code>#!/bin/bash
+
+# 通过位置变量创建 Linux 系统账户及密码
+
+#$1 是执行脚本的第一个参数,$2 是执行脚本的第二个参数
+useradd    &quot;$1&quot; 
+echo &quot;$2&quot;  |  passwd  ‐‐stdin  &quot;$1&quot;
+</code></pre>
+<h3 id="3"><strong>3、备份日志</strong></h3>
+<pre><code>#!/bin/bash
+# 每周 5 使用 tar 命令备份/var/log 下的所有日志文件
+# vim  /root/logbak.sh
+# 编写备份脚本,备份后的文件名包含日期标签,防止后面的备份将前面的备份数据覆盖
+# 注意 date 命令需要使用反引号括起来,反引号在键盘&lt;tab&gt;键上面
+tar  -czf  log-`date +%Y%m%d`.tar.gz  /var/log 
+
+# crontab ‐e  #编写计划任务,执行备份脚本
+00  03  *  *  5  /root/logbak.sh
+</code></pre>
+<h3 id="4"><strong>4 猜数字游戏</strong></h3>
+<pre><code>#!/bin/bash
+
+# 脚本生成一个 100 以内的随机数,提示用户猜数字,根据用户的输入,提示用户猜对了,
+# 猜小了或猜大了,直至用户猜对脚本结束。
+
+# RANDOM 为系统自带的系统变量,值为 0‐32767的随机数
+# 使用取余算法将随机数变为 1‐100 的随机数
+num=$[RANDOM%100+1]
+echo &quot;$num&quot;
+
+# 使用 read 提示用户猜数字
+# 使用 if 判断用户猜数字的大小关系:‐eq(等于),‐ne(不等于),‐gt(大于),‐ge(大于等于),
+# ‐lt(小于),‐le(小于等于)
+while  :
+do
+  read -p &quot;计算机生成了一个 1‐100 的随机数,你猜: &quot; cai
+    if [ $cai -eq $num ]
+    then
+         echo &quot;恭喜,猜对了&quot;
+         exit
+      elif [ $cai -gt $num ]
+      then
+             echo &quot;Oops,猜大了&quot;
+        else
+             echo &quot;Oops,猜小了&quot;
+   fi
+done
+</code></pre>
+<h3 id="5-123456"><strong>5 编写脚本:提示用户输入用户名和密码,脚本自动创建相应的账户及配置密码。如果用户不输入账户名,则提示必须输入账户名并退出脚本;如果用户不输入密码,则统一使用默认的 123456 作为默认密码。</strong></h3>
+<pre><code>#!/bin/bash
+
+# 编写脚本:提示用户输入用户名和密码,脚本自动创建相应的账户及配置密码。如果用户
+# 不输入账户名,则提示必须输入账户名并退出脚本;如果用户不输入密码,则统一使用默
+# 认的 123456 作为默认密码。
+
+read -p &quot;请输入用户名: &quot; user
+#使用‐z 可以判断一个变量是否为空,如果为空,提示用户必须输入账户名,并退出脚本,退出码为 2
+#没有输入用户名脚本退出后,使用$?查看的返回码为 2
+if [ -z $user ];then
+     echo &quot;您不需输入账户名&quot;
+   exit 2
+fi
+#使用 stty ‐echo 关闭 shell 的回显功能
+#使用 stty  echo 打开 shell 的回显功能
+stty -echo
+read -p &quot;请输入密码: &quot; pass
+stty echo
+pass=${pass:‐123456}
+useradd &quot;$user&quot;
+echo &quot;$pass&quot; | passwd ‐‐stdin &quot;$user&quot;
+</code></pre>
+<h3 id="6"><strong>6 输入三个数并进行升序排序</strong></h3>
+<pre><code>#!/bin/bash
+
+# 依次提示用户输入 3 个整数,脚本根据数字大小依次排序输出 3 个数字
+read -p &quot;请输入一个整数:&quot; num1
+read -p &quot;请输入一个整数:&quot; num2
+read -p &quot;请输入一个整数:&quot; num3
+# 不管谁大谁小,最后都打印 echo &quot;$num1,$num2,$num3&quot;
+# num1 中永远存最小的值,num2 中永远存中间值,num3 永远存最大值
+# 如果输入的不是这样的顺序,则改变数的存储顺序,如:可以将 num1 和 num2 的值对调
+tmp=0
+# 如果 num1 大于 num2,就把 num1 和和 num2 的值对调,确保 num1 变量中存的是最小值
+if [ $num1 -gt $num2 ];then   
+  tmp=$num1
+  num1=$num2
+  num2=$tmp
+fi
+# 如果 num1 大于 num3,就把 num1 和 num3 对调,确保 num1 变量中存的是最小值
+if [ $num1 -gt $num3 ];then   
+    tmp=$num1
+    num1=$num3
+    num3=$tmp
+fi
+# 如果 num2 大于 num3,就把 num2 和 num3 对标,确保 num2 变量中存的是小一点的值
+if [ $num2 -gt $num3 ];then
+    tmp=$num2
+    num2=$num3
+    num3=$tmp
+fi
+echo &quot;排序后数据(从小到大)为:$num1,$num2,$num3&quot;
+</code></pre>
+<h3 id="7"><strong>7 石头、剪刀、布游戏</strong></h3>
+<pre><code>#!/bin/bash
+
+# 编写脚本,实现人机&lt;石头,剪刀,布&gt;游戏
+game=(石头 剪刀 布)
+num=$[RANDOM%3]
+computer=${game[$num]}
+# 通过随机数获取计算机的出拳
+# 出拳的可能性保存在一个数组中,game[0],game[1],game[2]分别是 3 中不同的可能
+
+echo &quot;请根据下列提示选择您的出拳手势&quot;
+echo &quot;1.石头&quot;
+echo &quot;2.剪刀&quot;
+echo &quot;3.布&quot;
+
+read -p &quot;请选择 1‐3:&quot; person
+case  $person  in
+1)
+  if [ $num -eq 0 ]
+  then
+    echo &quot;平局&quot;
+    elif [ $num -eq 1 ]
+    then
+      echo &quot;你赢&quot;
+  else
+    echo &quot;计算机赢&quot;
+  fi;;
+2)   
+  if [ $num -eq 0 ]
+  then
+    echo &quot;计算机赢&quot;
+    elif [ $num -eq 1 ]
+    then
+      echo &quot;平局&quot;
+  else
+    echo &quot;你赢&quot;
+  fi;;
+3)
+  if [ $num -eq 0 ]
+  then
+    echo &quot;你赢&quot;
+    elif [ $num -eq 1 ]
+    then
+      echo &quot;计算机赢&quot;
+  else
+    echo &quot;平局&quot;
+  fi;;
+*)
+  echo &quot;必须输入 1‐3 的数字&quot;
+esac
+</code></pre>
+<h3 id="8"><strong>8 编写脚本,显示进度条</strong></h3>
+<pre><code>
+#!/bin/bash
+
+# 编写脚本,显示进度条
+jindu(){
+while :
+do
+     echo -n '#'
+     sleep 0.2
+done
+}
+jindu &amp;
+cp -a $1 $2
+killall $0
+echo &quot;拷贝完成&quot;
+</code></pre>
+<h3 id="9"><strong>9、进度条,动态时针版本；定义一个显示进度的函数,屏幕快速显示<code>|  / ‐ \</code></strong></h3>
+<pre><code>#!/bin/bash
+
+# 进度条,动态时针版本
+# 定义一个显示进度的函数,屏幕快速显示|  / ‐ \
+rotate_line(){
+INTERVAL=0.5  #设置间隔时间
+COUNT=&quot;0&quot;     #设置4个形状的编号,默认编号为 0(不代表任何图像)
+while :
+do
+  COUNT=`expr $COUNT + 1` #执行循环,COUNT 每次循环加 1,(分别代表4种不同的形状)
+  case $COUNT in          #判断 COUNT 的值,值不一样显示的形状就不一样
+  &quot;1&quot;)                    #值为 1 显示‐
+          echo -e '‐'&quot;\b\c&quot;
+          sleep $INTERVAL
+          ;;
+    &quot;2&quot;)                  #值为 2 显示\\,第一个\是转义
+          echo -e '\\'&quot;\b\c&quot;
+          sleep $INTERVAL
+          ;;
+    &quot;3&quot;)                  #值为 3 显示|
+          echo -e &quot;|\b\c&quot;
+          sleep $INTERVAL
+          ;;
+   &quot;4&quot;)                   #值为 4 显示/
+          echo -e &quot;/\b\c&quot;
+          sleep $INTERVAL
+          ;;
+    *)                    #值为其他时,将 COUNT 重置为 0
+          COUNT=&quot;0&quot;;;
+    esac
+done
+}
+rotate_line
+</code></pre>
+<h3 id="10-99"><strong>10 <code>9*9</code> 乘法表</strong></h3>
+<pre><code>#!/bin/bash
+
+# 9*9 乘法表(编写 shell 脚本,打印 9*9 乘法表) 
+for i in `seq 9`
+do
+    for j in `seq $i`
+     do
+         echo -n &quot;$j*$i=$[i*j]  &quot;
+     done
+    echo
+done
+</code></pre>
+<h3 id="11-usertxt-usertxt"><strong>11、使用 user.txt 文件中的人员名单,在计算机中自动创建对应的账户并配置初始密码本脚本执行,需要提前准备一个 user.txt 文件,该文件中包含有若干用户名信息</strong></h3>
+<pre><code>
+#!/bin/bash
+
+# 使用 user.txt 文件中的人员名单,在计算机中自动创建对应的账户并配置初始密码
+# 本脚本执行,需要提前准备一个 user.txt 文件,该文件中包含有若干用户名信息
+for i in `cat user.txt`
+do
+     useradd  $i
+     echo &quot;123456&quot; | passwd ‐‐stdin $i
+done
+</code></pre>
+<h3 id="12"><strong>12、编写批量修改扩展名脚本</strong></h3>
+<pre><code>#!/bin/bash
+
+# 编写批量修改扩展名脚本,如批量将 txt 文件修改为 doc 文件 
+# 执行脚本时,需要给脚本添加位置参数
+# 脚本名  txt  doc(可以将 txt 的扩展名修改为 doc)
+# 脚本名  doc  jpg(可以将 doc 的扩展名修改为 jpg)
+
+for i in `ls *.$1`
+do
+     mv $i ${i%.*}.$2
+done
+</code></pre>
+<h3 id="13"><strong>13、点名器脚本</strong></h3>
+<pre><code>#!/bin/bash
+
+# 编写一个点名器脚本
+
+# 该脚本,需要提前准备一个 user.txt 文件
+# 该文件中需要包含所有姓名的信息,一行一个姓名,脚本每次随机显示一个姓名
+while :
+do
+#统计 user 文件中有多少用户
+line=`cat user.txt |wc ‐l`
+num=$[RANDOM%line+1]
+sed -n &quot;${num}p&quot;  user.txt
+sleep 0.2
+clear
+done
+</code></pre>
+<h3 id="14-100-1234100"><strong>14 对 100 以内的所有正整数相加求和(1+2+3+4...+100)</strong></h3>
+<pre><code>
+#!/bin/bash
+
+# 对 100 以内的所有正整数相加求和(1+2+3+4...+100)
+
+#seq 100 可以快速自动生成 100 个整数
+sum=0
+for i in `seq 100`
+do
+    sum=$[sum+i]
+done
+echo &quot;总和是:$sum&quot;
+</code></pre>
+<h3 id="15"><strong>15 打印国际象棋棋盘</strong></h3>
+<pre><code>
+#!/bin/bash
+
+# 打印国际象棋棋盘
+# 设置两个变量,i 和 j,一个代表行,一个代表列,国际象棋为 8*8 棋盘
+# i=1 是代表准备打印第一行棋盘,第 1 行棋盘有灰色和蓝色间隔输出,总共为 8 列
+# i=1,j=1 代表第 1 行的第 1 列;i=2,j=3 代表第 2 行的第 3 列
+# 棋盘的规律是 i+j 如果是偶数,就打印蓝色色块,如果是奇数就打印灰色色块
+# 使用 echo ‐ne 打印色块,并且打印完成色块后不自动换行,在同一行继续输出其他色块
+for i in {1..8}
+do
+    for j in {1..8}
+    do
+      sum=$[i+j]
+    if [  $[sum%2] -eq 0 ];then
+       echo -ne &quot;\033[46m  \033[0m&quot;
+    else
+      echo -ne &quot;\033[47m  \033[0m&quot;
+    fi
+    done
+    echo
+done
+</code></pre>
+<h3 id="16-linux"><strong>16 统计当前 Linux 系统中可以登录计算机的账户有多少个</strong></h3>
+<pre><code>
+#!/bin/bash
+
+# 统计当前 Linux 系统中可以登录计算机的账户有多少个
+#方法 1:
+grep &quot;bash$&quot; /etc/passwd | wc -l
+#方法 2:
+awk -f: '/bash$/{x++}end{print x}'  /etc/passwd
+</code></pre>
+<h3 id="17-varlog"><strong>17 统计<code>/var/log</code> 有多少个文件,并显示这些文件名</strong></h3>
+<pre><code>#!/bin/bash
+
+# 统计/var/log 有多少个文件,并显示这些文件名 
+# 使用 ls 递归显示所有,再判断是否为文件,如果是文件则计数器加 1
+cd  /var/log
+sum=0
+for i in `ls -r *`
+do
+   if [ -f $i ];then
+       let sum++
+         echo &quot;文件名:$i&quot;
+     fi
+done
+echo &quot;总文件数量为:$sum&quot;
+</code></pre>
+<h3 id="18"><strong>18 自动为其他脚本添加解释器信息</strong></h3>
+<pre><code>#!/bin/bash
+
+# 自动为其他脚本添加解释器信息#!/bin/bash,如脚本名为 test.sh 则效果如下: 
+# ./test.sh  abc.sh  自动为 abc.sh 添加解释器信息
+# ./test.sh  user.sh  自动为 user.sh 添加解释器信息
+
+# 先使用 grep 判断对象脚本是否已经有解释器信息,如果没有则使用 sed 添加解释器以及描述信息
+if  !  grep  -q  &quot;^#!&quot;  $1; then
+sed  '1i #!/bin/bash'  $1
+sed  '2i #Description: '
+fi
+# 因为每个脚本的功能不同,作用不同,所以在给对象脚本添加完解释器信息,以及 Description 后还希望
+# 继续编辑具体的脚本功能的描述信息,这里直接使用 vim 把对象脚本打开,并且光标跳转到该文件的第 2 行
+vim +2 $1
+</code></pre>
+<h3 id="19"><strong>19 自动对磁盘分区、格式化、挂载</strong></h3>
+<pre><code> #!/bin/bash
+
+# 自动对磁盘分区、格式化、挂载
+# 对虚拟机的 vdb 磁盘进行分区格式化,使用&lt;&lt;将需要的分区指令导入给程序 fdisk
+# n(新建分区),p(创建主分区),1(分区编号为 1),两个空白行(两个回车,相当于将整个磁盘分一个区)
+# 注意:1 后面的两个回车(空白行)是必须的!
+fdisk /dev/vdb &lt;&lt; EOF
+n
+p
+1
+
+
+wq
+EOF
+
+#格式化刚刚创建好的分区
+mkfs.xfs   /dev/vdb1
+
+#创建挂载点目录
+if [ -e /data ]; then
+exit
+fi
+mkdir /data
+
+#自动挂载刚刚创建的分区,并设置开机自动挂载该分区
+echo '/dev/vdb1     /data    xfs    defaults        1 2'  &gt;&gt; /etc/fstab
+mount -a
+</code></pre>
+<h3 id="20-linux"><strong>20 自动优化 Linux 内核参数</strong></h3>
+<pre><code>#!/bin/bash
+
+# 自动优化 Linux 内核参数
+
+#脚本针对 RHEL7
+cat &gt;&gt; /usr/lib/sysctl.d/00‐system.conf &lt;&lt;EOF
+fs.file‐max=65535
+net.ipv4.tcp_timestamps = 0
+net.ipv4.tcp_synack_retries = 5
+net.ipv4.tcp_syn_retries = 5
+net.ipv4.tcp_tw_recycle = 1
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_fin_timeout = 30
+#net.ipv4.tcp_keepalive_time = 120
+net.ipv4.ip_local_port_range = 1024  65535
+kernel.shmall = 2097152
+kernel.shmmax = 2147483648
+kernel.shmmni = 4096
+kernel.sem = 5010 641280 5010 128
+net.core.wmem_default=262144
+net.core.wmem_max=262144
+net.core.rmem_default=4194304
+net.core.rmem_max=4194304
+net.ipv4.tcp_fin_timeout = 10
+net.ipv4.tcp_keepalive_time = 30
+net.ipv4.tcp_window_scaling = 0
+net.ipv4.tcp_sack = 0
+EOF
+
+sysctl –p
+</code></pre>
+<h3 id="21"><strong>21 将文件中所有的小写字母转换为大写字母</strong></h3>
+<pre><code>
+#!/bin/bash
+
+# 将文件中所有的小写字母转换为大写字母 
+
+# $1是位置参数,是你需要转换大小写字母的文件名称
+# 执行脚本,给定一个文件名作为参数,脚本就会将该文件中所有的小写字母转换为大写字母
+tr &quot;[a‐z]&quot; &quot;[A‐Z]&quot; &lt; $1
+</code></pre>
+<h3 id="22"><strong>22 使用脚本自动创建逻辑卷</strong></h3>
+<pre><code>
+#!/bin/bash
+
+# 使用脚本自动创建逻辑卷 
+
+# 清屏,显示警告信息,创建将磁盘转换为逻辑卷会删除数据
+clear
+echo -e &quot;\033[32m           !!!!!!警告(Warning)!!!!!!\033[0m&quot;
+echo
+echo &quot;+++++++++++++++++++++++++++++++++++++++++++++++++&quot;
+echo &quot;脚本会将整个磁盘转换为 PV,并删除磁盘上所有数据!!!&quot;
+echo &quot;This Script will destroy all data on the Disk&quot;
+echo &quot;+++++++++++++++++++++++++++++++++++++++++++++++++&quot;
+echo
+read -p &quot;请问是否继续 y/n?:&quot; sure
+
+# 测试用户输入的是否为 y,如果不是则退出脚本
+[ $sure != y ] &amp;&amp; exit
+
+# 提示用户输入相关参数(磁盘、卷组名称等数据),并测试用户是否输入了这些值,如果没有输入,则脚本退出
+read -p &quot;请输入磁盘名称,如/dev/vdb:&quot; disk
+[ -z $disk ] &amp;&amp; echo &quot;没有输入磁盘名称&quot; &amp;&amp; exit
+read -p &quot;请输入卷组名称:&quot; vg_name
+[ -z $vg_name ] &amp;&amp; echo &quot;没有输入卷组名称&quot; &amp;&amp; exit
+read -p &quot;请输入逻辑卷名称:&quot; lv_name
+[ -z $lv_name ] &amp;&amp; echo &quot;没有输入逻辑卷名称&quot; &amp;&amp; exit
+read -p &quot;请输入逻辑卷大小:&quot; lv_size
+[ -z $lv_size ] &amp;&amp; echo &quot;没有输入逻辑卷大小&quot; &amp;&amp; exit
+
+# 使用命令创建逻辑卷
+pvcreate $disk
+vgcreate $vg_name $disk
+lvcreate -L ${lv_size}M -n ${lv_name}  ${vg_name}
+</code></pre>
+<h3 id="23-cpu"><strong>23 显示 CPU 厂商信息</strong></h3>
+<pre><code>#!/bin/bash
+
+# 显示 CPU 厂商信息 
+awk '/vendor_id/{print $3}' /proc/cpuinfo | uniq
+</code></pre>
+<h3 id="24-0"><strong>24 删除某个目录下大小为 0 的文件</strong></h3>
+<pre><code>
+#!/bin/bash
+
+# 删除某个目录下大小为 0 的文件
+
+#/var/www/html 为测试目录,脚本会清空该目录下所有 0 字节的文件
+dir=&quot;/var/www/html&quot;
+find $dir -type f -size 0 -exec rm -rf {} \;
+</code></pre>
+<h3 id="25-linux"><strong>25 查找 Linux 系统中的僵尸进程</strong></h3>
+<pre><code>#!/bin/bash
+
+# 查找 Linux 系统中的僵尸进程
+
+# awk 判断 ps 命令输出的第 8 列为 Z 是,显示该进程的 PID 和进程命令
+ps aux | awk '{if($8 == &quot;Z&quot;){print $2,$11}}'
+</code></pre>
+<h3 id="26"><strong>26 提示用户输入年份后判断该年是否为闰年</strong></h3>
+<pre><code>
+#!/bin/bash
+
+# 提示用户输入年份后判断该年是否为闰年
+
+# 能被4整除并且并不能被100整除的年份是闰年
+# 能被400整除的年份也是闰年
+read -p &quot;请输入一个年份:&quot; year
+
+if [ &quot;$year&quot; = &quot;&quot; ];then
+    echo &quot;没有输入年份&quot;
+    exit
+fi
+#使用正则测试变量 year 中是否包含大小写字母
+if [[ &quot;$year&quot; =~ [a‐Z] ]];then
+    echo &quot;你输入的不是数字&quot;
+    exit
+fi
+# 判断是否为闰年
+if [ $[year % 4] -eq 0 ] &amp;&amp; [ $[year % 100] -ne 0 ];then
+    echo &quot;$year年是闰年&quot;  
+elif [ $[year % 400] -eq 0 ];then
+    echo &quot;$year年是闰年&quot;
+else
+    echo &quot;$year年不是闰年&quot;
+fi
+</code></pre>
+<h3 id="27-shell-fork"><strong>27 Shell 脚本的 fork 炸弹</strong></h3>
+<pre><code>
+#!/bin/bash
+
+# Shell 脚本的 fork 炸弹 
+
+# 快速消耗计算机资源,致使计算机死机
+# 定义函数名为.(点), 函数中递归调用自己并放入后台执行
+.() { .|.&amp; };.
+</code></pre>
+<h3 id="28"><strong>28 显示当前计算机中所有账户的用户名称</strong></h3>
+<pre><code>
+ #!/bin/bash
+
+# 显示当前计算机中所有账户的用户名称
+
+# 下面使用3种不同的方式列出计算机中所有账户的用户名
+# 指定以:为分隔符,打印/etc/passwd 文件的第 1 列
+awk -F: '{print $1}' /etc/passwd
+
+# 指定以:为分隔符,打印/etc/passwd 文件的第 1 列
+cut -d: -f1 /etc/passwd
+
+# 使用 sed 的替换功能,将/etc/passwd 文件中:后面的所有内容替换为空(仅显示用户名)
+sed 's/:.*//' /etc/passwd
+</code></pre>
+<h3 id="29-tar-data"><strong>29 制定目录路径,脚本自动将该目录使用 tar 命令打包备份到<code>/data</code>目录</strong></h3>
+<pre><code>#!/bin/bash
+
+# 制定目录路径,脚本自动将该目录使用 tar 命令打包备份到/data目录 
+
+[ ! -d /data ] &amp;&amp; mkdir /data
+[ -z $1 ] &amp;&amp; exit
+if [ -d $1 ];then
+  tar -czf /data/$1.-`date +%Y%m%d`.tar.gz $1
+else
+    echo &quot;该目录不存在&quot;
+fi
+</code></pre>
+<h3 id="30"><strong>30 显示进度条(回旋镖版)</strong></h3>
+<pre><code>#!/bin/bash
+
+# 显示进度条(回旋镖版)
+
+while :
+do
+  clear
+  for i in {1..20}
+  do
+    echo ‐e &quot;\033[3;${i}H*&quot;
+    sleep 0.1
+    done
+    clear
+    for i in {20..1}
+    do
+    echo ‐e &quot;\033[3;${i}H*&quot;
+    sleep 0.1
+    done
+    clear
+done
+</code></pre>
+<h3 id="31-linux"><strong>31 修改 Linux 系统的最大打开文件数量</strong></h3>
+<pre><code>
+#!/bin/bash
+
+# 修改 Linux 系统的最大打开文件数量 
+
+# 往/etc/security/limits.conf 文件的末尾追加两行配置参数,修改最大打开文件数量为 65536
+cat &gt;&gt; /etc/security/limits.conf &lt;&lt;EOF
+* soft nofile  65536
+* hard nofile  65536
+EOF
+</code></pre>
+<h3 id="32"><strong>32 自动修改计划任务配置文件</strong></h3>
+<pre><code>#!/bin/bash
+
+# 自动修改计划任务配置文件 
+
+read -p &quot;请输入分钟信息(00‐59):&quot; min
+read -p &quot;请输入小时信息(00‐24):&quot; hour
+read -p &quot;请输入日期信息(01‐31):&quot; date
+read -p &quot;请输入月份信息(01‐12):&quot; month
+read -p &quot;请输入星期信息(00‐06):&quot; weak
+read -p &quot;请输入计划任务需要执行的命令或脚本:&quot; program
+echo &quot;$min $hour $date $month $weak $program&quot; &gt;&gt; /etc/crontab
+</code></pre>
+<h3 id="33-111-999"><strong>33 使用脚本循环创建三位数字的文本文件(111-999 的文件)</strong></h3>
+<pre><code>
+#!/bin/bash
+
+# 使用脚本循环创建三位数字的文本文件(111-999 的文件) 
+
+for i in {1..9}
+do
+  for j in {1..9}
+  do
+    for k in {1..9}
+    do
+      touch /tmp/$i$j$k.txt
+    done
+    done
+done
+</code></pre>
+<h3 id="34-linux"><strong>34、统计 Linux 进程相关数量信息</strong></h3>
+<pre><code>#!/bin/bash
+
+# 统计 Linux 进程相关数量信息 
+
+running=0
+sleeping=0
+stoped=0
+zombie=0
+# 在 proc 目录下所有以数字开始的都是当前计算机正在运行的进程的进程 PID
+# 每个 PID 编号的目录下记录有该进程相关的信息
+for pid in /proc/[1‐9]*
+do
+  procs=$[procs+1]
+  stat=$(awk '{print $3}' $pid/stat)
+# 每个 pid 目录下都有一个 stat 文件,该文件的第 3 列是该进程的状态信息
+    case $stat in
+    R)
+    running=$[running+1]
+    ;;
+    T)
+    stoped=$[stoped+1]
+    ;;
+    S)
+    sleeping=$[sleeping+1]
+    ;;
+    Z)
+     zombie=$[zombie+1]
+     ;;
+    esac
+done
+echo &quot;进程统计信息如下&quot;
+echo &quot;总进程数量为:$procs&quot;
+echo &quot;Running 进程数为:$running&quot;
+echo &quot;Stoped 进程数为:$stoped&quot;
+echo &quot;Sleeping 进程数为:$sleeping&quot;
+echo &quot;Zombie 进程数为:$zombie&quot;
+</code></pre>
+<h3 id="35"><strong>35 从键盘读取一个论坛积分,判断论坛用户等级</strong></h3>
+<pre><code>#!/bin/bash
+
+# 从键盘读取一个论坛积分,判断论坛用户等级
+
+#等级分类如下:
+#  大于等于 90        神功绝世
+#  大于等于 80,小于 90       登峰造极
+#  大于等于 70,小于 80       炉火纯青
+#  大于等于 60,小于 70       略有小成
+#  小于 60               初学乍练
+read -p &quot;请输入积分(0‐100):&quot; JF
+if [ $JF -ge 90 ] ; then
+  echo &quot;$JF 分,神功绝世&quot;
+elif [ $JF -ge 80 ] ; then
+    echo &quot;$JF 分,登峰造极&quot;
+elif [ $JF -ge 70 ] ; then
+    echo &quot;$JF 分,炉火纯青&quot;
+elif [ $JF -lt 60 ] ; then
+    echo &quot;$JF 分,略有小成&quot;
+else
+    echo &quot;$JF 分,初学乍练&quot;
+fi
+</code></pre>
+<h3 id="36"><strong>36 判断用户输入的数据类型(字母、数字或其他)</strong></h3>
+<pre><code>#!/bin/bash
+
+# 判断用户输入的数据类型(字母、数字或其他) 
+read -p &quot;请输入一个字符:&quot; KEY
+case &quot;$KEY&quot; in
+  [a‐z]|[A‐Z])
+    echo &quot;字母&quot; 
+    ;;
+  [0‐9])
+    echo &quot;数字&quot; 
+    ;;
+  *)
+    echo &quot;空格、功能键或其他控制字符&quot;
+esac
+</code></pre>
+<h3 id="37"><strong>37 显示进度条(数字版)</strong></h3>
+<pre><code>
+#!/bin/bash
+
+# 显示进度条(数字版) 
+# echo 使用‐e 选项后,在打印参数中可以指定 H,设置需要打印内容的 x,y 轴的定位坐标
+# 设置需要打印内容在第几行,第几列
+for i in {1..100}
+do
+    echo -e &quot;\033[6;8H[&quot;
+    echo -e &quot;\033[6;9H$i%&quot;
+    echo -e &quot;\033[6;13H]&quot;
+    sleep 0.1
+done
+</code></pre>
+<h3 id="38"><strong>38 打印斐波那契数列</strong></h3>
+<pre><code>
+#!/bin/bash
+
+# 打印斐波那契数列(该数列的特点是后一个数字,永远都是前 2 个数字之和) 
+
+# 斐波那契数列后一个数字永远是前 2 个数字之和
+# 如:0  1  1  2  3  5  8  13 ... ...
+list=(0 1)
+for i in `seq 2 11`
+do
+  list[$i]=`expr ${list[‐1]} + ${list[‐2]}`
+done
+echo ${list[@]}
+</code></pre>
+<h3 id="39-yes-no"><strong>39 判断用户输入的是 Yes 或 NO</strong></h3>
+<pre><code>#!/bin/bash
+
+# 判断用户输入的是 Yes 或 NO 
+
+read -p  &quot;Are you sure?[y/n]:&quot;  sure
+case  $sure  in
+  y|Y|Yes|YES)  
+    echo &quot;you enter $a&quot;
+    ;;
+    n|N|NO|no)
+     echo &quot;you enter $a&quot;
+     ;;
+    *)
+     echo &quot;error&quot;;;
+esac
+</code></pre>
+<h3 id="40-linux-uid-1000"><strong>40 将 Linux 系统中 UID 大于等于 1000 的普通用户都删除</strong></h3>
+<pre><code>#!/bin/bash
+
+# 将 Linux 系统中 UID 大于等于 1000 的普通用户都删除 
+
+# 先用 awk 提取所有 uid 大于等于 1000 的普通用户名称
+# 再使用 for 循环逐个将每个用户删除即可
+user=$(awk -F: '$3&gt;=1000{print $1}' /etc/passwd)
+for i in $user
+do
+     userdel -r $i
+done
+</code></pre>
+<h3 id="41"><strong>41 使用脚本开启关闭虚拟机</strong></h3>
+<pre><code>#!/bin/bash
+
+# 使用脚本开启关闭虚拟机 
+
+# 脚本通过调用virsh命令实现对虚拟机的管理,如果没有该命令,需要安装 libvirt‐client 软件包
+# $1是脚本的第1个参数,$2是脚本的第2个参数
+# 第1个参数是你希望对虚拟机进行的操作指令,第2个参数是虚拟机名称
+case $1 in
+  list)
+    virsh list --all
+    ;;
+  start)
+    virsh start $2
+    ;;
+  stop)
+    virsh destroy $2
+    ;;
+  enable)
+    virsh autostart $2
+    ;;
+  disable)
+    virsh autostart --disable $2
+    ;;
+  *)
+    echo &quot;Usage:$0 list&quot;
+    echo &quot;Usage:$0 [start|stop|enable|disable]  VM_name&quot;
+    cat &lt;&lt; EOF
+    #list      显示虚拟机列表
+    #start     启动虚拟机
+    #stop      关闭虚拟机
+    #enable    设置虚拟机为开机自启
+    #disable   关闭虚拟机开机自启功能
+    EOF
+    ;;
+esac
+</code></pre>
+<h3 id="42-shell"><strong>42 调整虚拟机内存参数的 shell 脚本</strong></h3>
+<pre><code>#!/bin/bash
+
+# 调整虚拟机内存参数的 shell 脚本 
+
+# 脚本通过调用 virsh 命令实现对虚拟机的管理,如果没有该命令,需要安装 libvirt‐client 软件包
+cat &lt;&lt; EOF
+1.调整虚拟机最大内存数值
+2.调整实际分配给虚拟机的内存数值
+EOF
+read -p &quot;请选择[1‐2]:&quot; select
+case $select in
+  1)
+      read -p &quot;请输入虚拟机名称&quot; name
+      read -p &quot;请输入最大内存数值(单位:k):&quot; size
+      virsh setmaxmem $name --size $size --config
+      ;;
+  2)
+      read -p &quot;请输入虚拟机名称&quot; name
+      read -p &quot;请输入实际分配内存数值(单位:k):&quot; size
+      virsh setmem $name $size
+      ;;
+  *)
+      echo &quot;Error&quot;
+      ;;
+esac
+</code></pre>
+<h3 id="43"><strong>43 破解虚拟机密码,无密码登陆虚拟机系统</strong></h3>
+<pre><code>#!/bin/bash
+
+# 破解虚拟机密码,无密码登陆虚拟机系统 
+
+# 该脚本使用 guestmount 工具,Centos7.2 中安装 libguestfs‐tools‐c 可以获得 guestmount 工具
+
+read -p &quot;请输入虚拟机名称:&quot; name
+if virsh domstate $name | grep -q running ;then
+  echo &quot;破解,需要关闭虚拟机&quot;
+  virsh destroy $name
+fi
+mountpoint=&quot;/media/virtimage&quot;
+[ ! -d $mountpoint ] &amp;&amp; mkdir $mountpoint
+echo &quot;请稍后...&quot;
+if mount | grep -q &quot;$mountpoint&quot; ;then
+  umount $mountpoint
+fi
+guestmount -d $name -i $mountpoint
+# 将 passwd 中密码占位符号 x 删除,该账户即可实现无密码登陆系统
+sed -i &quot;/^root/s/x//&quot; $mountpoint/etc/passwd
+</code></pre>
+<h3 id="44-shell-ctrlc"><strong>44 Shell 脚本对信号的处理,执行脚本后,按键盘 Ctrl+C 无法终止的脚本</strong></h3>
+<pre><code>#!/bin/bash
+
+# Shell 脚本对信号的处理,执行脚本后,按键盘 Ctrl+C 无法终止的脚本 
+
+# 使用 trap 命令可以拦截用户通过键盘或 kill 命令发送过来的信号
+# 使用 kill ‐l 可以查看 Linux 系统中所有的信号列表,其中 2 代表 Ctrl+C
+# trap 当发现有用户 ctrl+C 希望终端脚本时,就执行 echo &quot;暂停 10s&quot;;sleep 10 这两条命令
+# 另外用户使用命令:[ kill ‐2 脚本的 PID ] 也可以中断脚本和 Ctrl+C 一样的效果,都会被 trap 拦截
+trap 'echo &quot;暂停 10s&quot;;sleep 10' 2
+while :
+do
+  echo &quot;go go go&quot;
+done
+</code></pre>
+<h3 id="45-vnc"><strong>45 一键配置 VNC 远程桌面服务器(无密码版本)</strong></h3>
+<pre><code>#!/bin/bash
+
+# 一键配置 VNC 远程桌面服务器(无密码版本)
+
+# 脚本配置的 VNC 服务器,客户端无需密码即可连接
+# 客户端仅有查看远程桌面的权限,没有鼠标和键盘的操作权限
+
+rpm --quiet -q tigervnc‐server
+if [  $? -ne  0 ];then
+  yum  -y  tigervnc‐server
+fi
+x0vncserver AcceptKeyEvents=0 AlwaysShared=1 \
+AcceptPointerEvents=0 SecurityTypes=None  rfbport=5908
+</code></pre>
+<h3 id="46-selinux"><strong>46 关闭 SELinux</strong></h3>
+<pre><code>#!/bin/bash
+
+# 关闭 SELinux 
+
+sed -i  '/^SELINUX/s/=.*/=disabled/' /etc/selinux/config
+setenforce 0
+</code></pre>
+<h3 id="47-cpu"><strong>47 查看所有虚拟机磁盘使用量以及CPU使用量信息</strong></h3>
+<pre><code>#!/bin/bash
+
+# 查看所有虚拟机磁盘使用量以及CPU使用量信息 
+
+virt‐df
+read -n1 &quot;按任意键继续&quot; key
+virt‐top
+</code></pre>
+<h3 id="48-shell"><strong>48 使用 shell 脚本打印图形</strong></h3>
+<pre><code>
+#!/bin/bash
+
+# 使用 shell 脚本打印如下图形: 
+
+# 打印第一组图片
+# for(())为类 C 语言的语法格式,也可以使用 for i  in;do  ;done 的格式替换
+# for((i=1;i&lt;=9;i++))循环会执行 9 次,i 从 1 开始到 9,每循环一次 i 自加 1
+clear
+for (( i=1; i&lt;=9; i++ ))
+do
+  for (( j=1; j&lt;=i; j++ ))
+  do
+    echo -n &quot;$i&quot;
+  done
+  echo &quot;&quot;
+done
+read  -n1  &quot;按任意键继续&quot;  key
+#打印第二组图片
+clear
+for (( i=1; i&lt;=5; i++ )) 
+do
+  for (( j=1; j&lt;=i; j++ ))
+  do
+    echo -n &quot; |&quot;
+  done
+  echo &quot;_ &quot;
+done
+read  -n1  &quot;按任意键继续&quot;  key
+#打印第三组图片
+clear
+for (( i=1; i&lt;=5; i++ ))
+do
+  for (( j=1; j&lt;=i; j++ ))
+  do
+    echo -n &quot; *&quot;
+  done
+  echo &quot;&quot;
+done
+for (( i=5; i&gt;=1; i‐‐ ))
+do
+  for (( j=1; j&lt;=i; j++ ))
+  do
+    echo -n &quot; *&quot;
+  done
+  echo &quot;&quot;
+done
+</code></pre>
+<h3 id="49"><strong>49 根据计算机当前时间,返回问候语,可以将该脚本设置为开机启动</strong></h3>
+<pre><code>
+#!/bin/bash
+
+# 根据计算机当前时间,返回问候语,可以将该脚本设置为开机启动 
+
+# 00‐12 点为早晨,12‐18 点为下午,18‐24 点为晚上
+# 使用 date 命令获取时间后,if 判断时间的区间,确定问候语内容
+tm=$(date +%H)
+if [ $tm -le 12 ];then
+  msg=&quot;Good Morning $USER&quot;
+elif [ $tm -gt 12 -a $tm -le 18 ];then
+    msg=&quot;Good Afternoon $USER&quot;
+else
+    msg=&quot;Good Night $USER&quot;
+fi
+echo &quot;当前时间是:$(date +&quot;%Y‐%m‐%d %H:%M:%S&quot;)&quot;
+echo -e &quot;\033[34m$msg\033[0m&quot;
+</code></pre>
+<h3 id="50"><strong>50 读取用户输入的账户名称,将账户名写入到数组保存</strong></h3>
+<pre><code>
+#!/bin/bash
+
+# 读取用户输入的账户名称,将账户名写入到数组保存 
+
+# 定义数组名称为 name,数组的下标为 i,小标从 0 开始,每输入一个账户名,下标加 1,继续存下一个账户
+# 最后,输入 over,脚本输出总结性信息后脚本退出
+i=0
+while :
+do
+  read -p &quot;请输入账户名,输入 over 结束:&quot; key
+  if [ $key == &quot;over&quot; ];then 
+    break
+    else
+    name[$i]=$key
+    let i++
+    fi
+done
+echo &quot;总账户名数量:${#name[*]}&quot;
+echo &quot;${name[@]}&quot;
+</code></pre>
+<h3 id="51"><strong>51 判断文件或目录是否存在</strong></h3>
+<pre><code>#!/bin/bash
+
+# 判断文件或目录是否存在 
+
+if [ $# -eq 0 ] ;then
+echo &quot;未输入任何参数,请输入参数&quot;
+echo &quot;用法:$0 [文件名|目录名]&quot;
+fi
+if [ -f $1 ];then
+  echo &quot;该文件,存在&quot;
+  ls -l $1
+else
+  echo &quot;没有该文件&quot;
+fi
+if [ -d  $1 ];then
+     echo &quot;该目录,存在&quot;
+     ls -ld  $2
+else
+     echo &quot;没有该目录&quot;
+fi
+</code></pre>
+<h3 id="52"><strong>52 打印各种格式的时间</strong></h3>
+<pre><code>!/bin/bash
+
+# 打印各种时间格式 
+
+echo &quot;显示星期简称(如:Sun)&quot;
+date +%a
+echo &quot;显示星期全称(如:Sunday)&quot;
+date +%A
+echo &quot;显示月份简称(如:Jan)&quot;
+date +%b
+echo &quot;显示月份全称(如:January)&quot;
+date +%B
+echo &quot;显示数字月份(如:12)&quot;
+date +%m
+echo &quot;显示数字日期(如:01 号)&quot;
+date +%d
+echo &quot;显示数字年(如:01 号)&quot;
+date +%Y echo &quot;显示年‐月‐日&quot;
+date +%F
+echo &quot;显示小时(24 小时制)&quot;
+date +%H
+echo &quot;显示分钟(00..59)&quot;
+date +%M
+echo &quot;显示秒&quot;
+date +%S
+echo &quot;显示纳秒&quot;
+date +%N
+echo &quot;组合显示&quot;
+date +&quot;%Y%m%d %H:%M:%S&quot;
+</code></pre>
+<h3 id="53-egrep-mac"><strong>53 使用 egrep 过滤 MAC 地址</strong></h3>
+<pre><code>
+#!/bin/bash
+
+# 使用 egrep 过滤 MAC 地址 
+
+# MAC 地址由 16 进制组成,如 AA:BB:CC:DD:EE:FF
+# [0‐9a‐fA‐F]{2}表示一段十六进制数值,{5}表示连续出现5组前置:的十六进制
+egrep &quot;[0‐9a‐fA‐F]{2}(:[0‐9a‐fA‐F]{2}){5}&quot; $1
+</code></pre>
+<h3 id="54"><strong>54 统计双色球各个数字的中奖概率</strong></h3>
+<pre><code>#!/bin/bash
+
+# 统计双色球各个数字的中奖概率 
+
+# 往期双色球中奖号码如下:
+# 01 04 11 28 31 32  16
+# 04 07 08 18 23 24  02
+# 02 05 06 16 28 29  04
+# 04 19 22 27 30 33  01
+# 05 10 18 19 30 31  03
+# 02 06 11 12 19 29  06
+# 统计篮球和红球数据出现的概率次数(篮球不分顺序,统计所有篮球混合在一起的概率)
+awk '{print $1&quot;\n&quot;$2&quot;\n&quot;$3&quot;\n&quot;$4&quot;\n&quot;$5&quot;\n&quot;$6}' 1.txt | sort | uniq -c | sort
+awk '{print $7}' 1.txt | sort | uniq -c | sort
+</code></pre>
+<h3 id="55-awkwc"><strong>55 使用awk编写的wc程序</strong></h3>
+<pre><code>#!/bin/bash
+
+# 使用awk编写的wc程序 
+
+# 自定义变量 chars 变量存储字符个数,自定义变量 words 变量存储单词个数
+# awk 内置变量 NR 存储行数
+# length()为 awk 内置函数,用来统计每行的字符数量,因为每行都会有一个隐藏的$,所以每次统计后都+1
+# wc 程序会把文件结尾符$也统计在内,可以使用 cat ‐A 文件名,查看该隐藏字符
+awk '{chars+=length($0)+1;words+=NF} END{print NR,words,chars}' $1
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2021-9999 Jacob Xi
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      
+    
+  </body>
+</html>

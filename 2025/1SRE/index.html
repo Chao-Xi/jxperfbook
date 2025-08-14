@@ -1,0 +1,6838 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Jacob's 系统性能&Linux调优技术与实战教程">
+      
+      
+        <meta name="author" content="Jacob Xi">
+      
+      
+        <link rel="canonical" href="https://chao-xi.github.io/jxperfbook/2025/1SRE/">
+      
+      
+        <link rel="prev" href="../15Apple_SRE_prp/">
+      
+      
+        <link rel="next" href="../13tiktok/">
+      
+      
+      <link rel="icon" href="../../images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>1 SRE Interview Questions and Answers - Jacob Performance&Linux Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="light-green" data-md-color-accent="light-green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-sre-interview-questions-and-answers" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="Jacob Performance&amp;Linux Book" class="md-header__button md-logo" aria-label="Jacob Performance&Linux Book" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Jacob Performance&Linux Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              1 SRE Interview Questions and Answers
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Chao-Xi/jxperfbook.git" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jxperfbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Jacob Performance&amp;Linux Book" class="md-nav__button md-logo" aria-label="Jacob Performance&Linux Book" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    Jacob Performance&Linux Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Chao-Xi/jxperfbook.git" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jxperfbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Welcome
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    系统基础设施优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            系统基础设施优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/1CPU_Cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 代码让CPU执行得更快 — CPU缓存
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/2Mem_Pool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 内存池提升内存分配的效率
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/3Hash_index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 哈希表利用索引管理亿级对象
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/4PageCache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 磁盘高效地传输文件零拷贝：PageCache
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/5Coroutine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 协程快速地实现高并发服务：Coroutine
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/6Locks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 据业务场景选择合适的锁
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    系统层网络优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            系统层网络优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/1broadcast_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 一对多通讯如何实现
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/2C10M/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 C10M是如何实现事件驱动
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/3tcp3shakehand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 提升TCP三次握手的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/4tcpshutdown/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 提升TCP四次挥手的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/5tcpchachepool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 TCP缓冲区兼顾并发数量与传输速度
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/6tcpcongestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 调整TCP拥塞控制的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    分布式系统优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            分布式系统优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/1Mon_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 通过监控找到性能瓶颈
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/2perf_cap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 舍弃一致性去换取性能的CAP理论
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/3perf_akf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 AKF立方体可扩展性来提高性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/4perf_nwr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 NWR算法修改读写模型以提升性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/5nginx_openresty/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 负载均衡：选择Nginx还是OpenResty
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/6hash_consistent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 一致性哈希的均衡负载
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/7cache_expire/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第七节 过期缓存防止缓存被流量打穿
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/8message_queue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第八节 消息队列基于异步消息提升性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/9map_reduce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第九节 MapReduce通过集群实现离线计算
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/10DB_choice/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第十节 权衡关系数据库与NoSQL数据库
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    IT运维面试问题总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            IT运维面试问题总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/1Linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 IT运维面试问题总结- Linux基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/2Linux_SVC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 IT运维面试问题总结-基础服务、磁盘管理、虚拟平台和系统管理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/3Linux_tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 IT运维面试问题总结-运维工具、开源应用(Ceph、Docker、Apache、Nginx等)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/4Linux_db_dia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 IT运维面试问题总结-数据库、监控、网络管理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/5k8s_OpenShift/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 IT运维面试问题总结-简述Etcd、Kubernetes、Lvs、HAProxy等
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/6Py_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 Python面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/7Pro_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第七节 prometheus：要点总结及面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/8Data_ana_interview1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L8 Data Analyst Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/8Data_ana_interview2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第八节 分析岗笔试/面试知识点
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/9Data_ML_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L9 Top 50 Machine Learning Interview Questions & Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/10Deep_learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L10 30 Frequently asked Deep Learning Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/11Redis_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L11 Redis 核心技术考题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/12ES_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L12 ES 期末考试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/13istio_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L13 Istio面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/14sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L14 SRE本质就是一个懂运维的资深开发
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/15prometheus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L15 Top Prometheus Interview Questions and Answers (2022)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/16jenkins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L16 Top Jenkins Interview Questions and Answers (2022)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/17devops_int2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L17 DevOps Engineer: 30+ Interview Questions and Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/18helm2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L18 Helm指南：Kubernetes包管理器简介
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Python 面试题与总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Python 面试题与总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/1Apple_3sum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1、Apple Interview(3Sum)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/2Python_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2、Python Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/3GS_longest_substr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3、Longest substring
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/4GS_remove_sort_list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4、Remove duplicate in Sort List
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/5Sort_list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5、Reverse Sort List
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/6RM_dup_dict/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6、Remove duplicate from dictionary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/7Find_max/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7、Find Maxmium number count in list and nth number
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/8gs_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8、GS Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/9Substring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9、Find substring inside String
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/10reverse_string/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10、Reverse String
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/11zeroinN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11、Count how many zero in N!
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/12JumpGame/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12、Jump Game
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/13Gs_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13、GS interview preparation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux 面试题与总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Linux 面试题与总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/1Linux_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L1 1min 内对 Linux 进行性能诊断
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/2Linux_load_avg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L2 当面试官问你load average时，怎么回答？
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/3Linux_inode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L3 文件系统inode
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/4Linux_ops_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L4 运维必须掌握的Linux面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/5Linux_network_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L5 常见网络编程面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/6Git_principle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L6 Git 实用技巧记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/7LoadBalancer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L7 深入浅出负载均衡
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/8Linux_all/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L8 Linux 面试题 合集CDN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/9Linux_five/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L9 Linux面试最高频的5个基本问题（CPU+COMMMAND)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/10haproxy_learn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L10 HAProxy从零开始到掌握
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/12Linux_vir_file/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L12 从 lsof 开始，深入理解 Linux 虚拟文件系统
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/linux_rew/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux review
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/13Linux_ts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L13 Linux故障排查思路及常用命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/14Linux_iptables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L14 Linux iptables命令详解
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/15linux_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L15 Linux网络基础与性能优化
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Companies Interview
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Companies Interview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/1Ms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Microsoft Interview2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/2Ms_al/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Microsoft Interview Algorithm 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/3ubs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 UBS interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/4MorganS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Morgan Stanly 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/5apple/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Apple 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/6aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 AWS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/7tesla/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Tesla
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/my/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    My Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/int_anws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    架构师面试合集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux 常用命令
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Linux 常用命令
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/0shell_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Shell命令行一些快捷键组合
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/0shell_linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Linux常用命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/16linux_ops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Linux 实用运维命令 - Update
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/1shell_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Shell 分析服务器日志命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/1log_man/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Log: 用 awk + grep + sed搞定日志处理神器组合拳
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/2linux_locate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Linux 系统下查找文件命令总结
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/3devops_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Basic Shell Scripting for Devops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/4Basic_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 基本 shell 脚本 系统+文件+卷+时间
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/5install_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Shell Package 安装+配置脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/6mon_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 监控 Shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/7net_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 网络+数据库 Shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/8secret_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8 Secret shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/9script_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9 Linux script 录播
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/10linux_unlink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10 使用 unlink 删除文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/11linux_ip_port/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11 如何在 Linux 下限制端口仅对指定 IP 开放访问
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/12socat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12 Linux 命令 socat
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/14linux_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14 Linux shell 脚本详解学习 2023
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/15grep_learn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15 使用grep分析日志
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/17file_opt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16 Linux File Operation (df/du/rsync/批量删除/定时备份)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/18linux_var/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17 Shell script中的8个常用的特殊变量
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/19curl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18 Curl的10个高级用法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/20shell_dir/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19 Shell脚本执行不再受限，不进入所在目录也能成功运行
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/21shell_eva/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20 Bash脚本多函数使用eval提高脚本编写效率！
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/22find/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21 使用find命令轻松查找文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/22find/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21 使用find命令轻松查找文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/24xargs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23 xargs命令的使用技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/25shell_script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24 快速提升Shell脚本能力
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/26linux_zombie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25 如何清理 Linux 僵尸进程？
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/27Inode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26 Linux inode 介绍与清理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/28vim/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27 Vim 技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/29awk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    28 Linux AWK 文本处理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/30nohup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    29 nohup命令：在Linux中轻松实现后台运行和守护进程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/31ln/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    30 文件系统中的“分身术”ln命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/32Linux_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    31 Linux 系统日志之深入解析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/33bash/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    32 Linux 中 `.bashrc`、`.bash-profile` 和 `.profile` 之间的区别
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/34linux_6logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    33 6大Linux命令线上日志排查
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/35port_detect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    34 未安装telnet 和 nc 等工具，如何测试端口是否开放
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/36dudf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    35 df命令显示磁盘空间不足而du命令显示还有很多空闲空间
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/37linux_cond/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    36 Shell脚本的流程控制知识点汇总(2024)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Bash Programming 技巧
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Bash Programming 技巧
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/1bash_prom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 简洁的 Bash Programming 技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/2bash_skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 简洁的 Bash Programming 技巧续篇
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/3bash_skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Bash Pitfalls: 编程易犯的错误（一）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/4bash_python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 在Python中执行Linux Shell脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    AutoSys
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            AutoSys
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/1autosys_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 AutoSys: A Beginner’s Guide AutoSys Workload Automation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/1Autosys_tot1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Autosys Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/2Autosys_jil/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Autosys JIL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/3Autosys_comp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Autosys Components, Configuration & Validation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/4Autosys_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Austosys command
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/5Autosys_job_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Manage Job in the Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/6autosys_vir_resouce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Autotsys virtual resource management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/7autosys_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Shell Script to check Autosys agent installed
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    2025 - 面试准备
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            2025 - 面试准备
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025-Intro
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 CI/CD 之路-GitOps 面试题合集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Docker面试10大必考题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Kubernetes 面试题精解：从入门到进阶(2025)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4Linux_tb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Linux 系统故障时
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 AWS 面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6monitor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 监控生态面试通关秘籍
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7cri/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 从容器到调度：准备好这些 CRI 面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8sap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8 SAP面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../9db_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9 数据库面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10prometheus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10 Prometheus面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11istio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11 深度剖析 Istio (2025)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12 Python Interview - Full
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            SRE
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15Apple_SRE_prp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025 Apple SRE PRP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    1 SRE Interview Questions and Answers
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 SRE Interview Questions and Answers
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-is-the-difference-between-sre-and-devops" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What is the difference between SRE and DevOps?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. What is the difference between SRE and DevOps?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sre" class="md-nav__link">
+    <span class="md-ellipsis">
+      SRE
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#devops" class="md-nav__link">
+    <span class="md-ellipsis">
+      DevOps
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-what-are-slis-slos-and-slas-how-do-they-relate" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. What are SLIs, SLOs, and SLAs? How do they relate?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-what-is-an-error-budget-and-how-do-you-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. What is an Error Budget and how do you use it?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-how-do-you-implement-monitoring-for-a-distributed-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. How do you implement monitoring for a distributed system?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-what-are-some-common-causes-of-high-latency-in-web-applications-and-how-can-you-troubleshoot-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. What are some common causes of high latency in web applications and how can you troubleshoot them?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-describe-a-runbook-what-should-be-included-in-a-good-runbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Describe a runbook. What should be included in a good runbook?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-what-is-toil-in-sre-and-how-can-it-be-eliminated" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. What is toil in SRE, and how can it be eliminated?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-how-would-you-design-a-high-availability-architecture-in-a-cloud-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. How would you design a high-availability architecture in a cloud environment?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-what-are-the-differences-between-horizontal-and-vertical-scaling-when-would-you-use-each" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. What are the differences between horizontal and vertical scaling? When would you use each?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-explain-blue-green-deployment-and-its-benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Explain blue-green deployment and its benefits.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-how-do-you-ensure-fault-tolerance-in-a-microservices-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. How do you ensure fault tolerance in a microservices architecture?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-what-is-chaos-engineering-and-why-is-it-important" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. What is chaos engineering, and why is it important?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-how-do-you-handle-noisy-alerts" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. How do you handle noisy alerts?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-how-does-sre-measure-the-reliability-of-a-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      14. How does SRE measure the reliability of a system?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-what-is-mttr-mtbf-and-mttd-why-are-they-important" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. What is MTTR, MTBF, and MTTD? Why are they important?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-what-is-the-difference-between-canary-and-rolling-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      16. What is the difference between canary and rolling deployment?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-how-does-kubernetes-help-in-sre" class="md-nav__link">
+    <span class="md-ellipsis">
+      17. How does Kubernetes help in SRE?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-what-is-a-blameless-postmortem-and-why-is-it-important" class="md-nav__link">
+    <span class="md-ellipsis">
+      18. What is a blameless postmortem, and why is it important?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-how-do-you-handle-database-scaling-in-high-traffic-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      19. How do you handle database scaling in high-traffic systems?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-what-is-service-mesh-and-how-does-it-help-in-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      20. What is service mesh, and how does it help in observability?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-how-do-you-reduce-mean-time-to-recovery-mttr" class="md-nav__link">
+    <span class="md-ellipsis">
+      21. How do you reduce Mean Time to Recovery (MTTR)?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-describe-a-typical-sre-on-call-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      22. Describe a typical SRE on-call process.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-how-do-you-handle-secret-management-in-production-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      23. How do you handle secret management in production systems?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-how-do-you-conduct-capacity-planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      25. How do you conduct capacity planning?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#26-what-is-observability-how-is-it-different-from-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      26. What is observability? How is it different from monitoring?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#27-how-do-you-ensure-zero-downtime-deployments" class="md-nav__link">
+    <span class="md-ellipsis">
+      27. How do you ensure zero-downtime deployments?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#28-what-is-infrastructure-as-code-iac-and-how-does-it-benefit-sres" class="md-nav__link">
+    <span class="md-ellipsis">
+      28. What is infrastructure as code (IaC), and how does it benefit SREs?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#29-what-is-gitops-and-how-is-it-applied-in-sre-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      29. What is GitOps and how is it applied in SRE workflows?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30-how-do-you-test-disaster-recovery-in-cloud-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      30. How do you test disaster recovery in cloud systems?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#31-explain-rate-limiting-and-why-its-important" class="md-nav__link">
+    <span class="md-ellipsis">
+      31. Explain rate limiting and why it’s important.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32-how-do-you-ensure-security-in-cicd-pipelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      32. How do you ensure security in CI/CD pipelines?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33-whats-the-difference-between-a-symptom-based-and-cause-based-alert" class="md-nav__link">
+    <span class="md-ellipsis">
+      33. What’s the difference between a symptom-based and cause-based alert?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34-how-do-you-handle-cascading-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      34. How do you handle cascading failures?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#35-how-does-load-shedding-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      35. How does load shedding work?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#36-what-is-distributed-tracing-and-how-do-you-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      36. What is distributed tracing and how do you use it?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#37-what-is-the-principle-of-least-privilege-in-access-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      37. What is the principle of least privilege in access control?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#38-how-do-you-track-configuration-drift" class="md-nav__link">
+    <span class="md-ellipsis">
+      38. How do you track configuration drift?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#39-what-is-alert-fatigue-and-how-do-you-combat-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      39. What is alert fatigue and how do you combat it?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#40-describe-the-incident-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      40. Describe the incident lifecycle.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#41-how-do-you-design-a-high-availability-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      41. How do you design a high-availability system?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#43-how-do-you-scale-systems-to-handle-sudden-traffic-spikes" class="md-nav__link">
+    <span class="md-ellipsis">
+      43. How do you scale systems to handle sudden traffic spikes?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#44-whats-the-purpose-of-an-error-budget-and-how-do-you-enforce-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      44. What’s the purpose of an error budget, and how do you enforce it?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#45-how-do-you-handle-ephemeral-environments-for-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      45. How do you handle ephemeral environments for testing?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#46-how-do-you-monitor-service-dependencies-in-microservices" class="md-nav__link">
+    <span class="md-ellipsis">
+      46. How do you monitor service dependencies in microservices?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#49-what-is-auto-remediation-and-give-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      49. What is auto-remediation, and give examples.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#50-how-do-you-prepare-for-major-product-launches-from-an-sre-perspective" class="md-nav__link">
+    <span class="md-ellipsis">
+      50. How do you prepare for major product launches from an SRE perspective?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sre-incident-response-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      SRE Incident Response &amp; Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SRE Incident Response &amp; Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-you-discover-that-a-recent-config-change-was-deployed-without-proper-testing-the-system-is-unstable-how-do-you-respond" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 You discover that a recent config change was deployed without proper testing. The system is unstable. How do you respond?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-your-service-is-intermittently-returning-403-errors-to-authenticated-users-how-do-you-debug-and-resolve-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 Your service is intermittently returning 403 errors to authenticated users. How do you debug and resolve this?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-a-traffic-spike-is-causing-cascading-failures-in-your-microservices-how-do-you-stabilize-the-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 A traffic spike is causing cascading failures in your microservices. How do you stabilize the system?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-you-receive-alerts-during-a-region-wide-cloud-provider-outage-whats-your-course-of-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 You receive alerts during a region-wide cloud provider outage. What’s your course of action?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-a-rollback-didnt-resolve-a-production-issue-whats-your-next-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      5 A rollback didn’t resolve a production issue. What’s your next step?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-your-cdn-is-returning-stale-content-after-a-deployment-how-do-you-troubleshoot" class="md-nav__link">
+    <span class="md-ellipsis">
+      6 Your CDN is returning stale content after a deployment. How do you troubleshoot?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-an-internal-service-has-exceeded-its-api-rate-limits-how-do-you-resolve-it-and-prevent-recurrence" class="md-nav__link">
+    <span class="md-ellipsis">
+      7 An internal service has exceeded its API rate limits. How do you resolve it and prevent recurrence?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-a-monitoring-tool-itself-has-gone-down-how-do-you-ensure-visibility-during-the-incident" class="md-nav__link">
+    <span class="md-ellipsis">
+      8 A monitoring tool itself has gone down. How do you ensure visibility during the incident?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-your-application-suddenly-has-a-spike-in-retries-and-timeouts-whats-your-investigative-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      9 Your application suddenly has a spike in retries and timeouts. What’s your investigative strategy?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-reliability-performance-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 Reliability &amp; Performance Optimization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 Reliability &amp; Performance Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-your-system-is-hitting-database-connection-pool-limits-how-do-you-investigate-and-mitigate" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 Your system is hitting database connection pool limits. How do you investigate and mitigate?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-a-regional-failover-succeeded-but-users-reported-increased-latency-what-improvements-would-you-make" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 A regional failover succeeded, but users reported increased latency. What improvements would you make?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-a-memory-intensive-process-is-causing-gc-thrashing-how-would-you-fix-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 A memory-intensive process is causing GC thrashing. How would you fix this?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-your-app-needs-to-support-zero-downtime-deployments-but-users-experience-brief-disruptions-how-do-you-fix-that" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 Your app needs to support zero-downtime deployments, but users experience brief disruptions. How do you fix that?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-how-would-you-introduce-chaos-testing-into-a-mission-critical-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      5 How would you introduce chaos testing into a mission-critical environment?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-you-need-to-migrate-a-high-availability-service-to-a-new-cloud-provider-whats-your-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      6 You need to migrate a high-availability service to a new cloud provider. What’s your plan?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-a-background-job-is-starving-the-main-thread-of-resources-how-do-you-diagnose-and-resolve-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      7 A background job is starving the main thread of resources. How do you diagnose and resolve it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-your-system-is-slow-under-load-but-resource-metrics-look-fine-whats-your-next-move" class="md-nav__link">
+    <span class="md-ellipsis">
+      8 Your system is slow under load, but resource metrics look fine. What’s your next move?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-your-application-caches-are-not-invalidating-properly-how-do-you-handle-cache-staleness" class="md-nav__link">
+    <span class="md-ellipsis">
+      9 Your application caches are not invalidating properly. How do you handle cache staleness?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-monitoring-observability-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      10 Monitoring, Observability &amp; Automation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10 Monitoring, Observability &amp; Automation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-your-alerts-are-not-capturing-a-slow-memory-leak-that-causes-a-crash-after-days-of-uptime-how-do-you-refine-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 Your alerts are not capturing a slow memory leak that causes a crash after days of uptime. How do you refine observability?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-you-need-to-create-slos-for-a-service-with-varying-usage-patterns-how-do-you-define-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 You need to create SLOs for a service with varying usage patterns. How do you define them?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-a-team-reports-inconsistent-metrics-between-dashboards-how-do-you-validate-data-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 A team reports inconsistent metrics between dashboards. How do you validate data sources?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13tiktok/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 2025 最新字节跳动运维云原生面经分享
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2Ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Ansible Interview Question
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 250 Linux Scenario Based Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3kubernetes_sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Kubernetes SRE part1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3kubernetes_sre2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Kubernetes SRE part2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Git Scenario-Based Questions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            SRE
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/0interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 SRE 面试2025
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/1linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 SRE Linux All2025
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/2ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Ansible 从入门到放弃
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15Apple_SRE_prp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025 Apple SRE PRP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/3git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 GIT CE TEST
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE_Linux
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            SRE_Linux
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/2Linux_test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Linux Fundamentals
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/1k8s_dev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Using Kubernetes as a Developer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/3code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Script Learning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/4sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 SRE Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/5agile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Agile Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/6cloud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Cloud Native Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    英语学习
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16">
+            <span class="md-nav__icon md-icon"></span>
+            英语学习
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Eng/1work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 职场英语
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-is-the-difference-between-sre-and-devops" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What is the difference between SRE and DevOps?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. What is the difference between SRE and DevOps?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sre" class="md-nav__link">
+    <span class="md-ellipsis">
+      SRE
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#devops" class="md-nav__link">
+    <span class="md-ellipsis">
+      DevOps
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-what-are-slis-slos-and-slas-how-do-they-relate" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. What are SLIs, SLOs, and SLAs? How do they relate?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-what-is-an-error-budget-and-how-do-you-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. What is an Error Budget and how do you use it?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-how-do-you-implement-monitoring-for-a-distributed-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. How do you implement monitoring for a distributed system?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-what-are-some-common-causes-of-high-latency-in-web-applications-and-how-can-you-troubleshoot-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. What are some common causes of high latency in web applications and how can you troubleshoot them?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-describe-a-runbook-what-should-be-included-in-a-good-runbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Describe a runbook. What should be included in a good runbook?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-what-is-toil-in-sre-and-how-can-it-be-eliminated" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. What is toil in SRE, and how can it be eliminated?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-how-would-you-design-a-high-availability-architecture-in-a-cloud-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. How would you design a high-availability architecture in a cloud environment?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-what-are-the-differences-between-horizontal-and-vertical-scaling-when-would-you-use-each" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. What are the differences between horizontal and vertical scaling? When would you use each?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-explain-blue-green-deployment-and-its-benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Explain blue-green deployment and its benefits.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-how-do-you-ensure-fault-tolerance-in-a-microservices-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. How do you ensure fault tolerance in a microservices architecture?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-what-is-chaos-engineering-and-why-is-it-important" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. What is chaos engineering, and why is it important?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-how-do-you-handle-noisy-alerts" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. How do you handle noisy alerts?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-how-does-sre-measure-the-reliability-of-a-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      14. How does SRE measure the reliability of a system?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-what-is-mttr-mtbf-and-mttd-why-are-they-important" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. What is MTTR, MTBF, and MTTD? Why are they important?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-what-is-the-difference-between-canary-and-rolling-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      16. What is the difference between canary and rolling deployment?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-how-does-kubernetes-help-in-sre" class="md-nav__link">
+    <span class="md-ellipsis">
+      17. How does Kubernetes help in SRE?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-what-is-a-blameless-postmortem-and-why-is-it-important" class="md-nav__link">
+    <span class="md-ellipsis">
+      18. What is a blameless postmortem, and why is it important?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-how-do-you-handle-database-scaling-in-high-traffic-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      19. How do you handle database scaling in high-traffic systems?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-what-is-service-mesh-and-how-does-it-help-in-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      20. What is service mesh, and how does it help in observability?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-how-do-you-reduce-mean-time-to-recovery-mttr" class="md-nav__link">
+    <span class="md-ellipsis">
+      21. How do you reduce Mean Time to Recovery (MTTR)?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-describe-a-typical-sre-on-call-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      22. Describe a typical SRE on-call process.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-how-do-you-handle-secret-management-in-production-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      23. How do you handle secret management in production systems?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-how-do-you-conduct-capacity-planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      25. How do you conduct capacity planning?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#26-what-is-observability-how-is-it-different-from-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      26. What is observability? How is it different from monitoring?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#27-how-do-you-ensure-zero-downtime-deployments" class="md-nav__link">
+    <span class="md-ellipsis">
+      27. How do you ensure zero-downtime deployments?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#28-what-is-infrastructure-as-code-iac-and-how-does-it-benefit-sres" class="md-nav__link">
+    <span class="md-ellipsis">
+      28. What is infrastructure as code (IaC), and how does it benefit SREs?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#29-what-is-gitops-and-how-is-it-applied-in-sre-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      29. What is GitOps and how is it applied in SRE workflows?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30-how-do-you-test-disaster-recovery-in-cloud-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      30. How do you test disaster recovery in cloud systems?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#31-explain-rate-limiting-and-why-its-important" class="md-nav__link">
+    <span class="md-ellipsis">
+      31. Explain rate limiting and why it’s important.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32-how-do-you-ensure-security-in-cicd-pipelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      32. How do you ensure security in CI/CD pipelines?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33-whats-the-difference-between-a-symptom-based-and-cause-based-alert" class="md-nav__link">
+    <span class="md-ellipsis">
+      33. What’s the difference between a symptom-based and cause-based alert?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34-how-do-you-handle-cascading-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      34. How do you handle cascading failures?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#35-how-does-load-shedding-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      35. How does load shedding work?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#36-what-is-distributed-tracing-and-how-do-you-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      36. What is distributed tracing and how do you use it?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#37-what-is-the-principle-of-least-privilege-in-access-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      37. What is the principle of least privilege in access control?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#38-how-do-you-track-configuration-drift" class="md-nav__link">
+    <span class="md-ellipsis">
+      38. How do you track configuration drift?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#39-what-is-alert-fatigue-and-how-do-you-combat-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      39. What is alert fatigue and how do you combat it?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#40-describe-the-incident-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      40. Describe the incident lifecycle.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#41-how-do-you-design-a-high-availability-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      41. How do you design a high-availability system?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#43-how-do-you-scale-systems-to-handle-sudden-traffic-spikes" class="md-nav__link">
+    <span class="md-ellipsis">
+      43. How do you scale systems to handle sudden traffic spikes?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#44-whats-the-purpose-of-an-error-budget-and-how-do-you-enforce-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      44. What’s the purpose of an error budget, and how do you enforce it?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#45-how-do-you-handle-ephemeral-environments-for-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      45. How do you handle ephemeral environments for testing?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#46-how-do-you-monitor-service-dependencies-in-microservices" class="md-nav__link">
+    <span class="md-ellipsis">
+      46. How do you monitor service dependencies in microservices?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#49-what-is-auto-remediation-and-give-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      49. What is auto-remediation, and give examples.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#50-how-do-you-prepare-for-major-product-launches-from-an-sre-perspective" class="md-nav__link">
+    <span class="md-ellipsis">
+      50. How do you prepare for major product launches from an SRE perspective?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sre-incident-response-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      SRE Incident Response &amp; Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SRE Incident Response &amp; Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-you-discover-that-a-recent-config-change-was-deployed-without-proper-testing-the-system-is-unstable-how-do-you-respond" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 You discover that a recent config change was deployed without proper testing. The system is unstable. How do you respond?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-your-service-is-intermittently-returning-403-errors-to-authenticated-users-how-do-you-debug-and-resolve-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 Your service is intermittently returning 403 errors to authenticated users. How do you debug and resolve this?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-a-traffic-spike-is-causing-cascading-failures-in-your-microservices-how-do-you-stabilize-the-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 A traffic spike is causing cascading failures in your microservices. How do you stabilize the system?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-you-receive-alerts-during-a-region-wide-cloud-provider-outage-whats-your-course-of-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 You receive alerts during a region-wide cloud provider outage. What’s your course of action?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-a-rollback-didnt-resolve-a-production-issue-whats-your-next-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      5 A rollback didn’t resolve a production issue. What’s your next step?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-your-cdn-is-returning-stale-content-after-a-deployment-how-do-you-troubleshoot" class="md-nav__link">
+    <span class="md-ellipsis">
+      6 Your CDN is returning stale content after a deployment. How do you troubleshoot?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-an-internal-service-has-exceeded-its-api-rate-limits-how-do-you-resolve-it-and-prevent-recurrence" class="md-nav__link">
+    <span class="md-ellipsis">
+      7 An internal service has exceeded its API rate limits. How do you resolve it and prevent recurrence?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-a-monitoring-tool-itself-has-gone-down-how-do-you-ensure-visibility-during-the-incident" class="md-nav__link">
+    <span class="md-ellipsis">
+      8 A monitoring tool itself has gone down. How do you ensure visibility during the incident?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-your-application-suddenly-has-a-spike-in-retries-and-timeouts-whats-your-investigative-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      9 Your application suddenly has a spike in retries and timeouts. What’s your investigative strategy?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-reliability-performance-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 Reliability &amp; Performance Optimization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 Reliability &amp; Performance Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-your-system-is-hitting-database-connection-pool-limits-how-do-you-investigate-and-mitigate" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 Your system is hitting database connection pool limits. How do you investigate and mitigate?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-a-regional-failover-succeeded-but-users-reported-increased-latency-what-improvements-would-you-make" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 A regional failover succeeded, but users reported increased latency. What improvements would you make?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-a-memory-intensive-process-is-causing-gc-thrashing-how-would-you-fix-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 A memory-intensive process is causing GC thrashing. How would you fix this?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-your-app-needs-to-support-zero-downtime-deployments-but-users-experience-brief-disruptions-how-do-you-fix-that" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 Your app needs to support zero-downtime deployments, but users experience brief disruptions. How do you fix that?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-how-would-you-introduce-chaos-testing-into-a-mission-critical-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      5 How would you introduce chaos testing into a mission-critical environment?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-you-need-to-migrate-a-high-availability-service-to-a-new-cloud-provider-whats-your-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      6 You need to migrate a high-availability service to a new cloud provider. What’s your plan?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-a-background-job-is-starving-the-main-thread-of-resources-how-do-you-diagnose-and-resolve-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      7 A background job is starving the main thread of resources. How do you diagnose and resolve it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-your-system-is-slow-under-load-but-resource-metrics-look-fine-whats-your-next-move" class="md-nav__link">
+    <span class="md-ellipsis">
+      8 Your system is slow under load, but resource metrics look fine. What’s your next move?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-your-application-caches-are-not-invalidating-properly-how-do-you-handle-cache-staleness" class="md-nav__link">
+    <span class="md-ellipsis">
+      9 Your application caches are not invalidating properly. How do you handle cache staleness?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-monitoring-observability-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      10 Monitoring, Observability &amp; Automation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10 Monitoring, Observability &amp; Automation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-your-alerts-are-not-capturing-a-slow-memory-leak-that-causes-a-crash-after-days-of-uptime-how-do-you-refine-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 Your alerts are not capturing a slow memory leak that causes a crash after days of uptime. How do you refine observability?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-you-need-to-create-slos-for-a-service-with-varying-usage-patterns-how-do-you-define-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 You need to create SLOs for a service with varying usage patterns. How do you define them?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-a-team-reports-inconsistent-metrics-between-dashboards-how-do-you-validate-data-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 A team reports inconsistent metrics between dashboards. How do you validate data sources?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="1-sre-interview-questions-and-answers">1 SRE Interview Questions and Answers</h1>
+<h3 id="1-what-is-the-difference-between-sre-and-devops">1. What is the difference between SRE and DevOps?</h3>
+<p><strong>DevOps is a set of cultural philosophies and practices that aims to unify software development (Dev) and software operation (Ops)</strong>. </p>
+<p>Its goal is to shorten the system development life cycle and provide continuous delivery with high software quality</p>
+<p><strong>SRE, coined by Google, applies software engineering to infrastructure and operations problems.</strong> </p>
+<p>It enforces reliability using measurable Service Level Objectives (SLOs), focuses on toil reduction, automation, and balancing reliability with feature velocity using error budgets.</p>
+<h4 id="sre"><strong>SRE</strong></h4>
+<ul>
+<li>Origin:  Introduced by Google</li>
+<li>Focus: <strong>Reliability, automation, monitoring</strong></li>
+<li>Core Principles <strong>SLOs, SLIs, Error Budget</strong></li>
+<li>Tooling Uses <strong>software engineering tools</strong></li>
+</ul>
+<h4 id="devops"><strong>DevOps</strong></h4>
+<ul>
+<li>Cultural movement</li>
+<li>CI/CD, collaboration</li>
+<li>Automation, culture, shared responsibility</li>
+<li>Emphasis on CI/CD pipelines, version control</li>
+</ul>
+<h3 id="2-what-are-slis-slos-and-slas-how-do-they-relate">2. What are SLIs, SLOs, and SLAs? How do they relate?</h3>
+<ul>
+<li><strong>SLI (Service Level Indicator)</strong>: A quantitative measure of a service's performance. </li>
+</ul>
+<p><strong>Example: latency, uptime, request success rate.</strong></p>
+<ul>
+<li><strong>SLO (Service Level Objective): A target value for an SLI.</strong> </li>
+</ul>
+<p>Example: “99.9% of requests  should succeed in a 30-day window.”</p>
+<ul>
+<li>SLA (Service Level Agreement): A formal agreement between service providers and customers, including penalties for failing to meet the SLOs.</li>
+</ul>
+<p>Relationship:</p>
+<ul>
+<li><strong>SLIs → Used to measure service behavior</strong></li>
+<li><strong>SLOs → Targets based on SLIs</strong></li>
+<li><strong>SLAs → Contracts based on SLOs</strong></li>
+</ul>
+<h3 id="3-what-is-an-error-budget-and-how-do-you-use-it">3. What is an Error Budget and how do you use it?</h3>
+<p><strong>An Error Budget</strong> is the <strong>allowable amount of downtime or failures a system can have without breaching the SLO</strong>. </p>
+<p><strong>It represents the balance between innovation and reliability</strong>.</p>
+<p>If your SLO is 99.9% uptime over 30 days:</p>
+<ul>
+<li>Total minutes = 43,200</li>
+<li>Downtime allowed = 0.1% of 43,200 = 43.2 minutes</li>
+</ul>
+<p>Usage:</p>
+<ul>
+<li>If the error budget is used up → halt feature releases, focus on reliability.</li>
+<li>If not used → can afford to take more risk (release features, experiments).</li>
+</ul>
+<p>It enables <strong>data-driven decision</strong> making between ops and dev.</p>
+<h3 id="4-how-do-you-implement-monitoring-for-a-distributed-system">4. How do you implement monitoring for a distributed system?</h3>
+<p>Monitoring a distributed system involves collecting metrics, logs, and traces across services, components, and hosts. Implementation includes:</p>
+<ol>
+<li><strong>Metric Collection</strong>: Use tools like Prometheus, Datadog, or CloudWatch to gather CPU, memory, latency, etc.</li>
+<li><strong>Logging</strong>: Centralize logs with ELK (Elasticsearch, Logstash, Kibana), Fluentd, or Loki.</li>
+<li><strong>Tracing</strong>: Implement distributed tracing using OpenTelemetry, Jaeger, or Zipkin.</li>
+<li><strong>Dashboards</strong>: Visualize key metrics using Grafana or Datadog dashboards.</li>
+<li><strong>Alerting</strong>: Set up alerts for SLO breaches, resource exhaustion, or abnormal behavior</li>
+</ol>
+<p><strong>Best Practices</strong></p>
+<ul>
+<li><strong>Define key SLIs (latency, availability)</strong></li>
+<li>Use black-box and white-box monitoring</li>
+<li>Alert on symptoms, not causes</li>
+</ul>
+<h3 id="5-what-are-some-common-causes-of-high-latency-in-web-applications-and-how-can-you-troubleshoot-them">5. What are some common causes of high latency in web applications and how can you  troubleshoot them?</h3>
+<p><strong>Common Causes</strong></p>
+<ul>
+<li>Database slow queries</li>
+<li>Application-level bottlenecks (e.g., loops, locking)</li>
+<li>Network issues (packet loss, congestion)</li>
+<li>Service dependency delays (e.g., upstream APIs)</li>
+</ul>
+<p>Troubleshooting Steps:</p>
+<ol>
+<li><strong>Use APM tools: Detect slow endpoints/functions</strong>.</li>
+<li><strong>Check logs: Look for timeouts or retries</strong>.</li>
+<li><strong>Query DB slow logs</strong>: Identify problematic SQL.</li>
+<li><strong>Network diagnostics</strong>: Use traceroute, ping, mtr.</li>
+<li><strong>Load testing</strong>: Use tools like <strong>JMeter, Locust to simulate traffic.</strong></li>
+</ol>
+<p><strong>Fixes might include:</strong></p>
+<ul>
+<li>Caching results (e.g., Redis)</li>
+<li>DB indexing</li>
+<li>Optimizing code</li>
+<li>Load balancing traffic</li>
+</ul>
+<h3 id="6-describe-a-runbook-what-should-be-included-in-a-good-runbook">6. Describe a runbook. What should be included in a good runbook?</h3>
+<p>A runbook is a documented set of <strong>procedures for handling known operations or incidents</strong>.</p>
+<p>Should Include:</p>
+<ul>
+<li>Description of the problem</li>
+<li>Preconditions or triggers</li>
+<li>Step-by-step resolution actions</li>
+<li>Validation steps post-fix</li>
+<li>Rollback plan</li>
+<li>Owner/team to escalate to</li>
+</ul>
+<p>Example:</p>
+<p><strong>Runbook for “Disk Full on Web Server”</strong></p>
+<ul>
+<li>Step 1: SSH into the server</li>
+<li>Step 2: Identify large files (<code>du -sh *</code>)</li>
+<li>Step 3: Archive or delete logs</li>
+<li>Step 4: Verify disk space</li>
+</ul>
+<p>Benefits: </p>
+<ul>
+<li><strong>Faster MTTR (Mean Time To Recovery)</strong></li>
+<li>Reduces need for on-call escalation</li>
+<li>Ensures consistency</li>
+</ul>
+<h3 id="7-what-is-toil-in-sre-and-how-can-it-be-eliminated">7. What is toil in SRE, and how can it be eliminated?</h3>
+<p><strong>Toil is repetitive, manual, automatable, and non-value-add work that doesn't require human judgment.</strong></p>
+<p>Examples: </p>
+<ul>
+<li><strong>Restarting failed services</strong></li>
+<li><strong>Manually rotating logs</strong></li>
+<li><strong>Handling routine tickets</strong></li>
+</ul>
+<p>Elimination Techniques:</p>
+<ul>
+<li><strong>Automation: Write scripts, use Ansible/Terraform</strong></li>
+<li><strong>Self-healing: Use Kubernetes probes and auto-restart</strong></li>
+<li><strong>Better alerting: Suppress noise with smart alerts</strong></li>
+<li><strong>Bots: Use Slack bots for common actions</strong></li>
+</ul>
+<p>Goal is to keep toil &lt; 50% of SRE workload</p>
+<h3 id="8-how-would-you-design-a-high-availability-architecture-in-a-cloud-environment">8. How would you design a high-availability architecture in a cloud environment?</h3>
+<p>Core Principles:</p>
+<ul>
+<li><strong>Multi-Zone</strong>: Use multiple availability zones (AZs)</li>
+<li><strong>Load Balancers</strong>: Distribute traffic across instances</li>
+<li><strong>Auto-scaling</strong>: Maintain performance under load</li>
+<li><strong>Stateless services</strong>: Easier to replicate</li>
+<li><strong>Managed DBs</strong>: Use HA RDS, CosmosDB, etc.</li>
+<li><strong>Health checks</strong>: Auto-restart failed nodes</li>
+</ul>
+<p>Example in AWS:</p>
+<ul>
+<li>ALB → Auto Scaling Group with EC2 across 3 AZs</li>
+<li>Aurora DB with cross-AZ failover</li>
+<li>Route53 for multi-region DNS</li>
+</ul>
+<p>Design should be <strong>resilient, scalable, and self-healing</strong>.</p>
+<h3 id="9-what-are-the-differences-between-horizontal-and-vertical-scaling-when-would-you-use-each">9. What are the differences between horizontal and vertical scaling? When would you use each?</h3>
+<p><strong>Horizontal scaling is preferred in cloud environments because it’s more fault-tolerant and supports auto-scaling.</strong></p>
+<p><strong>Vertical scaling is used when application architecture doesn’t support clustering or sharding.</strong></p>
+<h3 id="10-explain-blue-green-deployment-and-its-benefits">10. Explain blue-green deployment and its benefits.</h3>
+<p>Blue-Green Deployment is a strategy where two environments (B<strong>lue = current, Green = new</strong>) are used.</p>
+<ol>
+<li>Deploy new version to Green.</li>
+<li>Test internally.</li>
+<li>Switch traffic from Blue to Green.</li>
+<li>Rollback by redirecting traffic back to Blue if needed.</li>
+</ol>
+<p>Benefits:</p>
+<ul>
+<li>Zero downtime</li>
+<li>Easy rollback</li>
+<li>Safe experimentation</li>
+</ul>
+<p>Used in CI/CD pipelines for risk mitigation during production releases</p>
+<h3 id="11-how-do-you-ensure-fault-tolerance-in-a-microservices-architecture">11. How do you ensure fault tolerance in a microservices architecture?</h3>
+<p>Fault tolerance ensures that the system continues functioning even if components fail.</p>
+<p><strong>Techniques:</strong></p>
+<ul>
+<li><strong>Retries with exponential backoff</strong></li>
+<li><strong>Circuit Breakers</strong> (e.g., Hystrix, Resilience4j)</li>
+<li><strong>Bulkheads</strong>: Isolate failures to specific service components</li>
+<li><strong>Fallback mechanisms</strong>: Return default values or cached data</li>
+<li><strong>Health checks</strong>: Remove unhealthy instances from service mesh/load balancer</li>
+</ul>
+<p>Best Practices:</p>
+<ul>
+<li>Monitor each microservice independently</li>
+<li>Use service meshes (like Istio) for traffic management</li>
+<li>Container orchestration (like Kubernetes) for resilience</li>
+</ul>
+<h3 id="12-what-is-chaos-engineering-and-why-is-it-important">12. What is chaos engineering, and why is it important?</h3>
+<p>Chaos engineering is the practice of intentionally injecting faults into a system to test its resilience.</p>
+<p><strong>Tools: Chaos Monkey, Gremlin, Litmus</strong></p>
+<p>Purpose:</p>
+<ul>
+<li><strong>Identify weak points</strong></li>
+<li><strong>Validate alerting and monitoring</strong></li>
+<li>Build confidence in production readines</li>
+</ul>
+<p><strong>Example Scenarios:</strong></p>
+<ul>
+<li>Terminate instances randomly</li>
+<li>Block network between services</li>
+<li>Increase latency to simulate real-world conditions</li>
+</ul>
+<p>Outcome: More resilient systems through proactive failure discovery</p>
+<h3 id="13-how-do-you-handle-noisy-alerts">13. How do you handle noisy alerts?</h3>
+<p>Noisy alerts overwhelm engineers and lead to alert fatigue.</p>
+<p>Solutions:</p>
+<ul>
+<li>Use <strong>deduplication and rate-limiting</strong></li>
+<li>Apply <strong>threshold tuning</strong> on alerts</li>
+<li>Categorize alerts: <strong>P1 (urgent), P2 (important)</strong>, etc.</li>
+<li>Implement <strong>alert silencing during maintenance</strong></li>
+<li>Use <strong>machine learning-based anomaly detection for smarter alerting</strong></li>
+<li>Only alert on symptoms, not causes</li>
+</ul>
+<h3 id="14-how-does-sre-measure-the-reliability-of-a-system">14. How does SRE measure the reliability of a system?</h3>
+<p><strong>Reliability is measured through SLIs and SLOs</strong>, often based on:</p>
+<ul>
+<li><strong>Availability</strong> (uptime): e.g., 99.99%</li>
+<li><strong>Latency</strong>: e.g., 95% of requests &lt; 200ms</li>
+<li><strong>Durability</strong>: e.g., no data loss</li>
+<li><strong>Error rate</strong>: e.g., &lt; 0.1% failed requests</li>
+</ul>
+<p>Metrics Tools:</p>
+<ul>
+<li>Prometheus</li>
+<li>CloudWatch</li>
+<li>New Relic</li>
+<li>Datadog</li>
+</ul>
+<p><strong>Reliability Score = How closely your system meets its SLOs.</strong></p>
+<h3 id="15-what-is-mttr-mtbf-and-mttd-why-are-they-important">15. What is MTTR, MTBF, and MTTD? Why are they important?</h3>
+<ul>
+<li><strong>MTTR (Mean Time to Repair)</strong>: Time to fix a failure.</li>
+<li><strong>MTBF (Mean Time Between Failures)</strong>: Average uptime between failures.</li>
+<li><strong>MTTD (Mean Time to Detect)</strong>: Time to detect an issue after it occurs</li>
+</ul>
+<p>Importance</p>
+<ul>
+<li>Helps track operational efficiency</li>
+<li>Indicates reliability trends</li>
+<li>Guides incident response planning</li>
+</ul>
+<p>Lower MTTR and MTTD → faster recovery. Higher MTBF → fewer outages.</p>
+<h3 id="16-what-is-the-difference-between-canary-and-rolling-deployment">16. What is the difference between canary and rolling deployment?</h3>
+<p><strong>Canary is better for risk detection.</strong></p>
+<p>Rolling is suitable for stable environments with minor changes.</p>
+<h3 id="17-how-does-kubernetes-help-in-sre">17. How does Kubernetes help in SRE?</h3>
+<p>Kubernetes simplifies operations and enables reliability through:</p>
+<ul>
+<li><strong>Auto-scaling</strong>: Horizontal and vertical</li>
+<li><strong>Self-healing</strong>: Restart failed pods</li>
+<li><strong>Rolling updates</strong>: Minimal downtime deployments</li>
+<li><strong>Health checks</strong>: Liveness and readiness probes</li>
+<li><strong>Namespaces &amp; RBAC</strong>: Better isolation and security</li>
+</ul>
+<p>SREs leverage Kubernetes to automate deployments, monitor workloads, and maintain service uptime efficiently.</p>
+<h3 id="18-what-is-a-blameless-postmortem-and-why-is-it-important">18. What is a blameless postmortem, and why is it important?</h3>
+<p>A blameless postmortem focuses on learning from incidents without attributing fault to individuals.</p>
+<ul>
+<li>Encourages transparency</li>
+<li>Builds psychological safety</li>
+<li>Uncovers systemic weaknesses</li>
+</ul>
+<p><strong>Postmortem Includes:</strong></p>
+<ul>
+<li>Summary of the incident</li>
+<li>Timeline</li>
+<li>Root cause analysis</li>
+<li>Action items</li>
+<li>Lessons learned</li>
+</ul>
+<h3 id="19-how-do-you-handle-database-scaling-in-high-traffic-systems">19. How do you handle database scaling in high-traffic systems?</h3>
+<p>Vertical Scaling: </p>
+<p><strong>Add more CPU/RAM to DB server (limited scalability)</strong></p>
+<p><strong>Horizontal Scaling</strong>: </p>
+<ul>
+<li><strong>Sharding</strong>: Split data across nodes</li>
+<li><strong>Read Replicas</strong>: Distribute read traffic</li>
+<li><strong>Caching</strong>: Use Redis/Memcached for frequent reads</li>
+<li><strong>Connection pooling</strong>: Optimize database connections</li>
+</ul>
+<p>Use proxy layers (like ProxySQL) and managed DB services (like Amazon Aurora) for easier scaling.</p>
+<h3 id="20-what-is-service-mesh-and-how-does-it-help-in-observability">20. What is service mesh, and how does it help in observability?</h3>
+<p>A service mesh is <strong>an infrastructure layer that manages service-to-service communication.</strong></p>
+<p>Examples: Istio, Linkerd, Consul</p>
+<ul>
+<li>Traffic management (routing, retries)</li>
+<li>Security (mTLS)</li>
+<li>Observability (metrics, traces)</li>
+<li>Fault injection (chaos testing)</li>
+</ul>
+<p><strong>In Observability:</strong></p>
+<ul>
+<li>Automatically collects telemetry data (latency, errors)</li>
+<li>Integrates with tracing and logging tools</li>
+<li>Enables fine-grained metrics per service</li>
+</ul>
+<h3 id="21-how-do-you-reduce-mean-time-to-recovery-mttr">21. How do you reduce Mean Time to Recovery (MTTR)?</h3>
+<p>MTTR can be reduced by:</p>
+<ul>
+<li><strong>Robust monitoring</strong>: Real-time alerts to catch issues quickly</li>
+<li><strong>Runbooks</strong>: Fast, documented response</li>
+<li><strong>Auto-remediation</strong>: Scripts to self-heal (e.g., restart services)</li>
+<li><strong>Incident drills</strong>: Prepare responders via simulations</li>
+<li><strong>CI/CD rollback</strong>: Enable rapid reversion to last known good state</li>
+</ul>
+<p>Tooling: PagerDuty, Opsgenie, Lambda/Functions for automation</p>
+<h3 id="22-describe-a-typical-sre-on-call-process">22. Describe a typical SRE on-call process.</h3>
+<ol>
+<li><strong>Alerting system (Prometheus, CloudWatch)</strong> detects an issue</li>
+<li><strong>Notification</strong> sent to on-call engineer via PagerDuty, Opsgenie</li>
+<li>Engineer assesses logs, dashboards</li>
+<li><strong>Mitigation</strong>: Hotfix, restart, or scale-out</li>
+<li><strong>Escalate if necessary</strong></li>
+<li><strong>After issue → Postmortem created</strong></li>
+</ol>
+<p>Goals: fast detection, minimal downtime, documented</p>
+<h3 id="23-how-do-you-handle-secret-management-in-production-systems">23. How do you handle secret management in production systems?</h3>
+<ul>
+<li>HashiCorp Vault</li>
+<li>AWS Secrets Manager</li>
+<li>Azure Key Vault</li>
+<li>Kubernetes Secrets</li>
+</ul>
+<p>Practices:</p>
+<ul>
+<li><strong>Encrypt secrets at rest and in transit</strong></li>
+<li><strong>Rotate secrets regularly</strong></li>
+<li>Use IAM for controlled access</li>
+<li><strong>Never hardcode secrets in code or CI/CD</strong></li>
+</ul>
+<h3 id="25-how-do-you-conduct-capacity-planning">25. How do you conduct capacity planning?</h3>
+<ol>
+<li><strong>Gather metrics</strong>: CPU, memory, disk, traffic trends</li>
+<li><strong>Forecast usage</strong>: Based on historical data and business growth</li>
+<li><strong>Test scalability</strong>: Stress/load tests</li>
+<li>Plan buffer: Typically 30% headroom</li>
+<li><strong>Reassess periodically</strong></li>
+</ol>
+<p>Tools: Grafana, CloudWatch, Datadog</p>
+<h3 id="26-what-is-observability-how-is-it-different-from-monitoring">26. What is observability? How is it different from monitoring?</h3>
+<p><strong>Monitoring: Predefined metrics and alerts</strong></p>
+<p><strong>Observability</strong>: Ability to understand internal system state from outputs (metrics, logs, traces)</p>
+<p><strong>3 Pillars of Observability:</strong></p>
+<ol>
+<li>Metrics (quantitative)</li>
+<li>Logs (textual)</li>
+<li>Traces (request flows)</li>
+</ol>
+<p>Observability helps debug unknown unknowns. Monitoring detects known issues.</p>
+<h3 id="27-how-do-you-ensure-zero-downtime-deployments">27. How do you ensure zero-downtime deployments?</h3>
+<ul>
+<li>Blue-Green or Canary deployments</li>
+<li>Load balancer health checks</li>
+<li>Readiness/liveness probes</li>
+<li><strong>Preload containers before switching traffic</strong></li>
+<li><strong>Use rolling updates with maxSurge and maxUnavailable</strong></li>
+</ul>
+<p>Kubernetes and service meshes help manage zero-downtime rollouts.</p>
+<h3 id="28-what-is-infrastructure-as-code-iac-and-how-does-it-benefit-sres">28. What is infrastructure as code (IaC), and how does it benefit SREs?</h3>
+<p><strong>IaC is managing infrastructure using code (declarative/imperative)</strong>.</p>
+<p>Tools: Terraform, Pulumi, AWS CDK, Ansible</p>
+<p>Benefits</p>
+<ul>
+<li>Version control for infra</li>
+<li><strong>Reproducibility and audit trails</strong></li>
+<li>Easier testing and rollback</li>
+<li><strong>Automation of provisioning</strong></li>
+</ul>
+<p>Enables GitOps workflows for environment management.</p>
+<h3 id="29-what-is-gitops-and-how-is-it-applied-in-sre-workflows">29. What is GitOps and how is it applied in SRE workflows?</h3>
+<p><strong>GitOps</strong> uses Git as a single source of truth for infra and app config.</p>
+<p><strong>Process:</strong></p>
+<ul>
+<li>Desired state in Git</li>
+<li>Git triggers deployment via agents (e.g., ArgoCD, Flux)</li>
+<li>Reconciliation loops correct drift</li>
+</ul>
+<p>Benefits:</p>
+<ul>
+<li>Auditable changes</li>
+<li>Easy rollback</li>
+<li>Consistency across environments</li>
+</ul>
+<h3 id="30-how-do-you-test-disaster-recovery-in-cloud-systems">30. How do you test disaster recovery in cloud systems?</h3>
+<p>Plan:</p>
+<ul>
+<li>Define RPO (Recovery Point Objective)</li>
+<li>Define RTO (Recovery Time Objective)</li>
+</ul>
+<p>Testing:</p>
+<ul>
+<li>Simulate region outage</li>
+<li>Practice DB failovers</li>
+<li>Validate backup restores</li>
+<li>Chaos engineering for DR</li>
+</ul>
+<h3 id="31-explain-rate-limiting-and-why-its-important">31. Explain rate limiting and why it’s important.</h3>
+<p><strong>Rate limiting restricts number of requests per client/service to prevent abuse or overload</strong></p>
+<p>Types: </p>
+<ul>
+<li>IP-based</li>
+<li>User-based</li>
+<li>Token-bucket algorithms</li>
+</ul>
+<p><strong>Tools: NGINX, Envoy, API Gateway</strong></p>
+<p>Prevents:</p>
+<ul>
+<li>DDoS</li>
+<li>API overuse</li>
+<li>Resource exhaustion</li>
+</ul>
+<h3 id="32-how-do-you-ensure-security-in-cicd-pipelines">32. How do you ensure security in CI/CD pipelines?</h3>
+<p>Steps:</p>
+<ul>
+<li><strong>Use static analysis tools</strong> (e.g., SonarQube, Checkov)</li>
+<li><strong>Scan for secrets</strong> (e.g., truffleHog)</li>
+<li>Sign artifacts (e.g., Cosign)</li>
+<li><strong>Use least privilege for CI/CD tokens</strong></li>
+<li><strong>Enable multi-factor authentication (MFA)</strong></li>
+</ul>
+<h3 id="33-whats-the-difference-between-a-symptom-based-and-cause-based-alert">33. What’s the difference between a symptom-based and cause-based alert?</h3>
+<ul>
+<li><strong>Symptom-based</strong> Alerts on impact (e.g., high latency)</li>
+<li><strong>Cause-based</strong> Alerts on root issue (e.g., CPU spike)</li>
+</ul>
+<h3 id="34-how-do-you-handle-cascading-failures">34. How do you handle cascading failures?</h3>
+<p>Cascading failures spread from one service to another</p>
+<p><strong>Prevention:</strong></p>
+<ul>
+<li>Implement circuit breakers</li>
+<li><strong>Add timeouts and retries</strong></li>
+<li>Use bulkheads to isolate services</li>
+<li><strong>Monitor dependency health</strong></li>
+</ul>
+<p>Service meshes can enforce limits to prevent overload</p>
+<h3 id="35-how-does-load-shedding-work">35. How does load shedding work?</h3>
+<p><strong>Load shedding drops low-priority traffic during high load to protect the system</strong></p>
+<p>Methods: </p>
+<ul>
+<li>Reject requests with 503</li>
+<li><strong>Queue overflow handling</strong></li>
+<li><strong>Prioritize traffic tiers (e.g., VIP vs free users)</strong></li>
+</ul>
+<p>Preserves system availability under stress.</p>
+<h3 id="36-what-is-distributed-tracing-and-how-do-you-use-it">36. What is distributed tracing and how do you use it?</h3>
+<p><strong>Distributed tracing</strong> tracks requests across microservices</p>
+<p>Tooling: <strong>OpenTelemetry, Jaeger, Zipkin</strong></p>
+<p>Use Case</p>
+<ul>
+<li>Find latency bottlenecks</li>
+<li>Diagnose service dependencies</li>
+<li>Correlate logs and spans</li>
+</ul>
+<p><strong>Output: Span trees with timestamps and service names</strong></p>
+<h3 id="37-what-is-the-principle-of-least-privilege-in-access-control">37. What is the principle of least privilege in access control?</h3>
+<p>Only give access necessary for a user/app to perform their task.</p>
+<p>Applies to:</p>
+<ul>
+<li>IAM roles</li>
+<li>Kubernetes RBAC</li>
+<li>API keys and credentials</li>
+</ul>
+<p>Improves security and reduces breach impact.</p>
+<h3 id="38-how-do-you-track-configuration-drift">38. How do you track configuration drift?</h3>
+<p><strong>Configuration drift</strong> occurs when systems diverge from declared state.</p>
+<p>Solutions:</p>
+<ul>
+<li>IaC enforcement (Terraform, Ansible)</li>
+<li>GitOps reconciliation loops</li>
+<li>Drift detection tools (e.g., Terraform Plan)</li>
+</ul>
+<p>Automated alerts and enforcement reduce risk.</p>
+<h3 id="39-what-is-alert-fatigue-and-how-do-you-combat-it">39. What is alert fatigue and how do you combat it?</h3>
+<p><strong>Alert fatigue happens when engineers receive too many irrelevant alerts.</strong></p>
+<p>Solutions:</p>
+<ul>
+<li>Triage alerts into severity levels</li>
+<li>Silence non-critical alerts</li>
+<li>Use better thresholds and anomaly detection</li>
+<li>Run weekly alert review meetings</li>
+</ul>
+<p>Keep alerts actionable and minimal.</p>
+<h3 id="40-describe-the-incident-lifecycle">40. Describe the incident lifecycle.</h3>
+<ol>
+<li>Detection (monitoring/alerts)</li>
+<li>Response (triage, mitigation)</li>
+<li><strong>Resolution (restore service)</strong></li>
+<li><strong>Postmortem (blameless, documented)</strong></li>
+<li>Action Items (to prevent recurrence)</li>
+</ol>
+<p>Tools: PagerDuty, Slack, Statuspage</p>
+<h3 id="41-how-do-you-design-a-high-availability-system">41. How do you design a high-availability system?</h3>
+<p><strong>High availability (HA)</strong> ensures minimal downtime. Key components:</p>
+<ul>
+<li><strong>Redundancy</strong>: Use multiple instances/load balancers</li>
+<li><strong>Failover mechanisms</strong>: Auto switch on failure</li>
+<li><strong>Health checks</strong>: Remove unhealthy nodes</li>
+<li><strong>Geographic distribution</strong>: Multi-region or zone setup</li>
+<li><strong>Stateless design</strong>: Easier failover</li>
+</ul>
+<p>Use services like AWS ALB, Azure Availability Zones, or Kubernetes with anti-affinity rules.</p>
+<h3 id="43-how-do-you-scale-systems-to-handle-sudden-traffic-spikes">43. How do you scale systems to handle sudden traffic spikes?</h3>
+<p>Strategies:</p>
+<ul>
+<li>Auto-scaling groups (AWS ASG, K8s HPA)</li>
+<li>Queueing mechanisms (SQS, RabbitMQ)</li>
+<li>CDN offloading (Cloudflare, Akamai)</li>
+<li>Caching (Redis, Varnish)</li>
+<li>Pre-warm critical services (Lambda provisioned concurrency)</li>
+</ul>
+<p>Plan ahead with load testing and scale limit</p>
+<h3 id="44-whats-the-purpose-of-an-error-budget-and-how-do-you-enforce-it">44. What’s the purpose of an error budget, and how do you enforce it?</h3>
+<p><strong>Error budget = 100% - SLO target (e.g., 99.9% SLO → 0.1% budget for failure)</strong></p>
+<p><strong>Usage</strong></p>
+<ul>
+<li>Track system reliability</li>
+<li>Pause deployments if budget exhausted</li>
+<li>Encourage balance between innovation and reliability</li>
+</ul>
+<p>Monitored via dashboards; decisions tied to deployment frequency</p>
+<h3 id="45-how-do-you-handle-ephemeral-environments-for-testing">45. How do you handle ephemeral environments for testing?</h3>
+<p>Ephemeral environments are temporary, disposable staging/test setups.</p>
+<p>Tools: </p>
+<ul>
+<li>Terraform with short TTL</li>
+<li>Preview environments via CI (e.g., GitHub Actions, GitLab)</li>
+<li>Use Kubernetes namespaces per PR</li>
+</ul>
+<p>Benefits: consistent testing, cost efficiency, no long-lived test infra</p>
+<h3 id="46-how-do-you-monitor-service-dependencies-in-microservices">46. How do you monitor service dependencies in microservices?</h3>
+<ul>
+<li>Distributed tracing (OpenTelemetry, Jaeger)</li>
+<li>Service mesh observability (Istio, Linkerd)</li>
+<li>Dependency graphs (e.g., Dynatrace, New Relic)</li>
+</ul>
+<h3 id="49-what-is-auto-remediation-and-give-examples">49. What is auto-remediation, and give examples.</h3>
+<p>Auto-remediation automates incident response without human intervention.</p>
+<p>Examples: </p>
+<ul>
+<li>Restart a crashed pod via K8s liveness probe</li>
+<li>Auto scale on high CPU usage</li>
+<li>Replace failed EC2 instance using ASG</li>
+<li>Lambda function to restart service on failure alert</li>
+</ul>
+<p>Helps reduce MTTR and improve uptime.</p>
+<h3 id="50-how-do-you-prepare-for-major-product-launches-from-an-sre-perspective">50. How do you prepare for major product launches from an SRE perspective?</h3>
+<ul>
+<li>Load testing: Predict traffic behavior</li>
+<li>Chaos drills: Validate resilience</li>
+<li>Capacity planning: Scale resources ahead</li>
+<li>Rollback plan: Tested and ready</li>
+<li>Observability checks: Dashboards, alerts verified</li>
+<li>On-call rotation: Adjusted for event</li>
+</ul>
+<h2 id="sre-incident-response-troubleshooting">SRE Incident Response &amp; Troubleshooting</h2>
+<h4 id="1-you-discover-that-a-recent-config-change-was-deployed-without-proper-testing-the-system-is-unstable-how-do-you-respond">1 You discover that a recent config change was deployed without proper testing. The system is unstable. How do you respond?</h4>
+<p>First, identify the change using version control or deployment logs to understand what was altered. Communicate with stakeholders immediately to inform them of the issue. <strong>Attempt a rollback if the change is reversible and known to be the cause.</strong> </p>
+<p>If rollback is not feasible, <strong>deploy a hotfix to stabilize the system</strong>. Implement a temporary mitigation to reduce impact while a permanent fix is developed. </p>
+<p>After the incident, <strong>conduct a post-mortem to reinforce pre-deployment validation, code reviews, and automated testing policies</strong></p>
+<h4 id="2-your-service-is-intermittently-returning-403-errors-to-authenticated-users-how-do-you-debug-and-resolve-this">2 Your service is intermittently returning 403 errors to authenticated users. How do you debug and resolve this?</h4>
+<p>Start by verifying authentication and authorization systems: </p>
+<ul>
+<li>check if access tokens are valid and haven't expired.</li>
+<li>Review logs for 403 errors and identify affected users.</li>
+<li>Inspect access control logic in code or policies to ensure correct permissions are applied.</li>
+<li>Investigate <strong>recent changes in IAM roles, reverse proxy configurations, and WAF rules</strong>.</li>
+<li>Use A/B testing or rollback to validate if a recent change caused the issue.</li>
+</ul>
+<h4 id="3-a-traffic-spike-is-causing-cascading-failures-in-your-microservices-how-do-you-stabilize-the-system">3 A traffic spike is causing cascading failures in your microservices. How do you stabilize the system?</h4>
+<ul>
+<li>Begin by activating rate limiting to control incoming traffic and avoid overloading services.</li>
+<li><strong>Enable circuit breakers to prevent overworked services from impacting others.</strong> </li>
+<li>Temporarily scale up critical services or use caching/CDNs to offload traffic. </li>
+<li><strong>Use a load balancer to shed non-essential load</strong>. </li>
+<li>Once stabilized, perform root cause analysis and implement auto-scaling rules and service isolation to prevent recurrence</li>
+</ul>
+<h4 id="4-you-receive-alerts-during-a-region-wide-cloud-provider-outage-whats-your-course-of-action">4 You receive alerts during a region-wide cloud provider outage. What’s your course of action?</h4>
+<ul>
+<li>Immediately verify the extent of the outage via status pages and logs. </li>
+<li>If multi-region support is in place, initiate failover to an unaffected region. </li>
+<li><strong>Communicate with customers about the outage and mitigation steps</strong>. </li>
+<li><strong>Update DNS configurations or use traffic director services to reroute traffic</strong>. </li>
+<li><strong>After restoration, audit disaster recovery plans and ensure better redundancy</strong>.</li>
+</ul>
+<h4 id="5-a-rollback-didnt-resolve-a-production-issue-whats-your-next-step">5 A rollback didn’t resolve a production issue. What’s your next step?</h4>
+<ul>
+<li>Validate that the rollback was successful and all related components were included.</li>
+<li>Investigate logs for any new or persisting errors. </li>
+<li>Consider non-code causes like corrupted data, environment mismatches, or background jobs. </li>
+</ul>
+<p>Escalate the incident with a war room approach, involving cross-functional teams. 
+Use observability tools to trace the problem and plan a new remediation strategy.</p>
+<h4 id="6-your-cdn-is-returning-stale-content-after-a-deployment-how-do-you-troubleshoot">6 Your CDN is returning stale content after a deployment. How do you troubleshoot?</h4>
+<ul>
+<li><strong>Purge the CDN cache manually or via its API</strong>. </li>
+<li>Review cache-control headers and ensure they are correctly configured. </li>
+<li>Verify if content versioning is used; if not, implement it using file hashes or query strings. </li>
+<li><strong>Monitor the CDN for cache hit/miss rates to validate the fix</strong>.</li>
+</ul>
+<h4 id="7-an-internal-service-has-exceeded-its-api-rate-limits-how-do-you-resolve-it-and-prevent-recurrence">7 An internal service has exceeded its API rate limits. How do you resolve it and prevent recurrence?</h4>
+<ul>
+<li>Throttle or queue requests to reduce load on the API.</li>
+<li>If external, contact the API provider for temporary relief.</li>
+<li>Implement exponential backoff and retry logic.</li>
+<li><strong>Monitor usage patterns and apply quotas to internal clients</strong>.</li>
+<li><strong>Long-term, work on optimizing request frequency and introducing caching where possible.</strong></li>
+</ul>
+<h4 id="8-a-monitoring-tool-itself-has-gone-down-how-do-you-ensure-visibility-during-the-incident">8 A monitoring tool itself has gone down. How do you ensure visibility during the incident?</h4>
+<ul>
+<li>Fallback to alternative monitoring <strong>like cloud-native metrics, system logs, or backup observability stacks</strong>. </li>
+<li><strong>Deploy lightweight agents that push logs/metrics to a temporary dashboard</strong>. </li>
+<li>Prioritize restoring the main monitoring system and ensure its future availability by <strong>setting up redundancy and health checks.</strong></li>
+</ul>
+<h4 id="9-your-application-suddenly-has-a-spike-in-retries-and-timeouts-whats-your-investigative-strategy">9 Your application suddenly has a spike in retries and timeouts. What’s your investigative strategy?</h4>
+<ul>
+<li>Start by analyzing metrics and logs to pinpoint where the timeouts occur. </li>
+<li><strong>Use distributed tracing to identify slow or failing dependencies</strong>. </li>
+<li><strong>Validate network performance and DNS resolution</strong>.</li>
+<li><strong>Check if retries are causing a feedback loop</strong>.</li>
+<li>Investigate recent deployments or changes that could be affecting latency.</li>
+</ul>
+<h3 id="2-reliability-performance-optimization">2 Reliability &amp; Performance Optimization</h3>
+<h4 id="1-your-system-is-hitting-database-connection-pool-limits-how-do-you-investigate-and-mitigate">1 Your system is hitting database connection pool limits. How do you investigate and mitigate?</h4>
+<ul>
+<li>Start by examining application logs and DB metrics to confirm connection exhaustion. </li>
+<li><strong>Use connection pool monitoring tools to identify connection leaks or long-running querie</strong>s.</li>
+<li><strong>Optimize queries and database indexing. If appropriate, increase pool size, and introduce caching to reduce load</strong>. </li>
+<li>Consider horizontal scaling (read replicas) to distribute read traffic</li>
+</ul>
+<h4 id="2-a-regional-failover-succeeded-but-users-reported-increased-latency-what-improvements-would-you-make">2 A regional failover succeeded, but users reported increased latency. What improvements would you make?</h4>
+<ul>
+<li><strong>Review DNS TTLs and global routing policies</strong>. </li>
+<li>Evaluate whether the backup region’s infrastructure is warm or cold-start. </li>
+<li><strong>Pre-warm instances, replicate caches, and sync data to reduce failover time</strong>. </li>
+<li>Implement geo-based routing or anycast to serve users from the nearest healthy location.</li>
+</ul>
+<h4 id="3-a-memory-intensive-process-is-causing-gc-thrashing-how-would-you-fix-this">3 A memory-intensive process is causing GC thrashing. How would you fix this?</h4>
+<ul>
+<li><strong>Use profiling tools to analyze heap usage and identify memory leaks or excessive object creation.</strong> </li>
+<li>Tune JVM/GC parameters or experiment with different garbage collectors.</li>
+<li>Refactor the code to reduce memory pressure and optimize object lifecycle management</li>
+</ul>
+<h4 id="4-your-app-needs-to-support-zero-downtime-deployments-but-users-experience-brief-disruptions-how-do-you-fix-that">4 Your app needs to support zero-downtime deployments, but users experience brief disruptions. How do you fix that?</h4>
+<ul>
+<li><strong>Switch to deployment strategies like blue-green or canary releases</strong>. </li>
+<li>Ensure proper load balancer configuration to drain connections before shutting down old instances. </li>
+<li><strong>Configure readiness and liveness probes to avoid routing traffic to unhealthy pods/instances during rollout</strong>.</li>
+</ul>
+<h4 id="5-how-would-you-introduce-chaos-testing-into-a-mission-critical-environment">5 How would you introduce chaos testing into a mission-critical environment?</h4>
+<ul>
+<li>Begin in non-production environments to validate resilience. Use tools like Chaos Mesh or Gremlin. </li>
+<li>Start with basic failure scenarios like network latency or service termination. </li>
+<li>Gain stakeholder buy-in, then gradually expand chaos coverage in production with strict guardrails and observability.</li>
+</ul>
+<h4 id="6-you-need-to-migrate-a-high-availability-service-to-a-new-cloud-provider-whats-your-plan">6 You need to migrate a high-availability service to a new cloud provider. What’s your plan?</h4>
+<ul>
+<li>Plan a phased migration starting with infrastructure setup in the new provider. </li>
+<li>Use tools for data replication and live sync. Validate performance and failover readiness before DNS cutover. </li>
+<li>Ensure rollback mechanisms are in place. </li>
+<li>Use blue-green or shadow traffic testing to validate live behavior before the switch.</li>
+</ul>
+<h4 id="7-a-background-job-is-starving-the-main-thread-of-resources-how-do-you-diagnose-and-resolve-it">7 A background job is starving the main thread of resources. How do you diagnose and resolve it?</h4>
+<ul>
+<li>Use performance profilers to inspect thread and CPU usage. </li>
+<li>Isolate the background job to a separate process or thread pool. </li>
+<li>Throttle its execution or reduce its priority. </li>
+<li>Optimize its resource consumption to prevent interference with critical user-facing processes.</li>
+</ul>
+<h4 id="8-your-system-is-slow-under-load-but-resource-metrics-look-fine-whats-your-next-move">8 Your system is slow under load, but resource metrics look fine. What’s your next move?</h4>
+<ul>
+<li>Investigate lock contention, thread starvation, or database queuing using profiling tools. </li>
+<li>Use APM to trace slow transactions and measure application-level bottlenecks. </li>
+<li>Consider synthetic load tests to simulate real traffic and identify bottlenecks not visible via CPU or memory metrics.</li>
+</ul>
+<h4 id="9-your-application-caches-are-not-invalidating-properly-how-do-you-handle-cache-staleness">9 Your application caches are not invalidating properly. How do you handle cache staleness?</h4>
+<ul>
+<li>Check if the cache keys and TTLs are correctly defined. </li>
+<li>Use cache versioning or add event-based invalidation via message queues. </li>
+<li>Monitor cache hit/miss ratio and design fallbacks for stale data scenarios. </li>
+<li>Use distributed cache tools that support advanced eviction strategies.</li>
+</ul>
+<h2 id="10-monitoring-observability-automation">10 Monitoring, Observability &amp; Automation</h2>
+<h4 id="1-your-alerts-are-not-capturing-a-slow-memory-leak-that-causes-a-crash-after-days-of-uptime-how-do-you-refine-observability">1 Your alerts are not capturing a slow memory leak that causes a crash after days of uptime. How do you refine observability?</h4>
+<ul>
+<li>Introduce trend-based alerting by analyzing memory usage over long time windows.</li>
+<li>Increase metric collection granularity. Capture heap snapshots and perform differential</li>
+<li>analysis. Consider integrating continuous profiling tools to detect leaks early.</li>
+</ul>
+<h4 id="2-you-need-to-create-slos-for-a-service-with-varying-usage-patterns-how-do-you-define-them">2 You need to create SLOs for a service with varying usage patterns. How do you define them?</h4>
+<ul>
+<li>Segment the user base or request types and define custom SLOs for each segment. </li>
+<li>Use percentile-based metrics like p95/p99 latency.</li>
+<li>Calculate error budgets aligned with business priorities. </li>
+<li>Regularly revisit SLOs based on evolving usage patterns</li>
+</ul>
+<h4 id="3-a-team-reports-inconsistent-metrics-between-dashboards-how-do-you-validate-data-sources">3 A team reports inconsistent metrics between dashboards. How do you validate data sources?</h4>
+<ul>
+<li>Audit the data collection agents, aggregation intervals, and label configurations. </li>
+<li>Verify if the dashboards use the same queries and time windows. </li>
+<li>Compare metrics directly from source (e.g., Prometheus) to rule out UI-related issues.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2021-9999 Jacob Xi
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      
+    
+  </body>
+</html>

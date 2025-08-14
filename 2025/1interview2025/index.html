@@ -1,0 +1,6805 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Jacob's 系统性能&Linux调优技术与实战教程">
+      
+      
+        <meta name="author" content="Jacob Xi">
+      
+      
+        <link rel="canonical" href="https://chao-xi.github.io/jxperfbook/2025/1interview2025/">
+      
+      
+      
+      
+      <link rel="icon" href="../../images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>1interview2025 - Jacob Performance&Linux Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="light-green" data-md-color-accent="light-green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-what-are-all-the-types-of-applications-you-have-deployed" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="Jacob Performance&amp;Linux Book" class="md-header__button md-logo" aria-label="Jacob Performance&Linux Book" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Jacob Performance&Linux Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              1interview2025
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Chao-Xi/jxperfbook.git" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jxperfbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Jacob Performance&amp;Linux Book" class="md-nav__button md-logo" aria-label="Jacob Performance&Linux Book" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    Jacob Performance&Linux Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Chao-Xi/jxperfbook.git" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jxperfbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Welcome
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    系统基础设施优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            系统基础设施优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/1CPU_Cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 代码让CPU执行得更快 — CPU缓存
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/2Mem_Pool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 内存池提升内存分配的效率
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/3Hash_index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 哈希表利用索引管理亿级对象
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/4PageCache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 磁盘高效地传输文件零拷贝：PageCache
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/5Coroutine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 协程快速地实现高并发服务：Coroutine
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/6Locks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 据业务场景选择合适的锁
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    系统层网络优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            系统层网络优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/1broadcast_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 一对多通讯如何实现
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/2C10M/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 C10M是如何实现事件驱动
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/3tcp3shakehand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 提升TCP三次握手的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/4tcpshutdown/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 提升TCP四次挥手的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/5tcpchachepool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 TCP缓冲区兼顾并发数量与传输速度
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/6tcpcongestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 调整TCP拥塞控制的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    分布式系统优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            分布式系统优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/1Mon_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 通过监控找到性能瓶颈
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/2perf_cap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 舍弃一致性去换取性能的CAP理论
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/3perf_akf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 AKF立方体可扩展性来提高性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/4perf_nwr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 NWR算法修改读写模型以提升性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/5nginx_openresty/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 负载均衡：选择Nginx还是OpenResty
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/6hash_consistent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 一致性哈希的均衡负载
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/7cache_expire/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第七节 过期缓存防止缓存被流量打穿
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/8message_queue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第八节 消息队列基于异步消息提升性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/9map_reduce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第九节 MapReduce通过集群实现离线计算
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/10DB_choice/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第十节 权衡关系数据库与NoSQL数据库
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    IT运维面试问题总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            IT运维面试问题总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/1Linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 IT运维面试问题总结- Linux基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/2Linux_SVC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 IT运维面试问题总结-基础服务、磁盘管理、虚拟平台和系统管理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/3Linux_tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 IT运维面试问题总结-运维工具、开源应用(Ceph、Docker、Apache、Nginx等)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/4Linux_db_dia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 IT运维面试问题总结-数据库、监控、网络管理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/5k8s_OpenShift/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 IT运维面试问题总结-简述Etcd、Kubernetes、Lvs、HAProxy等
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/6Py_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 Python面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/7Pro_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第七节 prometheus：要点总结及面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/8Data_ana_interview1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L8 Data Analyst Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/8Data_ana_interview2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第八节 分析岗笔试/面试知识点
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/9Data_ML_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L9 Top 50 Machine Learning Interview Questions & Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/10Deep_learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L10 30 Frequently asked Deep Learning Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/11Redis_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L11 Redis 核心技术考题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/12ES_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L12 ES 期末考试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/13istio_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L13 Istio面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/14sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L14 SRE本质就是一个懂运维的资深开发
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/15prometheus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L15 Top Prometheus Interview Questions and Answers (2022)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/16jenkins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L16 Top Jenkins Interview Questions and Answers (2022)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/17devops_int2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L17 DevOps Engineer: 30+ Interview Questions and Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/18helm2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L18 Helm指南：Kubernetes包管理器简介
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Python 面试题与总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Python 面试题与总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/1Apple_3sum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1、Apple Interview(3Sum)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/2Python_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2、Python Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/3GS_longest_substr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3、Longest substring
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/4GS_remove_sort_list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4、Remove duplicate in Sort List
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/5Sort_list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5、Reverse Sort List
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/6RM_dup_dict/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6、Remove duplicate from dictionary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/7Find_max/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7、Find Maxmium number count in list and nth number
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/8gs_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8、GS Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/9Substring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9、Find substring inside String
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/10reverse_string/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10、Reverse String
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/11zeroinN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11、Count how many zero in N!
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/12JumpGame/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12、Jump Game
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/13Gs_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13、GS interview preparation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux 面试题与总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Linux 面试题与总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/1Linux_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L1 1min 内对 Linux 进行性能诊断
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/2Linux_load_avg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L2 当面试官问你load average时，怎么回答？
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/3Linux_inode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L3 文件系统inode
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/4Linux_ops_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L4 运维必须掌握的Linux面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/5Linux_network_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L5 常见网络编程面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/6Git_principle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L6 Git 实用技巧记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/7LoadBalancer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L7 深入浅出负载均衡
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/8Linux_all/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L8 Linux 面试题 合集CDN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/9Linux_five/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L9 Linux面试最高频的5个基本问题（CPU+COMMMAND)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/10haproxy_learn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L10 HAProxy从零开始到掌握
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/12Linux_vir_file/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L12 从 lsof 开始，深入理解 Linux 虚拟文件系统
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/linux_rew/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux review
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/13Linux_ts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L13 Linux故障排查思路及常用命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/14Linux_iptables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L14 Linux iptables命令详解
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/15linux_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L15 Linux网络基础与性能优化
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Companies Interview
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Companies Interview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/1Ms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Microsoft Interview2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/2Ms_al/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Microsoft Interview Algorithm 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/3ubs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 UBS interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/4MorganS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Morgan Stanly 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/5apple/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Apple 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/6aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 AWS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/7tesla/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Tesla
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/my/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    My Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/int_anws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    架构师面试合集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux 常用命令
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Linux 常用命令
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/0shell_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Shell命令行一些快捷键组合
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/0shell_linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Linux常用命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/16linux_ops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Linux 实用运维命令 - Update
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/1shell_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Shell 分析服务器日志命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/1log_man/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Log: 用 awk + grep + sed搞定日志处理神器组合拳
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/2linux_locate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Linux 系统下查找文件命令总结
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/3devops_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Basic Shell Scripting for Devops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/4Basic_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 基本 shell 脚本 系统+文件+卷+时间
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/5install_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Shell Package 安装+配置脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/6mon_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 监控 Shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/7net_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 网络+数据库 Shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/8secret_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8 Secret shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/9script_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9 Linux script 录播
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/10linux_unlink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10 使用 unlink 删除文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/11linux_ip_port/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11 如何在 Linux 下限制端口仅对指定 IP 开放访问
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/12socat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12 Linux 命令 socat
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/14linux_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14 Linux shell 脚本详解学习 2023
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/15grep_learn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15 使用grep分析日志
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/17file_opt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16 Linux File Operation (df/du/rsync/批量删除/定时备份)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/18linux_var/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17 Shell script中的8个常用的特殊变量
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/19curl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18 Curl的10个高级用法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/20shell_dir/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19 Shell脚本执行不再受限，不进入所在目录也能成功运行
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/21shell_eva/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20 Bash脚本多函数使用eval提高脚本编写效率！
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/22find/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21 使用find命令轻松查找文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/22find/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21 使用find命令轻松查找文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/24xargs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23 xargs命令的使用技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/25shell_script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24 快速提升Shell脚本能力
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/26linux_zombie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25 如何清理 Linux 僵尸进程？
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/27Inode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26 Linux inode 介绍与清理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/28vim/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27 Vim 技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/29awk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    28 Linux AWK 文本处理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/30nohup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    29 nohup命令：在Linux中轻松实现后台运行和守护进程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/31ln/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    30 文件系统中的“分身术”ln命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/32Linux_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    31 Linux 系统日志之深入解析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/33bash/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    32 Linux 中 `.bashrc`、`.bash-profile` 和 `.profile` 之间的区别
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/34linux_6logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    33 6大Linux命令线上日志排查
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/35port_detect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    34 未安装telnet 和 nc 等工具，如何测试端口是否开放
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/36dudf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    35 df命令显示磁盘空间不足而du命令显示还有很多空闲空间
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/37linux_cond/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    36 Shell脚本的流程控制知识点汇总(2024)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Bash Programming 技巧
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Bash Programming 技巧
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/1bash_prom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 简洁的 Bash Programming 技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/2bash_skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 简洁的 Bash Programming 技巧续篇
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/3bash_skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Bash Pitfalls: 编程易犯的错误（一）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/4bash_python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 在Python中执行Linux Shell脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    AutoSys
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            AutoSys
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/1autosys_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 AutoSys: A Beginner’s Guide AutoSys Workload Automation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/1Autosys_tot1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Autosys Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/2Autosys_jil/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Autosys JIL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/3Autosys_comp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Autosys Components, Configuration & Validation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/4Autosys_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Austosys command
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/5Autosys_job_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Manage Job in the Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/6autosys_vir_resouce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Autotsys virtual resource management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/7autosys_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Shell Script to check Autosys agent installed
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    2025 - 面试准备
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            2025 - 面试准备
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025-Intro
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 CI/CD 之路-GitOps 面试题合集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Docker面试10大必考题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Kubernetes 面试题精解：从入门到进阶(2025)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4Linux_tb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Linux 系统故障时
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 AWS 面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6monitor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 监控生态面试通关秘籍
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7cri/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 从容器到调度：准备好这些 CRI 面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8sap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8 SAP面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../9db_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9 数据库面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10prometheus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10 Prometheus面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11istio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11 深度剖析 Istio (2025)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12 Python Interview - Full
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            SRE
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15Apple_SRE_prp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025 Apple SRE PRP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1SRE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 SRE Interview Questions and Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13tiktok/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 2025 最新字节跳动运维云原生面经分享
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2Ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Ansible Interview Question
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 250 Linux Scenario Based Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3kubernetes_sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Kubernetes SRE part1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3kubernetes_sre2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Kubernetes SRE part2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Git Scenario-Based Questions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            SRE
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/0interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 SRE 面试2025
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/1linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 SRE Linux All2025
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/2ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Ansible 从入门到放弃
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15Apple_SRE_prp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025 Apple SRE PRP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/3git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 GIT CE TEST
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE_Linux
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            SRE_Linux
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/2Linux_test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Linux Fundamentals
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/1k8s_dev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Using Kubernetes as a Developer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/3code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Script Learning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/4sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 SRE Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/5agile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Agile Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/6cloud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Cloud Native Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    英语学习
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16">
+            <span class="md-nav__icon md-icon"></span>
+            英语学习
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Eng/1work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 职场英语
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-are-all-the-types-of-applications-you-have-deployed" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What are all the types of applications you have deployed?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-how-have-you-injected-the-secrets-in-configmaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 How have you injected the secrets in ConfigMaps
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-how-do-you-find-which-pod-is-taking-more-system-resources-across-nodes-using-kubectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 How do you find which pod is taking more system resources across nodes using kubectl?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-how-do-you-know-which-worker-node-is-consuming-more-resources-across-the-clusters-using-kubectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 How do you know which worker node is consuming more resources across the clusters using kubectl?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-what-are-the-steps-for-configuring-prometheus-and-grafana-for-monitoring-kubernetes-clusters" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. What are the steps for configuring Prometheus and Grafana for monitoring Kubernetes clusters?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-if-20-pods-are-running-how-do-you-visualize-the-metrics-of-these-pods-in-grafana" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. If 20 pods are running, how do you visualize the metrics of these pods in Grafana?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-what-is-apache-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      7 What is Apache Kafka?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-how-do-you-set-up-a-docker-hub-private-registry-and-integrate-it-with-a-cicd-pipeline-what-is-the-procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. How do you set up a Docker Hub private registry and integrate it with a CI/CD pipeline? What is the procedure?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-what-is-the-difference-between-a-hard-link-and-a-soft-link" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. What is the difference between a hard link and a soft link?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-what-is-the-use-of-the-break-command-in-shell-scripting-in-what-scenarios-have-you-used-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. What is the use of the break command in shell scripting? In what scenarios have you used it?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-how-do-you-count-the-number-of-devops-words-in-15-html-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. How do you count the number of "devops" words in 15 HTML files?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-what-is-the-terraform-taint-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. What is the terraform taint command?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-what-are-the-possible-ways-to-secure-a-state-file-in-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. What are the possible ways to secure a state file in Terraform?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-if-you-provision-100-servers-and-someone-deletes-50-vms-manually-what-happens-if-you-apply-the-terraform-apply-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      14. If you provision 100 servers and someone deletes 50 VMs manually, what happens if you apply the terraform apply command?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-what-is-the-syntax-for-for_each-in-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. What is the syntax for for_each in Terraform?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-what-are-the-advantages-and-disadvantages-of-multi-stage-builds-in-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      16. What are the advantages and disadvantages of multi-stage builds in Docker?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16. What are the advantages and disadvantages of multi-stage builds in Docker?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantages
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disadvantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disadvantages
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-how-do-you-deploy-containers-on-different-hosts-not-the-same-host-within-a-docker-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      17. How do you deploy containers on different hosts, not the same host, within a Docker cluster?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-if-you-have-a-docker-compose-setup-how-do-you-deploy-the-web-container-on-one-host-and-the-db-container-on-another-host" class="md-nav__link">
+    <span class="md-ellipsis">
+      18. If you have a Docker Compose setup, how do you deploy the web container on one host and the DB container on another host?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-what-is-the-difference-between-bridge-networking-and-host-networking-in-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      19. What is the difference between bridge networking and host networking in Docker
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-how-do-you-resolve-merge-conflicts" class="md-nav__link">
+    <span class="md-ellipsis">
+      20. How do you resolve merge conflicts
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-what-command-do-you-use-to-change-the-existing-commit-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      21. What command do you use to change the existing commit message?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-what-is-session-affinity" class="md-nav__link">
+    <span class="md-ellipsis">
+      22. What is session affinity?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-what-is-pod-affinity-and-its-use-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      23. What is pod affinity and its use case?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-what-is-the-difference-between-pod-affinity-and-pod-anti-affinity" class="md-nav__link">
+    <span class="md-ellipsis">
+      24. What is the difference between pod affinity and pod anti-affinity?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-what-are-readiness-and-liveness-probes" class="md-nav__link">
+    <span class="md-ellipsis">
+      25. What are readiness and liveness probes?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="25. What are readiness and liveness probes?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#26-write-a-simple-groovy-pipeline-for-a-java-spring-boot-application-that-waits-for-user-input-for-approval-to-move-to-the-next-stage-with-stages-for-checkout-build-push-and-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      26. Write a simple Groovy pipeline for a Java Spring Boot application that waits for user input for approval to move to the next stage, with stages for checkout, build, push, and deploy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#27-how-do-you-export-test-reports-in-jenkins" class="md-nav__link">
+    <span class="md-ellipsis">
+      27. How do you export test reports in Jenkins?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#28-if-5-pods-are-running-how-do-you-scale-the-number-of-pods-to-10-using-the-command-line-in-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      28. If 5 pods are running, how do you scale the number of pods to 10 using the command line in Kubernetes?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#29-can-you-explain-the-usage-of-the-terraform-import-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      29. Can you explain the usage of the terraform import command?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30-in-aws-where-do-you-store-the-state-file-and-how-do-you-manage-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      30. In AWS, where do you store the state file, and how do you manage it?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="30. In AWS, where do you store the state file, and how do you manage it?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-what-is-the-biggest-issue-you-have-faced-with-terraform-and-how-did-you-resolve-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      31. What is the biggest issue you have faced with Terraform, and how did you resolve it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-what-are-the-types-of-storage-accounts-in-aws-s3" class="md-nav__link">
+    <span class="md-ellipsis">
+      32. What are the types of storage accounts in AWS S3?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-are-you-familiar-with-lifecycle-management-in-s3-buckets-how-do-you-set-up-lifecycle-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      33. Are you familiar with lifecycle management in S3 buckets? How do you set up lifecycle policies?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-what-are-the-differences-between-load-balancers-and-why-do-we-need-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      34. What are the differences between load balancers, and why do we need them?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-have-you-worked-with-auto-scaling-groups-asg" class="md-nav__link">
+    <span class="md-ellipsis">
+      35. Have you worked with Auto Scaling Groups (ASG)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-can-you-write-a-simple-dockerfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      36. Can you write a simple Dockerfile?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-if-you-want-to-expose-your-application-to-the-public-internet-or-access-your-application-within-a-cluster-how-would-you-do-that-in-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      37. If you want to expose your application to the public internet or access your application within a cluster, how would you do that in Kubernetes?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#38-why-do-we-need-a-configmap-in-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      38. Why do we need a ConfigMap in Kubernetes?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#39-which-aws-services-do-you-consider-when-setting-up-a-cicd-pipeline-for-a-microservices-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      39. Which AWS services do you consider when setting up a CI/CD pipeline for a microservices application?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="39. Which AWS services do you consider when setting up a CI/CD pipeline for a microservices application?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#40-on-a-day-with-unusually-high-traffic-for-an-e-commerce-application-how-would-you-as-a-cloud-engineer-manage-the-current-setup-to-handle-the-load-smoothly" class="md-nav__link">
+    <span class="md-ellipsis">
+      40. On a day with unusually high traffic for an e-commerce application, how would you, as a cloud engineer, manage the current setup to handle the load smoothly
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#41-if-traffic-is-currently-handled-on-a-single-instance-how-would-you-upgrade-for-high-availability-in-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      41. If traffic is currently handled on a single instance, how would you upgrade for high availability in AWS?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-when-auto-scaling-instances-how-do-you-manage-the-backend-rds-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      42. When auto-scaling instances, how do you manage the backend RDS database?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-have-you-ever-set-up-cross-account-access-for-s3-for-example-if-the-qa-team-needs-access-to-the-production-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      43. Have you ever set up cross-account access for S3? For example, if the QA team needs access to the production database.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-how-can-an-s3-account-in-account-a-access-an-s3-account-in-account-b" class="md-nav__link">
+    <span class="md-ellipsis">
+      44. How can an S3 account in Account A access an S3 account in Account B?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-can-you-differentiate-between-iam-policies-and-iam-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      45. Can you differentiate between IAM policies and IAM roles?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-can-you-explain-the-sts-assume-role-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      46. Can you explain the STS assume role policy?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47-have-you-experienced-any-challenging-issues-or-incidents-in-your-project-how-did-you-and-your-team-identify-and-resolve-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      47. Have you experienced any challenging issues or incidents in your project? How did you and your team identify and resolve them?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#48-what-is-the-difference-between-cmd-and-entrypoint-in-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      48. What is the difference between CMD and ENTRYPOINT in Docker?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#49-have-you-ever-managed-an-application-single-handedly" class="md-nav__link">
+    <span class="md-ellipsis">
+      49. Have you ever managed an application single-handedly?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#50-what-are-the-benefits-of-infrastructure-as-code-iac" class="md-nav__link">
+    <span class="md-ellipsis">
+      50. What are the benefits of Infrastructure as Code (IaC)?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="50. What are the benefits of Infrastructure as Code (IaC)?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-what-are-the-different-ways-to-create-infrastructure-as-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      51. What are the different ways to create infrastructure as code?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-what-is-the-difference-between-public-and-private-networking" class="md-nav__link">
+    <span class="md-ellipsis">
+      52. What is the difference between public and private networking?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-what-is-a-docker-registry-and-why-do-we-need-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      53. What is a Docker registry and why do we need it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-what-is-a-secrets-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      54. What is a secrets manager?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-what-is-the-secure-way-to-manage-sensitive-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      55. What is the secure way to manage sensitive information?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56-have-you-worked-with-kubernetes-k8s" class="md-nav__link">
+    <span class="md-ellipsis">
+      56. Have you worked with Kubernetes (K8s)?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#57-what-is-the-difference-between-docker-and-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      57. What is the difference between Docker and Kubernetes?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#58-can-you-explain-an-end-to-end-deployment-for-an-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      58. Can you explain an end-to-end deployment for an application?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#59-if-you-want-to-use-kubernetes-instead-of-ec2-instances-how-would-you-do-it-have-you-used-helm-charts-or-other-cd-tools-how-would-you-handle-a-project-with-multiple-microservices-on-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      59. If you want to use Kubernetes instead of EC2 instances, how would you do it? Have you used Helm charts or other CD tools? How would you handle a project with multiple microservices on Kubernetes?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#60-how-do-you-connect-a-bastion-host-to-a-private-network-can-you-explain-vpc-and-vpc-peering" class="md-nav__link">
+    <span class="md-ellipsis">
+      60. How do you connect a bastion host to a private network? Can you explain VPC and VPC peering?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#61-have-you-configured-a-system-where-code-is-automatically-merged-and-published-upon-a-developer-completing-a-ticket-in-jira-what-exactly-have-you-managed" class="md-nav__link">
+    <span class="md-ellipsis">
+      61. Have you configured a system where code is automatically merged and published upon a developer completing a ticket in Jira? What exactly have you managed
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#62-how-do-you-set-up-nginx-on-a-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      62. How do you set up Nginx on a server?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="62. How do you set up Nginx on a server?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#63-what-is-a-load-balancer-and-its-benefits-what-is-cloud-nat" class="md-nav__link">
+    <span class="md-ellipsis">
+      63. What is a load balancer and its benefits? What is Cloud NAT?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-what-is-the-difference-between-a-load-balancer-and-a-cloud-nat-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      64. What is the difference between a load balancer and a Cloud NAT gateway?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-how-do-you-see-yourself-fitting-into-this-particular-role" class="md-nav__link">
+    <span class="md-ellipsis">
+      65. How do you see yourself fitting into this particular role?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#67-describe-a-situation-where-the-entire-production-instance-crashed-and-you-had-to-fix-it-quickly-have-you-experienced-such-a-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      67. Describe a situation where the entire production instance crashed, and you had to fix it quickly. Have you experienced such a scenario?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#68-what-is-blue-green-deployment-and-why-is-it-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      68. What is blue-green deployment and why is it needed?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#69-what-other-deployment-strategies-do-you-know" class="md-nav__link">
+    <span class="md-ellipsis">
+      69. What other deployment strategies do you know?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#70-what-advanced-aws-resource-types-have-you-worked-with-and-utilized" class="md-nav__link">
+    <span class="md-ellipsis">
+      70. What advanced AWS resource types have you worked with and utilized?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#71-how-are-hosted-modules-like-aiml-deployed-customized-and-scaled-as-per-different-frontendbackend-requirements-in-aws-with-the-help-of-a-devops-engineer-deploying-customizing-and-scaling-hosted-modules-in-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      71. How are hosted modules (like AI/ML) deployed, customized, and scaled as per different frontend/backend requirements in AWS with the help of a DevOps engineer? Deploying, Customizing, and Scaling Hosted Modules in AWS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#72-can-you-describe-a-technology-you-had-not-heard-of-before-but-managed-to-learn-and-use-on-your-own-learning-a-new-technology" class="md-nav__link">
+    <span class="md-ellipsis">
+      72. Can you describe a technology you had not heard of before but managed to learn and use on your own? Learning a New Technology
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#73-what-challenges-have-you-faced-as-a-devops-engineer-devops-engineer-challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      73. What challenges have you faced as a DevOps engineer? DevOps Engineer Challenges
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="73. What challenges have you faced as a DevOps engineer? DevOps Engineer Challenges">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#76-during-data-loss-what-strategy-do-you-use-to-ensure-no-data-loss-especially-in-critical-applications-like-banking" class="md-nav__link">
+    <span class="md-ellipsis">
+      76. During data loss, what strategy do you use to ensure no data loss, especially in critical applications like banking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#77have-you-faced-any-cyberattacks-on-systems-you-built-and-implemented-what-precautions-do-you-take" class="md-nav__link">
+    <span class="md-ellipsis">
+      77.Have you faced any cyberattacks on systems you built and implemented? What precautions do you take?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#78-what-are-the-networking-setup-rules-you-follow" class="md-nav__link">
+    <span class="md-ellipsis">
+      78. What are the networking setup rules you follow?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#79-what-are-your-daily-responsibilities-as-a-devops-engineer" class="md-nav__link">
+    <span class="md-ellipsis">
+      79. What are your daily responsibilities as a DevOps engineer?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="79. What are your daily responsibilities as a DevOps engineer?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#80-which-devops-tools-are-you-proficient-with" class="md-nav__link">
+    <span class="md-ellipsis">
+      80. Which DevOps tools are you proficient with?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#81-can-you-describe-the-cicd-workflow-in-your-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      81. Can you describe the CI/CD workflow in your project?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#82-how-do-you-handle-the-continuous-delivery-cd-aspect-in-your-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      82. How do you handle the continuous delivery (CD) aspect in your projects?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="82. How do you handle the continuous delivery (CD) aspect in your projects?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#83-what-methods-do-you-use-to-check-for-code-vulnerabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      83. What methods do you use to check for code vulnerabilities?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84-what-aws-services-are-you-proficient-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      84. What AWS services are you proficient in?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#85-how-would-you-access-data-in-an-s3-bucket-from-account-a-when-your-application-is-running-on-an-ec2-instance-in-account-b" class="md-nav__link">
+    <span class="md-ellipsis">
+      85. How would you access data in an S3 bucket from Account A when your application is running on an EC2 instance in Account B?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#86-how-do-you-provide-access-to-an-s3-bucket-and-what-permissions-need-to-be-set-on-the-bucket-side-s3-bucket-access-and-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      86. How do you provide access to an S3 bucket, and what permissions need to be set on the bucket side? S3 Bucket Access and Permissions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#91-which-services-can-be-integrated-with-a-cdn-content-delivery-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      91. Which services can be integrated with a CDN (Content Delivery Network)?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92how-do-you-dynamically-retrieve-vpc-details-from-aws-to-create-an-ec2-instance-using-iac" class="md-nav__link">
+    <span class="md-ellipsis">
+      92.How do you dynamically retrieve VPC details from AWS to create an EC2 instance using IaC?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-managing-unmanaged-resources-in-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      93. Managing Unmanaged Resources in Terraform
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#94-passing-arguments-to-vpc-during-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      94. Passing Arguments to VPC During Import
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#95-what-is-the-master-slave-architecture-in-jenkins" class="md-nav__link">
+    <span class="md-ellipsis">
+      95. What is the master-slave architecture in Jenkins?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#96-how-do-you-integrate-ldap-with-aws-and-jenkins" class="md-nav__link">
+    <span class="md-ellipsis">
+      96. How do you integrate LDAP with AWS and Jenkins?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#97-what-are-some-key-features-of-github" class="md-nav__link">
+    <span class="md-ellipsis">
+      97. What are some key features of GitHub?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#98-what-are-some-key-features-of-jenkins" class="md-nav__link">
+    <span class="md-ellipsis">
+      98. What are some key features of Jenkins?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#99-what-are-the-benefits-and-uses-of-cicd" class="md-nav__link">
+    <span class="md-ellipsis">
+      99. What are the benefits and uses of CI/CD?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#100-what-is-a-github-workflow-and-how-is-it-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      100. What is a GitHub workflow, and how is it used?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#101-how-do-you-handle-merge-conflicts-in-git" class="md-nav__link">
+    <span class="md-ellipsis">
+      101 How do you handle merge conflicts in Git?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-what-steps-do-you-take-when-a-build-fails-in-jenkins" class="md-nav__link">
+    <span class="md-ellipsis">
+      102. What steps do you take when a build fails in Jenkins?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-how-do-you-execute-jobs-in-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      103 How do you execute jobs in AWS?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104-what-are-ansible-roles-and-how-do-you-use-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      104. What are Ansible roles, and how do you use them?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#105-how-do-you-ensure-data-persistence-with-docker-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      105 How do you ensure data persistence with Docker volumes?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#106-what-are-the-key-differences-between-docker-and-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      106 What are the key differences between Docker and Kubernetes?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#107-how-do-you-securely-store-credentials-in-github" class="md-nav__link">
+    <span class="md-ellipsis">
+      107 How do you securely store credentials in GitHub?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#108-where-is-the-jenkinsfile-typically-stored" class="md-nav__link">
+    <span class="md-ellipsis">
+      108 Where is the Jenkinsfile typically stored?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#109-where-is-the-jenkinsfile-typically-stored" class="md-nav__link">
+    <span class="md-ellipsis">
+      109 Where is the Jenkinsfile typically stored?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#110-how-do-you-execute-a-shell-script-within-a-python-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      110 How do you execute a shell script within a Python script?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#111-how-do-you-communicate-with-a-jenkins-server-and-a-kubernetes-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      111 How do you communicate with a Jenkins server and a Kubernetes cluster?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-do-you-only-update-docker-images-in-kubernetes-or-do-you-also-update-replicas-storage-levels-and-cpu-allocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      112 Do you only update Docker images in Kubernetes, or do you also update replicas, storage levels, and CPU allocation?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-can-you-define-environment-variables-inside-your-jenkins-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      113. Can you define environment variables inside your Jenkins pipeline?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#114-what-is-the-role-of-artifacts-in-jenkins-and-why-do-we-need-to-push-them-to-nexus-instead-of-building-and-storing-them-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      114 What is the role of artifacts in Jenkins, and why do we need to push them to Nexus instead of building and storing them locally?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#116-what-are-the-prerequisites-before-importing-a-vpc-in-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      116 What are the prerequisites before importing a VPC in Terraform?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#117-if-an-s3-bucket-was-created-through-terraform-but-someone-manually-added-a-policy-to-it-how-do-you-handle-this-situation-using-iac" class="md-nav__link">
+    <span class="md-ellipsis">
+      117. If an S3 bucket was created through Terraform but someone manually added a policy to it, how do you handle this situation using IaC?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+  <h1>1interview2025</h1>
+
+<h3 id="1-what-are-all-the-types-of-applications-you-have-deployed">1. What are all the types of applications you have deployed?</h3>
+<ul>
+<li>Web applications (e.g., Java Spring Boot, Node.js),</li>
+<li>microservices architectures, </li>
+<li>databases (e.g., MySQL, MongoDB), </li>
+<li>message brokers (e.g., Apache Kafka), </li>
+<li>monitoring tools (e.g., Prometheus, Grafana), </li>
+<li>CI/CD pipelines (e.g., Jenkins), </li>
+<li>Containerized applications using Docker and Kubernetes</li>
+</ul>
+<h3 id="2-how-have-you-injected-the-secrets-in-configmaps">2 How have you injected the secrets in ConfigMaps</h3>
+<ul>
+<li>Secrets should not be injected in ConfigMaps as ConfigMaps are not designed for  sensitive data. </li>
+<li>Instead, Kubernetes Secrets should be used. <strong>Secrets can be injected into pods via environment variables or mounted as files</strong>.</li>
+</ul>
+<h3 id="3-how-do-you-find-which-pod-is-taking-more-system-resources-across-nodes-using-kubectl">3 How do you find which pod is taking more system resources across nodes using kubectl?</h3>
+<p>Use </p>
+<pre><code>kubectl top pod --all-namespaces
+</code></pre>
+<p>to list resource usage by pods. </p>
+<p>Combine it with <code>kubectl describe pod &lt;pod-name&gt;</code> to get detailed resource usage</p>
+<h3 id="4-how-do-you-know-which-worker-node-is-consuming-more-resources-across-the-clusters-using-kubectl">4 How do you know which worker node is consuming more resources across the clusters using kubectl?</h3>
+<p>Use <code>kubectl top nodes</code> to see resource consumption across nodes. </p>
+<p>This will show CPU and memory usage on each node.</p>
+<h3 id="5-what-are-the-steps-for-configuring-prometheus-and-grafana-for-monitoring-kubernetes-clusters">5. What are the steps for configuring Prometheus and Grafana for monitoring  Kubernetes clusters?</h3>
+<ol>
+<li>Deploy Prometheus using Helm or a custom YAML configuration.</li>
+<li>Set up Kubernetes <strong>service discovery for Prometheus</strong>.</li>
+<li>Deploy Grafana and configure it to use Prometheus as a data source.</li>
+<li><strong>Import Kubernetes monitoring dashboards in Grafana</strong>.</li>
+<li>Set up <strong>alerting rules in Prometheus as needed</strong>.</li>
+</ol>
+<h3 id="6-if-20-pods-are-running-how-do-you-visualize-the-metrics-of-these-pods-in-grafana">6. If 20 pods are running, how do you visualize the metrics of these pods in  Grafana?</h3>
+<p>Configure Grafana to use Prometheus as the data source. Use existing Kubernetes dashboards or create custom dashboards to visualize metrics for all pods.</p>
+<h3 id="7-what-is-apache-kafka">7 What is Apache Kafka?</h3>
+<p>Apache Kafka is a distributed event streaming platform used for building real-time  data pipelines and streaming applications. It’s designed to handle large volumes of data in a  distributed, fault-tolerant manner.</p>
+<h3 id="8-how-do-you-set-up-a-docker-hub-private-registry-and-integrate-it-with-a-cicd-pipeline-what-is-the-procedure">8. How do you set up a Docker Hub private registry and integrate it with a CI/CD  pipeline? What is the procedure?</h3>
+<ol>
+<li>Create a private repository on Docker Hub.</li>
+<li>Configure CI/CD pipeline to authenticate with Docker Hub using credentials.</li>
+<li>Build Docker images in CI pipeline and push them to the private repository.</li>
+<li>Pull images from the private registry during the CD process</li>
+</ol>
+<h3 id="9-what-is-the-difference-between-a-hard-link-and-a-soft-link">9. What is the difference between a hard link and a soft link?</h3>
+<ul>
+<li>
+<p><strong>Hard Link</strong>: A direct reference to the file’s data on the disk. </p>
+<ul>
+<li><strong>Deleting the original file does not affect the hard link.</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>Soft Link (Symbolic Link)</strong>: A pointer to the original file’s path.</p>
+<ul>
+<li><strong>If the original file is deleted, the soft link becomes broken</strong>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="10-what-is-the-use-of-the-break-command-in-shell-scripting-in-what-scenarios-have-you-used-it">10. What is the use of the break command in shell scripting? In what scenarios have you used it?</h3>
+<p><strong>The <code>break</code> command is used to exit a loop prematurely</strong>. It is commonly used when a specific condition is met, and you no longer need to continue the loop</p>
+<h3 id="11-how-do-you-count-the-number-of-devops-words-in-15-html-files">11. How do you count the number of "devops" words in 15 HTML files?</h3>
+<p>To count the number of times the word "devops" appears across 15 HTML files, you can use the  following shell command:</p>
+<pre><code>grep -o -i &quot;devops&quot; *.html | wc -l
+</code></pre>
+<ul>
+<li><code>grep -o -i "devops" *.html</code>: Searches for the word "devops" (case-insensitive due to -i) in all HTML files and outputs each occurrence on a new line (-o).</li>
+<li><code>wc -l</code>: Counts the number of lines output by grep, which corresponds to the number of occurrences of "devops". </li>
+</ul>
+<h3 id="12-what-is-the-terraform-taint-command">12. What is the <code>terraform taint</code> command?</h3>
+<p>The <code>terraform taint</code> command is used to manually mark a specific resource for recreation during the next <code>terraform apply</code>. </p>
+<p><strong>When a resource is tainted, Terraform will destroy it and create a new instance of it on the next apply.</strong></p>
+<p>This is useful when you know a resource needs to be replaced but Terraform hasn't automatically determined that it should be</p>
+<pre><code>Syntax: terraform taint &lt;resource_address&gt;
+Example: terraform taint aws_instance.example
+</code></pre>
+<h3 id="13-what-are-the-possible-ways-to-secure-a-state-file-in-terraform">13. What are the possible ways to secure a state file in Terraform?</h3>
+<ol>
+<li><strong>Encrypt the State File</strong>: Store the <strong>state file in an encrypted format using tools like AWS S3</strong> 
+bucket encryption, Azure Blob encryption, or Google Cloud Storage encryption.</li>
+<li><strong>Use Remote Backends with Security Controls</strong>: Use a remote backend like AWS S3 with IAM roles and policies, HashiCorp Consul with ACLs, or Terraform Cloud, which manages access 
+control and encryption.</li>
+<li><strong>Enable Versioning</strong>: Use versioning on the state file storage to recover from any unintended 
+changes or deletions.</li>
+<li><strong>Access Control</strong>: Restrict access to the state file using IAM policies, RBAC (Role-Based Access Control), or similar mechanisms.</li>
+<li><strong>Use Backend Locking</strong>: Use state locking mechanisms provided by backends like S3 with DynamoDB or Consul to prevent concurrent operations from corrupting the state file.</li>
+</ol>
+<h3 id="14-if-you-provision-100-servers-and-someone-deletes-50-vms-manually-what-happens-if-you-apply-the-terraform-apply-command">14. If you provision 100 servers and someone deletes 50 VMs manually, what happens if you apply the <code>terraform apply</code> command?</h3>
+<p>When you run <code>terraform apply</code>, Terraform will compare the state file with the actual infrastructure. </p>
+<p>It will notice that 50 VMs are missing and will attempt to recreate those missing VMs to match the state defined in your configuration. </p>
+<p>The end result will be 100 VMs again.</p>
+<h3 id="15-what-is-the-syntax-for-for_each-in-terraform">15. What is the syntax for <code>for_each</code> in Terraform?</h3>
+<p>The <code>for_each</code> meta-argument in Terraform allows you to create multiple instances of a resource or 
+module based on the items in a map or set. </p>
+<p>The syntax is as follows:</p>
+<pre><code>resource &quot;aws_instance&quot; &quot;example&quot; {
+    for_each = var.instances
+    ami = each.value[&quot;ami&quot;]
+    instance_type = each.value[&quot;instance_type&quot;]
+    tags = {
+        Name = each.key
+    }
+ }
+</code></pre>
+<p>In this example, </p>
+<p><strong>var.instances is a map, and each.key refers to the current key in the map,</strong> 
+while each.value refers to the associated value.</p>
+<h3 id="16-what-are-the-advantages-and-disadvantages-of-multi-stage-builds-in-docker">16. What are the advantages and disadvantages of multi-stage builds in  Docker?</h3>
+<h4 id="advantages"><strong>Advantages</strong></h4>
+<ul>
+<li><strong>Smaller Image Size</strong>: By separating the build environment from the runtime environment, only the necessary components are included in the final image, leading to smaller image sizes.</li>
+<li><strong>Improved Security</strong>: Reduces the attack surface by excluding build tools and other unnecessary components from the final image.</li>
+<li><strong>Better Caching</strong>: Allows for more efficient use of Docker’s caching mechanism, potentially speeding up the build process.</li>
+<li><strong>Separation of Concerns</strong>: Different stages can focus on specific tasks, making the Dockerfile more organized and easier to maintain.</li>
+</ul>
+<h4 id="disadvantages"><strong>Disadvantages</strong></h4>
+<ul>
+<li><strong>Complexity</strong>: Multi-stage Dockerfiles can be more complex and harder to understand, especially for those new to Docker.</li>
+<li><strong>Longer Build Times</strong>: In some cases, the use of multiple stages may lead to longer build 
+times due to additional steps and transitions between stages.</li>
+<li><strong>Troubleshooting</strong>: Debugging and troubleshooting can be more challenging because intermediate stages are not preserved by default.</li>
+</ul>
+<h3 id="17-how-do-you-deploy-containers-on-different-hosts-not-the-same-host-within-a-docker-cluster">17. How do you deploy containers on different hosts, not the same host, within a Docker cluster?</h3>
+<p>To deploy containers on different hosts within a Docker cluster, you can use Docker Swarm or Kubernetes</p>
+<p><strong>Docker Swarm: Use Docker Swarm’s built-in orchestration capabilities</strong>. </p>
+<p>When deploying a service, Swarm will automatically distribute the containers across different nodes in the 
+cluster. You can influence this behavior using placement constraints.</p>
+<p>Example</p>
+<pre><code>docker service create --name myservice --replicas 2 --constraint 'node.role == worker' myimage
+</code></pre>
+<p>Kubernetes: Use Kubernetes, which will schedule pods on different nodes based on the available resources and any specified node selectors or affinities</p>
+<h3 id="18-if-you-have-a-docker-compose-setup-how-do-you-deploy-the-web-container-on-one-host-and-the-db-container-on-another-host">18. If you have a Docker Compose setup, how do you deploy the web container on one host and the DB container on another host?</h3>
+<p>To deploy the web container on one host and the DB container on another using Docker Compose, 
+you can:</p>
+<ol>
+<li><strong>Use Docker Swarm</strong>: Convert the Compose file into a stack file, and deploy it with docker 
+stack deploy. Docker Swarm will distribute services across nodes.</li>
+<li><strong>Manual Placement</strong>: Use placement constraints in your docker-compose.yml file to specify which containers should run on which nodes.</li>
+</ol>
+<pre><code>version: '3.7'
+services:
+ web:
+ image: my-web-image
+ deploy:
+  placement:
+  constraints: [node.hostname == web-node]
+
+ db:
+ image: my-db-image
+ deploy:
+    placement:
+    constraints: [node.hostname == db-node]
+</code></pre>
+<h3 id="19-what-is-the-difference-between-bridge-networking-and-host-networking-in-docker">19. What is the difference between bridge networking and host networking in Docker</h3>
+<ul>
+<li><strong>Bridge Networking</strong>: <strong>The default Docker network driver</strong>. <ul>
+<li>Containers connected to the same bridge network can communicate with each other. </li>
+<li>Each container gets its own IP address 
+and is isolated from the host network. You can expose ports to the host using the <code>-p</code> option.</li>
+</ul>
+</li>
+<li><strong>Host Networking</strong>: The container shares the host's network stack, <ul>
+<li><strong>meaning it doesn’t get its own IP address, and the container's network is the same as the host's network</strong>. </li>
+<li>This can lead to performance improvements but reduces isolation between the host and the container.</li>
+</ul>
+</li>
+</ul>
+<h3 id="20-how-do-you-resolve-merge-conflicts">20. How do you resolve merge conflicts</h3>
+<p>To resolve merge conflicts, follow these steps:</p>
+<ol>
+<li>Identify the Conflict: Git will mark the conflicting areas in the files with conflict markers 
+(&lt;&lt;&lt;&lt;&lt;&lt;&lt;, =======, and &gt;&gt;&gt;&gt;&gt;&gt;&gt;).</li>
+<li><strong>Manually Resolve</strong>: Open the conflicting file and decide how to combine the changes. Remove the conflict markers and modify the content to resolve the conflict.</li>
+<li><strong>Stage the Resolved Files</strong>: Once resolved, stage the files using <code>git add</code>.</li>
+<li><strong>Commit the Changes</strong>: Commit the resolved conflicts with <code>git commit</code>. If you were in the middle of a merge, this will complete the merge process.</li>
+<li><strong>Test</strong>: Run tests to ensure that the merge didn’t introduce any issues.</li>
+</ol>
+<p>Example:</p>
+<pre><code>git add &lt;resolved-files&gt;
+git commit -m &quot;Resolved merge conflicts in X, Y, Z files
+</code></pre>
+<h3 id="21-what-command-do-you-use-to-change-the-existing-commit-message">21. What command do you use to change the existing commit message?</h3>
+<p>To change the most recent commit message, you can use the following Git command</p>
+<pre><code>git commit --amend -m &quot;New commit message&quot;
+</code></pre>
+<p>If you have already pushed the commit to a remote repository, you will need to force push the 
+changes:</p>
+<pre><code>git push --force
+</code></pre>
+<h3 id="22-what-is-session-affinity">22. What is session affinity?</h3>
+<p><strong>Session affinity, also known as sticky sessions</strong>, is a concept in load balancing where requests from a 
+particular user are consistently directed to the same server (or pod) in a multi-server environment. </p>
+<p><strong>This ensures that the user's session data, which might be stored locally on the server, remains 
+accessible throughout the session</strong>.</p>
+<h3 id="23-what-is-pod-affinity-and-its-use-case">23. What is pod affinity and its use case?</h3>
+<p>Pod affinity is a feature in Kubernetes that allows you to specify rules for scheduling pods to run on 
+nodes that have other specified pods running on them. </p>
+<p>This can be useful when you want certain 
+pods to be located together due to factors like data locality, network latency, or shared resources.</p>
+<p>Use Case: An application where the frontend and backend services communicate frequently might 
+use pod affinity to ensure that both are scheduled on the same node to reduce network latency</p>
+<h3 id="24-what-is-the-difference-between-pod-affinity-and-pod-anti-affinity">24. What is the difference between pod affinity and pod anti-affinity?</h3>
+<ul>
+<li><strong>Pod Affinity:</strong> Ensures that pods are scheduled on the same node or in proximity to each other.</li>
+<li><strong>Pod Anti-Affinity</strong>: Ensures that pods are not scheduled on the same node or are placed far </li>
+<li>apart from each other.</li>
+</ul>
+<p>Example Use Case:</p>
+<ul>
+<li><strong>Pod Affinity:</strong> Running frontend and backend on the same node for low-latency communication.</li>
+<li><strong>Pod Anti-Affinity</strong>: Ensuring replicas of the same application are spread across different nodes to increase availability and fault tolerance.</li>
+</ul>
+<h3 id="25-what-are-readiness-and-liveness-probes">25. What are readiness and liveness probes?</h3>
+<ul>
+<li><strong>Readiness Probe</strong>: Used to determine when a pod is ready to start accepting traffic. If the  readiness probe fails, the pod will be removed from the service endpoints, ensuring it does not receive traffic until it's ready.</li>
+<li><strong>Liveness Probe:</strong> Used to determine if a pod is still running. If the liveness probe fails, Kubernetes will restart the pod, assuming it's in a failed state.</li>
+</ul>
+<h4 id="26-write-a-simple-groovy-pipeline-for-a-java-spring-boot-application-that-waits-for-user-input-for-approval-to-move-to-the-next-stage-with-stages-for-checkout-build-push-and-deploy">26. Write a simple Groovy pipeline for a Java Spring Boot application that waits for user input for approval to move to the next stage, with stages for checkout,  build, push, and deploy</h4>
+<pre><code>pipeline {
+ agent any
+
+ stages {
+    stage('Checkout') {
+        steps {
+        git 'https://github.com/your-repo/java-spring-boot-app.git'
+    }
+ }
+
+ stage('Build') {
+    steps {
+        sh './mvnw clean package'
+    }
+ }
+
+ stage('Push') {
+    steps {
+        sh 'docker build -t your-docker-repo/java-spring-boot-app .'
+        sh 'docker push your-docker-repo/java-spring-boot-app'
+    }
+ }
+
+ stage('Approval') {
+    steps {
+        input 'Do you want to deploy to production?'
+    }
+ }
+
+ stage('Deploy') {
+    steps {
+        sh 'kubectl apply -f deployment.yaml'
+        }
+    }
+ } 
+}
+</code></pre>
+<h3 id="27-how-do-you-export-test-reports-in-jenkins">27. How do you export test reports in Jenkins?</h3>
+<p>To export test reports in Jenkins:</p>
+<ol>
+<li>Ensure that your tests generate reports in a standard format <strong>like JUnit XML or HTML</strong>.</li>
+<li>Use the <strong>Publish JUnit test result report post-build action to archive test reports</strong>.</li>
+<li>You can also use the <strong>Archive the artifacts</strong> post-build action to store other types of reports.</li>
+<li>The test reports can then be accessed and downloaded from the Jenkins build page</li>
+</ol>
+<h3 id="28-if-5-pods-are-running-how-do-you-scale-the-number-of-pods-to-10-using-the-command-line-in-kubernetes">28. If 5 pods are running, how do you scale the number of pods to 10 using the  command line in Kubernetes?</h3>
+<p>To scale the number of pods from 5 to 10, use the following command:</p>
+<pre><code>kubectl scale --replicas=10 deployment/&lt;your-deployment-name&gt;
+</code></pre>
+<h3 id="29-can-you-explain-the-usage-of-the-terraform-import-command">29. Can you explain the usage of the terraform import command?</h3>
+<p>The terraform import command is used to import existing infrastructure resources into Terraform's state file, allowing Terraform to manage them. </p>
+<p>This is particularly useful when you want to bring existing infrastructure under Terraform management without having to recreate resources.</p>
+<pre><code>terraform import &lt;resource_type&gt;.&lt;resource_name&gt; &lt;resource_id&gt;
+</code></pre>
+<pre><code>terraform import aws_instance.my_instance i-1234567890abcdef0
+</code></pre>
+<h3 id="30-in-aws-where-do-you-store-the-state-file-and-how-do-you-manage-it">30. In AWS, where do you store the state file, and how do you manage it?</h3>
+<p>In AWS, Terraform state files are typically stored in an S3 bucket, and the state can be managed using a combination of <strong>S3 and DynamoDB for locking</strong>.</p>
+<p>Example Configuration:</p>
+<pre><code>terraform {
+ backend &quot;s3&quot; {
+ bucket = &quot;my-terraform-state-bucket&quot;
+ key = &quot;path/to/my/terraform.tfstate&quot;
+ region = &quot;us-west-2&quot;
+ dynamodb_table = &quot;terraform-lock-table&quot;
+ encrypt = true
+ }}
+</code></pre>
+<p>Management</p>
+<ul>
+<li><strong>S3</strong>: <em>Stores the state file securely, supports versioning, and can be encrypted</em>.</li>
+<li><strong>DynamoDB</strong>: Provides locking to prevent multiple simultaneous operations on the same state file, avoiding conflicts.</li>
+</ul>
+<p>This setup ensures that your Terraform state is stored securely and is protected from simultaneous 
+access issues</p>
+<h4 id="31-what-is-the-biggest-issue-you-have-faced-with-terraform-and-how-did-you-resolve-it">31. What is the biggest issue you have faced with Terraform, and how did you resolve it?</h4>
+<p>One significant issue I faced was managing Terraform state when multiple teams were working on the same infrastructure. </p>
+<p><strong>This was resolved by organizing the infrastructure into separate modules</strong> and <strong>using remote state management with proper locking mechanisms</strong></p>
+<h4 id="32-what-are-the-types-of-storage-accounts-in-aws-s3">32. What are the types of storage accounts in AWS S3?</h4>
+<p>In AWS S3, the different storage classes include:</p>
+<ul>
+<li>S3 Standard</li>
+<li>S3 Intelligent-Tiering</li>
+<li>S3 Standard-IA (Infrequent Access)</li>
+<li>S3 One Zone-IA</li>
+<li>S3 Glacier</li>
+<li>S3 Glacier Deep Archive</li>
+</ul>
+<h4 id="33-are-you-familiar-with-lifecycle-management-in-s3-buckets-how-do-you-set-up-lifecycle-policies">33. Are you familiar with lifecycle management in S3 buckets? How do you set up lifecycle  policies?</h4>
+<p>Yes, lifecycle management in S3 allows you to define rules to transition objects between different storage classes or delete them after a certain period. </p>
+<p>Lifecycle policies can be set up using the S3 Management Console, AWS CLI, or Terraform by specifying the transitions and expiration actions in a JSON configuration file.</p>
+<h4 id="34-what-are-the-differences-between-load-balancers-and-why-do-we-need-them">34. What are the differences between load balancers, and why do we need them?</h4>
+<p>Load balancers distribute incoming network traffic across multiple servers. The main types are:</p>
+<ul>
+<li><strong>Application Load Balancer (ALB)</strong>: Operates at the application layer (Layer 7), and is used for HTTP/HTTPS traffic with advanced routing capabilities.</li>
+<li><strong>Network Load Balancer (NLB)</strong>: Operates at the transport layer (Layer 4) and is used for ultra-low latency TCP/UDP traffic.</li>
+<li><strong>Classic Load Balancer (CLB)</strong>: Supports both Layer 4 and Layer 7, but is now mostly deprecated in favor of ALB and NLB</li>
+</ul>
+<p>Load balancers improve fault tolerance, scalability, and ensure high availability.</p>
+<h4 id="35-have-you-worked-with-auto-scaling-groups-asg">35. Have you worked with Auto Scaling Groups (ASG)</h4>
+<p>Yes, <strong>I have worked with ASGs to automatically scale the number of instances in response to demand</strong>. </p>
+<p>ASGs are configured with policies that adjust the desired capacity based on metrics such as CPU utilization, helping to maintain application performance and optimize costs.</p>
+<h4 id="36-can-you-write-a-simple-dockerfile">36. Can you write a simple Dockerfile?</h4>
+<p>Yes, here is a simple example of a Dockerfile for a Node.js application:</p>
+<p><strong>Dockerfile</strong></p>
+<pre><code>FROM node: 14
+WORKDIR /app
+Copy package.json
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD [ &quot;npm&quot;, &quot;start&quot;]
+</code></pre>
+<h4 id="37-if-you-want-to-expose-your-application-to-the-public-internet-or-access-your-application-within-a-cluster-how-would-you-do-that-in-kubernetes">37. If you want to expose your application to the public internet or access your application within a cluster, how would you do that in Kubernetes?</h4>
+<p>To expose your application to the public internet, you can use a Kubernetes <strong>Service</strong> of type <strong>LoadBalancer or NodePort.</strong> </p>
+<p>For internal access within the cluster, you can use a <strong>ClusterIP</strong> service. Additionally, you might use an Ingress controller for more advanced routing.</p>
+<h3 id="38-why-do-we-need-a-configmap-in-kubernetes">38. Why do we need a ConfigMap in Kubernetes?</h3>
+<p>A ConfigMap is used to store non-confidential configuration data in key-value pairs. </p>
+<p>It allows you to decouple configuration artifacts from image content, enabling you to modify application settings without rebuilding your container images</p>
+<h3 id="39-which-aws-services-do-you-consider-when-setting-up-a-cicd-pipeline-for-a-microservices-application">39. Which AWS services do you consider when setting up a CI/CD pipeline for a microservices application?</h3>
+<p>For a CI/CD pipeline, I would consider using:</p>
+<ul>
+<li><strong>AWS CodeCommit</strong> for source control.</li>
+<li><strong>AWS CodeBuild</strong> for building and testing.</li>
+<li><strong>AWS CodeDeploy</strong> or Amazon EKS for deployment.</li>
+<li><strong>AWS CodePipeline</strong> to orchestrate the CI/CD process.</li>
+<li><strong>Amazon S3</strong> for artifact storage.</li>
+<li><strong>AWS Lambda</strong> for any custom automation tasks.</li>
+</ul>
+<h4 id="40-on-a-day-with-unusually-high-traffic-for-an-e-commerce-application-how-would-you-as-a-cloud-engineer-manage-the-current-setup-to-handle-the-load-smoothly">40. On a day with unusually high traffic for an e-commerce application, how would you, as a cloud engineer, manage the current setup to handle the load smoothly</h4>
+<p>I would ensure that <strong>Auto Scaling Groups</strong> are properly configured to handle the increased demand by automatically adding more instances. </p>
+<p>I'd also verify that the load balancers are evenly distributing traffic and consider enabling caching (e.g., using Amazon CloudFront) to reduce the load on backend servers. Monitoring tools like CloudWatch would be used to  track performance metrics and adjust resources in real-time</p>
+<p><strong>Strategies:</strong></p>
+<ul>
+<li><strong>Auto Scaling</strong>: Scale up instances automatically to handle the increased load.</li>
+<li><strong>Caching</strong>: Use a caching layer to reduce the load on your application servers.</li>
+<li><strong>Load Balancing</strong>: Distribute traffic evenly across available instances.</li>
+<li><strong>Database Optimization</strong>: Ensure your database is properly configured and optimized for performance.</li>
+<li><strong>Monitoring</strong>: Closely monitor system metrics to identify bottlenecks and adjust resources accordingly</li>
+</ul>
+<h4 id="41-if-traffic-is-currently-handled-on-a-single-instance-how-would-you-upgrade-for-high-availability-in-aws">41. If traffic is currently handled on a single instance, how would you upgrade for high availability  in AWS?</h4>
+<ul>
+<li>To upgrade for high availability, I would:<ul>
+<li><strong>Deploy multiple</strong> instances across different Availability Zones (AZs) using an Auto Scaling Group.</li>
+<li><strong>Set up a Load Balancer (ALB or NLB)</strong> to distribute traffic across these instances.</li>
+<li><strong>Configure health checks</strong> to ensure traffic is only routed to healthy instances.</li>
+<li><strong>Use Multi-AZ deployments</strong> for databases like RDS to ensure data availability</li>
+</ul>
+</li>
+</ul>
+<h4 id="42-when-auto-scaling-instances-how-do-you-manage-the-backend-rds-database">42. When auto-scaling instances, how do you manage the backend RDS database?</h4>
+<ul>
+<li>To manage the backend RDS database during auto-scaling:<ul>
+<li><strong>Enable Multi-AZ</strong> for high availability and automatic failover.</li>
+<li><strong>Use RDS Read Replicas to handle read-heavy traffic</strong>, reducing the load on the primary database.</li>
+<li><strong>Scale RDS vertically</strong> (instance size) or horizontally (read replicas) based on the database workload.</li>
+<li><strong>Monitor performance</strong> using Amazon CloudWatch and adjust as necessary</li>
+</ul>
+</li>
+</ul>
+<h4 id="43-have-you-ever-set-up-cross-account-access-for-s3-for-example-if-the-qa-team-needs-access-to-the-production-database">43. Have you ever set up cross-account access for S3? For example, if the QA team needs access to the production database.</h4>
+<p>Yes, I've set up cross-account access by:</p>
+<ul>
+<li><strong>Creating an IAM role</strong> in the production account with the necessary S3 permissions.</li>
+<li><strong>Establishing a trust relationship</strong> to allow the QA account to assume that role.</li>
+<li><strong>Using S3 bucket policies</strong> to grant access from the QA account.<ul>
+<li>QA team members can then assume the role using AWS STS (Security Token Service) to access the production S3 bucket.</li>
+</ul>
+</li>
+</ul>
+<h4 id="44-how-can-an-s3-account-in-account-a-access-an-s3-account-in-account-b">44. How can an S3 account in Account A access an S3 account in Account B?</h4>
+<p>Account A can access Account B’s S3 bucket by:</p>
+<ul>
+<li><strong>Setting up a bucket policy</strong> in Account B that grants Account A the necessary permissions.</li>
+<li><strong>Creating an IAM role</strong> in Account B with permissions for S3 and allowing Account A to assume that role via a trust policy.</li>
+<li><strong>Using AWS STS</strong> to assume the role from Account A and access the S3 bucket in Account B.</li>
+</ul>
+<h4 id="45-can-you-differentiate-between-iam-policies-and-iam-roles">45. Can you differentiate between IAM policies and IAM roles?</h4>
+<p><strong>IAM Policies:</strong> These are sets of permissions attached to users, groups, or roles, defining what actions are allowed or denied</p>
+<p><strong>IAM Roles</strong>: These are <strong>identities with specific permissions</strong> that can be assumed by entities like users, applications, or AWS services. Roles are often used for temporary access or cross-account access.</p>
+<h4 id="46-can-you-explain-the-sts-assume-role-policy">46. Can you explain the STS assume role policy?</h4>
+<p><strong>The STS (Security Token Service) AssumeRole policy</strong> allows a user or service to assume a role in a different account or within the same account. </p>
+<p>This provides temporary security credentials with the permissions associated with the assumed role, enabling cross-account access or delegation of permissions</p>
+<h4 id="47-have-you-experienced-any-challenging-issues-or-incidents-in-your-project-how-did-you-and-your-team-identify-and-resolve-them">47. Have you experienced any challenging issues or incidents in your project? How did you and  your team identify and resolve them?</h4>
+<p>Yes, one challenge was a sudden traffic spike causing performance degradation. </p>
+<p><strong>We identified the issue using CloudWatch metrics and logs, pinpointing the bottleneck in the database.</strong></p>
+<p><strong>The resolution involved scaling the database vertically and adding read replicas to distribute the load, along with optimizing slow-running queries.</strong></p>
+<h4 id="48-what-is-the-difference-between-cmd-and-entrypoint-in-docker">48. What is the difference between CMD and ENTRYPOINT in Docker?</h4>
+<ul>
+<li><strong>CMD</strong>: Provides default arguments for the entrypoint or the command to run if no other 
+command is provided.</li>
+<li><strong>ENTRYPOINT</strong>: Defines the executable that will always run, with CMD as its default  arguments. ENTRYPOINT is useful when you want your container to behave like a specific  executable.</li>
+<li>Example: <strong><code>ENTRYPOINT ["python", "app.py"]</code> </strong>ensures app.py is always executed, while CMD allows passing different arguments.</li>
+</ul>
+<h4 id="49-have-you-ever-managed-an-application-single-handedly">49. Have you ever managed an application single-handedly?</h4>
+<p>Yes, I have managed applications single-handedly, handling tasks such as deployment, monitoring, troubleshooting, and scaling. </p>
+<p>This involved setting up the infrastructure, CI/CD 
+pipelines, and ensuring high availability and security</p>
+<h3 id="50-what-are-the-benefits-of-infrastructure-as-code-iac">50. What are the benefits of Infrastructure as Code (IaC)?</h3>
+<ul>
+<li><strong>Consistency</strong>: Ensures consistent environments by automating the provisioning process.</li>
+<li><strong>Version Control</strong>: Infrastructure can be versioned and tracked, enabling rollbacks and audits.</li>
+<li><strong>Automation</strong>: Reduces manual intervention, minimizing errors and speeding up deployments.</li>
+<li><strong>Scalability</strong>: Allows easy scaling and management of resources through scripts.</li>
+<li><strong>Collaboration</strong>: Teams can collaborate more effectively using code reviews and version control systems.</li>
+</ul>
+<h4 id="51-what-are-the-different-ways-to-create-infrastructure-as-code">51. What are the different ways to create infrastructure as code?</h4>
+<ul>
+<li><strong>Terraform</strong>: A popular open-source tool that allows you to define infrastructure as code using a declarative configuration language. It works with various cloud providers.</li>
+<li><strong>AWS CloudFormation</strong>: A service provided by AWS that enables you to define AWS resources  using JSON or YAML templates.</li>
+<li><strong>Azure Resource Manager (ARM) Templates</strong>: Azure's solution for infrastructure as code, allowing you to define resources in JSON.</li>
+<li><strong>Google Cloud Deployment Manager</strong>: Google's infrastructure as code tool that uses YAML to define resources.</li>
+<li><strong>Ansible</strong>: Although primarily a configuration management tool, it can also be used to provision infrastructure using playbooks written in YAML</li>
+<li><strong>Pulumi</strong>: A modern infrastructure as code tool that supports multiple programming languages 
+like Python, JavaScript, and Go</li>
+</ul>
+<h4 id="52-what-is-the-difference-between-public-and-private-networking">52. What is the difference between public and private networking?</h4>
+<ul>
+<li><strong>Public Networking</strong>: Refers to networks that are accessible from the internet. Public IP 
+addresses are used, and resources are exposed to external access.</li>
+<li><strong>Private Networking</strong>: Refers to networks that are isolated from the public internet. <ul>
+<li>Resources within a private network communicate with each other securely using private IP addresses, 
+and access from outside is typically restricted.</li>
+</ul>
+</li>
+</ul>
+<h4 id="53-what-is-a-docker-registry-and-why-do-we-need-it">53. What is a Docker registry and why do we need it?</h4>
+<ul>
+<li><strong>Docker Registry</strong>: A storage and distribution system for Docker images. It allows you to store, share, and manage Docker container images. Docker Hub is a popular public registry, but you can also set up private registries.</li>
+<li><strong>Why We Need It</strong>: Docker registries allow teams to version, share, and deploy Docker images easily. They support CI/CD pipelines by enabling automated builds and deployments.</li>
+</ul>
+<h4 id="54-what-is-a-secrets-manager">54. What is a secrets manager?</h4>
+<ul>
+<li><strong>Secrets Manager</strong>: A tool or service that securely stores and manages sensitive information such as API keys, passwords, certificates, and tokens. Examples include AWS Secrets Manager, HashiCorp Vault, and Azure Key Vault.</li>
+<li><strong>Purpose</strong>: To securely store and access secrets without hardcoding them into application code or configuration files</li>
+</ul>
+<h4 id="55-what-is-the-secure-way-to-manage-sensitive-information">55. What is the secure way to manage sensitive information?</h4>
+<ul>
+<li><strong>Use a Secrets Manager</strong>: Store secrets in a dedicated service like AWS Secrets Manager,  Azure Key Vault, or HashiCorp Vault.</li>
+<li><strong>Environment Variables</strong>: Use environment variables to inject secrets at runtime rather than storing them in code.</li>
+<li><strong>Encrypted Storage</strong>: Store sensitive data in encrypted databases or files, ensuring that encryption keys are managed securely.</li>
+<li><strong>Access Control</strong>: Implement strict access controls and auditing to ensure that only authorized personnel and applications can access sensitive information.</li>
+</ul>
+<h4 id="56-have-you-worked-with-kubernetes-k8s">56. Have you worked with Kubernetes (K8s)?</h4>
+<p>If you have experience with Kubernetes, you might discuss:</p>
+<ul>
+<li>Deploying and managing containerized applications using Kubernetes.</li>
+<li>Configuring Kubernetes clusters and using tools like kubectl.</li>
+<li>Managing services, ingress, and networking in Kubernetes.</li>
+<li>Using Helm charts for packaging and deploying applications.</li>
+</ul>
+<h4 id="57-what-is-the-difference-between-docker-and-kubernetes">57. What is the difference between Docker and Kubernetes?</h4>
+<ul>
+<li><strong>Docker</strong>: A platform for developing, shipping, and running applications inside containers. It simplifies the process of managing application dependencies and environment consistency.</li>
+<li><strong>Kubernetes</strong>: An open-source orchestration system for automating the deployment, scaling, and management of containerized applications. Kubernetes manages multiple containers across a cluster, providing features like load balancing, scaling, and self-healing.</li>
+</ul>
+<h4 id="58-can-you-explain-an-end-to-end-deployment-for-an-application">58. Can you explain an end-to-end deployment for an application?</h4>
+<p>An end-to-end deployment process might involve the following steps:</p>
+<ol>
+<li><strong>Code Commit</strong>: Developers push code changes to a version control system like Git.</li>
+<li><strong>CI/CD Pipeline</strong>: A continuous integration pipeline builds the code, runs tests, and creates a 
+Docker image.</li>
+<li><strong>Image Storage</strong>: The Docker image is pushed to a Docker registry.</li>
+<li><strong>Deployment</strong>: The image is pulled from the registry by Kubernetes, Docker Swarm, or another 
+orchestration tool, and deployed to a staging or production environment.</li>
+<li><strong>Monitoring &amp; Logging</strong>: The application is monitored for performance and errors, with logs 
+collected and analyzed.</li>
+<li><strong>Scaling &amp; Updates</strong>: The application is scaled based on demand, and updates are rolled out 
+using a strategy like blue-green or canary deployment</li>
+</ol>
+<h4 id="59-if-you-want-to-use-kubernetes-instead-of-ec2-instances-how-would-you-do-it-have-you-used-helm-charts-or-other-cd-tools-how-would-you-handle-a-project-with-multiple-microservices-on-kubernetes">59. If you want to use Kubernetes instead of EC2 instances, how would  you do it? Have you used Helm charts or other CD tools? How would you handle a project with multiple microservices on Kubernetes?</h4>
+<ul>
+<li><strong>Using Kubernetes Instead of EC2</strong>: You would deploy your applications on a Kubernetes  cluster rather than directly on EC2 instances. This involves setting up an EKS (Elastic  Kubernetes Service) cluster in AWS or using another managed Kubernetes service.</li>
+<li><strong>Helm Charts</strong>: Helm is a package manager for Kubernetes that helps you manage Kubernetes 
+applications. You can use Helm charts to deploy and manage multiple microservices in a consistent and repeatable manner.</li>
+<li><strong>Handling Multiple Microservices</strong>: Use Kubernetes namespaces to isolate microservices, and manage their deployment using Helm charts or a CI/CD tool like Jenkins, ArgoCD, or GitLab CI/CD. Implement service discovery, networking, and security policies to ensure seamless communication between microservices.</li>
+</ul>
+<h4 id="60-how-do-you-connect-a-bastion-host-to-a-private-network-can-you-explain-vpc-and-vpc-peering">60. How do you connect a bastion host to a private network? Can you explain VPC and VPC peering?</h4>
+<p><strong>Connecting a Bastion Host</strong>: A bastion host is typically set up in a public subnet of a Virtual Private Cloud (VPC) with access to the private network. </p>
+<p>Users connect to the bastion host via SSH, and from there, they can access resources in the private subnet.</p>
+<p><strong>VPC (Virtual Private Cloud)</strong>: A logically isolated section of a cloud provider's network where 
+you can launch and manage resources. <strong>It allows you to define IP ranges, subnets, route tables, and network gateways</strong>.</p>
+<p><strong>VPC Peering</strong>: A network connection between two VPCs that allows traffic to be routed between them using private IP addresses. <strong>This is useful for connecting resources across different VPCs without going over the public internet.</strong></p>
+<h4 id="61-have-you-configured-a-system-where-code-is-automatically-merged-and-published-upon-a-developer-completing-a-ticket-in-jira-what-exactly-have-you-managed">61. Have you configured a system where code is automatically merged and published upon a developer completing a ticket in Jira? What exactly have you managed</h4>
+<p>Yes, I have set up a CI/CD pipeline where code is automatically merged and published once a 
+developer completes a ticket in Jira. This process typically involves:</p>
+<ul>
+<li>I<strong>ntegration with Jira</strong>: Configuring Jira to trigger CI/CD pipelines when a ticket is marked as "Done" or moved to a specific workflow stage.</li>
+<li>Code Merging: Using tools like GitLab CI, GitHub Actions, or Jenkins to automatically merge feature branches into the main branch after passing tests.</li>
+<li><strong>Automated Testing</strong>: Running unit, integration, and end-to-end tests to ensure the quality of the code before merging.</li>
+<li><strong>Deployment</strong>: Using deployment tools <strong>like Kubernetes, Helm, or Docker Swarm to automatically deploy the merged code to staging or production environments</strong>.</li>
+</ul>
+<h3 id="62-how-do-you-set-up-nginx-on-a-server">62. How do you set up Nginx on a server?</h3>
+<p>Setting up Nginx on a server involves:</p>
+<p><strong>1. Installation:</strong></p>
+<ul>
+<li>For Ubuntu/Debian: <code>sudo apt-get update &amp;&amp; sudo apt-get install</code> 
+nginx</li>
+<li>For CentOS/RHEL: <code>sudo yum install nginx</code></li>
+</ul>
+<p><strong>2. Configuration:</strong></p>
+<ul>
+<li>Edit the configuration file located at <code>/etc/nginx/nginx.conf</code> or individual site 
+configurations in <code>/etc/nginx/sites-available/</code>. </li>
+<li>Define server blocks (virtual hosts) to specify different sites and their root 
+directories.
+Configure reverse proxy, load balancing, SSL/TLS certificates, and caching as 
+needed.</li>
+</ul>
+<p><strong>3. Start and Enable Nginx:</strong> </p>
+<ul>
+<li>Start the service: <code>sudo systemctl start nginx</code></li>
+<li>Enable it to start on boot: <code>sudo systemctl enable nginx</code></li>
+</ul>
+<p><strong>4. Testing:</strong> </p>
+<ul>
+<li>Test the configuration: <code>sudo nginx -t</code></li>
+<li>Ensure Nginx is running and properly serving content.</li>
+</ul>
+<h4 id="63-what-is-a-load-balancer-and-its-benefits-what-is-cloud-nat">63. What is a load balancer and its benefits? What is Cloud NAT?</h4>
+<p><strong>Load Balancer</strong>: A load balancer distributes incoming network traffic across multiple servers or services to ensure reliability, scalability, and high availability. Benefits include:</p>
+<ul>
+<li><strong>Increased Fault Tolerance</strong>: Distributes traffic to prevent overload on a single server.</li>
+<li><strong>Scalability</strong>: Easily manage increased traffic by adding more servers.</li>
+<li><strong>Improved Performance</strong>: Balances load based on performance metrics, reducing latency.</li>
+</ul>
+<p><strong>Cloud NAT: Network Address Translation (NAT)</strong> service in cloud environments like Google 
+Cloud. </p>
+<p><strong>It allows instances in private subnets to connect to the internet without exposing 
+them to inbound internet traffic, maintaining security while enabling outbound connectivity</strong></p>
+<h4 id="64-what-is-the-difference-between-a-load-balancer-and-a-cloud-nat-gateway">64. What is the difference between a load balancer and a Cloud NAT gateway?</h4>
+<p>**Load Balancer: **</p>
+<ul>
+<li>Distributes incoming traffic across multiple servers or services.</li>
+<li>Primarily used for load distribution, redundancy, and high availability.</li>
+<li>Works at various layers (L4 for TCP, L7 for HTTP/HTTPS).</li>
+</ul>
+<p><strong>Cloud NAT Gateway:</strong></p>
+<ul>
+<li>Provides outbound internet access for instances in a private network without exposing them to inbound traffic.</li>
+<li>Used for secure, private instances that need internet access without being directly accessible from the internet.</li>
+</ul>
+<h4 id="65-how-do-you-see-yourself-fitting-into-this-particular-role">65. How do you see yourself fitting into this particular role?</h4>
+<p>I see myself fitting into this role by leveraging my technical expertise in infrastructure management, automation, and cloud technologies. </p>
+<p>My experience in setting up CI/CD pipelines, managing deployments, and optimizing resource allocation aligns with the responsibilities of this role. I also bring problem-solving skills and a proactive approach to ensuring system reliability, which will contribute to the success of the team and organization.</p>
+<p>In a previous project, I noticed that our cloud infrastructure was over-provisioned, leading to unnecessary costs. </p>
+<p>I implemented auto-scaling based on actual usage metrics and utilized spot instances for non-critical workloads. </p>
+<p>Additionally, I restructured the storage solution by moving infrequently accessed data to lower-cost storage classes. </p>
+<p>These changes resulted in asignificant reduction in our monthly cloud expenses without compromising performance</p>
+<h4 id="67-describe-a-situation-where-the-entire-production-instance-crashed-and-you-had-to-fix-it-quickly-have-you-experienced-such-a-scenario">67. Describe a situation where the entire production instance crashed, and you had to fix it quickly. Have you experienced such a scenario?</h4>
+<p>Yes, I have experienced such a scenario. In one instance, our production server crashed due to a memory leak in the application. </p>
+<p><strong>I quickly identified the issue using monitoring tools like Prometheus and logs from ELK Stack</strong>. </p>
+<p>To resolve it, I restarted the affected services and temporarily scaled up the infrastructure to handle the load. I then worked with the development team to identify and fix the memory leak, ensuring it didn’t happen again</p>
+<h4 id="68-what-is-blue-green-deployment-and-why-is-it-needed">68. What is blue-green deployment and why is it needed?</h4>
+<p><strong>Blue-Green Deployment</strong>: </p>
+<ul>
+<li>A deployment strategy where two identical environments (Blue and Green) are maintained. </li>
+<li>The Blue environment is the active production environment, while the Green is the idle one. During deployment, the new version is deployed to the Green environment. </li>
+<li>After testing, traffic is switched to Green, making it the new production environment.</li>
+</ul>
+<p>Why Needed: </p>
+<ul>
+<li><strong>Minimal Downtime:</strong> Reduces downtime as the switch between environments is 
+instantaneous.</li>
+<li><strong>Easy Rollback</strong>: If issues arise, switching back to the Blue environment is straightforward.</li>
+<li><strong>Improved Reliability</strong>: Reduces the risk of deployment failures affecting users.</li>
+</ul>
+<h4 id="69-what-other-deployment-strategies-do-you-know">69. What other deployment strategies do you know?</h4>
+<ul>
+<li><strong>Canary Deployment</strong>: Gradually rolling out the new version to a small subset of users before a full deployment.</li>
+<li><strong>Rolling Deployment</strong>: Incrementally updating instances or servers with the new version, 
+ensuring at least some instances are always running the old version.</li>
+<li><strong>A/B Testing</strong>: Similar to blue-green, but used for comparing different versions/features with live user traffic to determine which performs better.</li>
+<li><strong>Feature Toggles</strong>: Allows features to be turned on/off dynamically, enabling deployment of 
+incomplete features without impacting the user.</li>
+</ul>
+<h4 id="70-what-advanced-aws-resource-types-have-you-worked-with-and-utilized">70. What advanced AWS resource types have you worked with and utilized?</h4>
+<ul>
+<li><strong>AWS Lambda</strong>: Serverless computing for running code in response to events without 
+managing servers.</li>
+<li><strong>AWS Fargate</strong>: Serverless compute engine for containers, allowing the deployment of 
+containerized applications without managing the underlying infrastructure.</li>
+<li><strong>Amazon RDS</strong>: Managed database service for relational databases, including features like 
+automated backups, scaling, and multi-AZ deployments.</li>
+<li><strong>AWS CloudFormation</strong>: Infrastructure as Code (IaC) tool for automating resource provisioning and management.</li>
+<li><strong>Amazon VPC Peering and Transit Gateway</strong>: For creating complex network architectures 
+across multiple VPCs and accounts.</li>
+<li><strong>AWS Step Functions</strong>: Orchestration service for combining AWS Lambda functions and other 
+services into serverless workflows.</li>
+</ul>
+<h4 id="71-how-are-hosted-modules-like-aiml-deployed-customized-and-scaled-as-per-different-frontendbackend-requirements-in-aws-with-the-help-of-a-devops-engineer-deploying-customizing-and-scaling-hosted-modules-in-aws">71. How are hosted modules (like AI/ML) deployed, customized, and scaled as per different frontend/backend requirements in AWS with the help of a DevOps engineer? Deploying, Customizing, and Scaling Hosted Modules in AWS</h4>
+<p>Deployment: DevOps engineers use tools like AWS CodePipeline to automate the deployment of 
+hosted AI/ML modules. This involves:</p>
+<ul>
+<li><strong>Containerization</strong>: Packaging the modules into Docker containers for portability.</li>
+<li><strong>Infrastructure Provisioning</strong>: Using IaC (e.g., CloudFormation) to set up the necessary 
+AWS resources (EC2 instances, S3 buckets, etc.).</li>
+<li><strong>Deployment Automation</strong>: Using tools like AWS CodeDeploy to deploy the containers to 
+the provisioned infrastructure.</li>
+</ul>
+<p><strong>Customization</strong>: Customization often involves:</p>
+<ul>
+<li><strong>Configuration Management</strong>: Using tools like Ansible or Puppet to configure the modules 
+based on specific requirements.</li>
+<li><strong>Environment Variables</strong>: Using environment variables to inject different configurations for different environments (development, testing, production).</li>
+</ul>
+<p><strong>Scaling</strong>: DevOps engineers leverage AWS services like:</p>
+<ul>
+<li>Auto Scaling Groups: Automatically adjust the number of instances based on load.</li>
+<li>Elastic Load Balancing: Distribute traffic across multiple instances for high availability.</li>
+<li>Serverless Computing: Using services like AWS Lambda to scale AI/ML workloads 
+dynamically</li>
+</ul>
+<h3 id="72-can-you-describe-a-technology-you-had-not-heard-of-before-but-managed-to-learn-and-use-on-your-own-learning-a-new-technology">72. Can you describe a technology you had not heard of before but managed to learn and use on your  own?  Learning a New Technology</h3>
+<p>Example: I recently learned about Apache Kafka, a distributed streaming platform. I was initially  unfamiliar with its concepts but was intrigued by its potential for real-time data processing</p>
+<p><strong>Learning Process</strong>: I started by reading documentation, watching tutorials, and experimenting with Kafka on my own. I also joined online communities and forums to connect with other users and  learn from their experiences.</p>
+<p><strong>Application</strong>: I successfully implemented Kafka in a project to handle high-volume event streams, improving data processing efficiency and real-time insights</p>
+<h3 id="73-what-challenges-have-you-faced-as-a-devops-engineer-devops-engineer-challenges">73. What challenges have you faced as a DevOps engineer? DevOps Engineer Challenges</h3>
+<ul>
+<li><strong>Complexity</strong>: Managing complex cloud environments with multiple services and dependencies.</li>
+<li><strong>Automation</strong>: Finding the right balance between automation and manual intervention.</li>
+<li><strong>Security</strong>: Ensuring the security of cloud infrastructure and applications.</li>
+<li><strong>Collaboration</strong>: Working effectively with developers, operations teams, and other stakeholders.</li>
+<li><strong>Continuous Learning:</strong> Keeping up with the rapid pace of change in the cloud computing 
+landscape</li>
+</ul>
+<h4 id="76-during-data-loss-what-strategy-do-you-use-to-ensure-no-data-loss-especially-in-critical-applications-like-banking">76. During data loss, what strategy do you use to ensure no data loss, especially in critical applications like banking</h4>
+<p><strong>Data Loss Prevention Strategy</strong></p>
+<p>Strategy: For critical applications like banking, a multi-layered approach is essential:</p>
+<ul>
+<li><strong>Redundancy</strong>: Use multiple data centers or cloud regions for replication and failover.</li>
+<li><strong>Backups</strong>: Implement frequent and automated backups to multiple locations.</li>
+<li><strong>Version Control</strong>: Track changes to data and maintain historical versions.</li>
+<li><strong>Monitoring</strong>: Monitor database health and performance to detect potential issues early.</li>
+<li><strong>Disaster Recovery Plan</strong>: Develop a comprehensive disaster recovery plan to restore data and services in case of an outage.</li>
+</ul>
+<h4 id="77have-you-faced-any-cyberattacks-on-systems-you-built-and-implemented-what-precautions-do-you-take">77.Have you faced any cyberattacks on systems you built and implemented? What precautions do you take?</h4>
+<p>Cyberattacks and Precautions</p>
+<p><strong>Experience</strong>: I've encountered security incidents like brute-force attacks and attempts to exploit vulnerabilities.</p>
+<p><strong>Precautions:</strong></p>
+<ul>
+<li><strong>Security Best Practices</strong>: Implement strong passwords, multi-factor authentication, and 
+least privilege access.</li>
+<li><strong>Vulnerability Scanning</strong>: Regularly scan systems for vulnerabilities and patch them 
+promptly.</li>
+<li><strong>Security Monitoring</strong>: Use security information and event management (SIEM) tools to 
+monitor for suspicious activity.</li>
+<li><strong>Incident Response Plan</strong>: Develop a plan to respond to security incidents effectively.</li>
+</ul>
+<h4 id="78-what-are-the-networking-setup-rules-you-follow">78. What are the networking setup rules you follow?</h4>
+<p><strong>Networking Setup Rules</strong></p>
+<p>Rules:</p>
+<ul>
+<li><strong>Security Groups:</strong> Use security groups to control inbound and outbound traffic to instances.</li>
+<li><strong>Network Segmentation</strong>: Divide the network into smaller segments to isolate resources and limit the impact of security breaches.</li>
+<li><strong>Firewall Rules</strong>: Implement firewall rules to block unauthorized access.</li>
+<li><strong>VPN and Tunneling:</strong> Use VPNs and tunnels to secure communication between networks.</li>
+<li><strong>Network Monitoring</strong>: Monitor network traffic and performance to identify potential issues.</li>
+</ul>
+<h3 id="79-what-are-your-daily-responsibilities-as-a-devops-engineer">79. What are your daily responsibilities as a DevOps engineer?</h3>
+<p>Daily Responsibilities</p>
+<ul>
+<li><strong>Monitoring</strong>: Monitor system health, performance, and security.</li>
+<li><strong>Automation</strong>: Automate tasks like deployments, infrastructure provisioning, and backups.</li>
+<li><strong>Troubleshooting</strong>: Resolve issues and incidents.</li>
+<li><strong>Collaboration</strong>: Work with developers, operations teams, and other stakeholders.</li>
+<li><strong>Continuous Improvement</strong>: Identify areas for improvement and implement changes to enhance efficiency and reliability.</li>
+</ul>
+<h4 id="80-which-devops-tools-are-you-proficient-with">80. Which DevOps tools are you proficient with?</h4>
+<p>DevOps Tools Proficiency</p>
+<ul>
+<li><strong>Infrastructure as Code</strong>: Terraform, CloudFormation, Ansible, Puppet.</li>
+<li><strong>Containerization</strong>: Docker, Kubernetes.</li>
+<li><strong>CI/CD</strong>: Jenkins, GitLab CI/CD, AWS CodePipeline.</li>
+<li><strong>Monitoring and Logging</strong>: Prometheus, Grafana, ELK Stack.</li>
+<li><strong>Configuration Management</strong>: Ansible, Puppet, Chef.</li>
+<li><strong>Version Control</strong>: Git.</li>
+</ul>
+<h4 id="81-can-you-describe-the-cicd-workflow-in-your-project">81. Can you describe the CI/CD workflow in your project?</h4>
+<p><strong>CI/CD Workflow Description</strong></p>
+<p>Example: In a recent project, our CI/CD workflow involved:</p>
+<ol>
+<li><strong>Code Commit</strong>: Developers commit code changes to a Git repository.</li>
+<li><strong>Build and Test</strong>: A CI server (e.g., Jenkins, GitLab CI) automatically builds the application, runs unit tests, and performs code quality checks.</li>
+<li><strong>Artifact Storage</strong>: Successful builds are stored as artifacts in a repository (e.g., S3).</li>
+<li><strong>Deploymen</strong>t: The CD server (e.g., AWS CodeDeploy) deploys the artifact to the target 
+environment (development, testing, production).</li>
+<li><strong>Monitoring</strong>: Continuous monitoring tools (e.g., Prometheus, Grafana) track application 
+health and performance.</li>
+</ol>
+<h3 id="82-how-do-you-handle-the-continuous-delivery-cd-aspect-in-your-projects">82. How do you handle the continuous delivery (CD) aspect in your projects?</h3>
+<p><strong>Continuous Delivery (CD) Handling</strong></p>
+<p>Methods:</p>
+<ul>
+<li><strong>Automated Deployments</strong>: Use tools like AWS CodeDeploy to automate deployments to different environments.</li>
+<li><strong>Blue-Green Deployments</strong>: Deploy new versions of the application alongside the existing version, allowing for seamless switchover.</li>
+<li><strong>Canary Deployment</strong>s: Gradually roll out new versions to a small subset of users, monitoring for issues before full deployment.</li>
+<li><strong>Feature Flags</strong>: Use feature flags to enable or disable features in the application without code changes, allowing for controlled releases.</li>
+</ul>
+<h4 id="83-what-methods-do-you-use-to-check-for-code-vulnerabilities">83. What methods do you use to check for code vulnerabilities?</h4>
+<p>Code Vulnerability Checks</p>
+<p>Methods:</p>
+<ul>
+<li><strong>Static Code Analysis</strong>: Use tools like <strong>SonarQube or Snyk to analyze code for vulnerabilities</strong> and security issues.</li>
+<li><strong>Dynamic Code Analysis</strong>: Use tools like Burp Suite or ZAP to test the application in 
+runtime for vulnerabilities.</li>
+<li><strong>Security Scanning</strong>: Use tools like AWS Inspector or Qualys to scan infrastructure and 
+applications for vulnerabilities.</li>
+</ul>
+<h4 id="84-what-aws-services-are-you-proficient-in">84. What AWS services are you proficient in?</h4>
+<p><strong>AWS Service Proficiency</strong></p>
+<p>Services:</p>
+<ul>
+<li><strong>Compute</strong>: EC2, Lambda, ECS, EKS.</li>
+<li><strong>Storage</strong>: S3, EBS, EFS.</li>
+<li><strong>Networking</strong>: VPC, Route S3, Load Balancers.</li>
+<li><strong>Database</strong>: RDS, DynamoDB, Redshift.</li>
+<li><strong>CI/CD</strong>: CodePipeline, CodeBuild, CodeDeploy.</li>
+<li><strong>Security</strong>: IAM, Security Groups, KMS</li>
+<li><strong>Monitoring</strong>: CloudWatch,</li>
+</ul>
+<h4 id="85-how-would-you-access-data-in-an-s3-bucket-from-account-a-when-your-application-is-running-on-an-ec2-instance-in-account-b">85. How would you access data in an S3 bucket from Account A when your application is running on an  EC2 instance in Account B?</h4>
+<p><strong>Accessing S3 from Account B</strong></p>
+<p>Method: Use IAM roles and cross-account permissions:</p>
+<ol>
+<li><strong>Create Role</strong>: In Account A, create an IAM role with permissions to access the S3 bucket.</li>
+<li><strong>Assume Role</strong>: In Account B, configure the EC2 instance to assume the role created in 
+Account A.</li>
+<li><strong>Access S3</strong>: The EC2 instance can now access the S3 bucket using the assumed role's 
+credentials.</li>
+</ol>
+<h4 id="86-how-do-you-provide-access-to-an-s3-bucket-and-what-permissions-need-to-be-set-on-the-bucket-side-s3-bucket-access-and-permissions">86. How do you provide access to an S3 bucket, and what permissions need to be set on the bucket side? S3 Bucket Access and Permissions</h4>
+<p>Access: You can provide access to an S3 bucket using:</p>
+<ul>
+<li>IAM Policies: Attach policies to users, groups, or roles to grant specific permissions.</li>
+<li>Bucket Policies: Define access control rules directly on the bucket.</li>
+</ul>
+<p><strong>Permissions: Common permissions include:</strong></p>
+<ul>
+<li><strong>Read</strong>: Allows users to read objects from the bucket.</li>
+<li><strong>Write</strong>: Allows users to write objects to the bucket.</li>
+<li><strong>Delete</strong>: Allows users to delete objects from the bucket.</li>
+<li><strong>List</strong>: Allows users to list objects in the bucket.</li>
+</ul>
+<p>87.How can Instance 2, with a static IP, communicate with Instance 1, which is in a private subnet and  mapped to a multi-AZ load balancer?
+Instance Communication with Private Subnet</p>
+<ul>
+<li><strong>Method: Use a NAT gateway or a bastion host</strong><ul>
+<li><strong>NAT Gateway</strong>: A managed service that provides internet access for instances in a private subnet.</li>
+<li><strong>Bastion Host</strong>: A secure server in a public subnet that allows access to private instances.</li>
+</ul>
+</li>
+</ul>
+<p>88.For an EC2 instance in a private subnet, how can it verify and download required packages from the  internet without using a NAT gateway or bastion host? Are there any other AWS services that can  facilitate this?</p>
+<p><strong>EC2 Instance in Private Subnet Accessing Internet</strong></p>
+<p>Method: Use a private DNS hostname:</p>
+<ol>
+<li><strong>Private DNS</strong>: Configure a private DNS zone within your VPC.</li>
+<li><strong>Private Hostname</strong>: Assign a private hostname to the EC2 instance.</li>
+<li><strong>DNS Resolution</strong>: The EC2 instance can resolve the private hostname to access internet 
+resources.</li>
+</ol>
+<p>89.What is the typical latency for a load balancer, and if you encounter high latency, what monitoring steps would you take?</p>
+<p><strong>Load Balancer Latency and Monitoring</strong></p>
+<p><strong>Typical Latency</strong>: Load balancer latency typically ranges from a few milliseconds to a few hundred  milliseconds, depending on factors like network conditions and load.</p>
+<p>Monitoring Steps:</p>
+<ul>
+<li><strong>CloudWatch Metrics</strong>: Monitor load balancer latency using CloudWatch metrics.</li>
+<li><strong>Network Tracing</strong>: Use tools like AWS X-Ray to trace requests through the load balancer 
+and identify bottlenecks.</li>
+<li><strong>Performance Testing</strong>: Run load tests to simulate real-world traffic and identify 
+performance issues.</li>
+</ul>
+<p>90.If your application is hosted in S3 and users are in different geographic locations, how can you reduce  latency?</p>
+<p><strong>Reducing Latency for S3 Hosted Application</strong></p>
+<p>Methods:</p>
+<ul>
+<li><strong>Edge Locations</strong>: Use AWS CloudFront to cache content at edge locations closer to users, 
+reducing latency.</li>
+<li><strong>Regional Buckets</strong>: Store data in S3 buckets in the same region as the users, minimizing 
+network hops.</li>
+<li><strong>Content Delivery Networks (CDNs)</strong>: Use a CDN to distribute content across multiple 
+locations, reducing latency for users worldwide.</li>
+<li>Which services can be integrated with a CDN (Content Delivery Network)?</li>
+</ul>
+<h4 id="91-which-services-can-be-integrated-with-a-cdn-content-delivery-network">91. Which services can be integrated with a CDN (Content Delivery Network)?</h4>
+<p><strong>CDN Integration</strong></p>
+<p>Services: CDNs can integrate with various services, including:</p>
+<ul>
+<li><strong>Web Servers</strong>: Apache, Nginx, IIS.</li>
+<li><strong>Content Management Systems (CMS)</strong>: WordPress, Drupal, Joomla.</li>
+<li><strong>Cloud Storage</strong>: AWS S3, Google Cloud Storage, Azure Blob Storage.</li>
+<li><strong>Streaming Services</strong>: Netflix, YouTube, Twitch.</li>
+<li><strong>API Gateways</strong>: AWS API Gateway, Google Cloud Endpoints.</li>
+</ul>
+<h4 id="92how-do-you-dynamically-retrieve-vpc-details-from-aws-to-create-an-ec2-instance-using-iac">92.How do you dynamically retrieve VPC details from AWS to create an EC2 instance using IaC?</h4>
+<p><strong>Dynamically Retrieving VPC Details</strong></p>
+<p><strong>Method: Use Terraform's data sources:</strong></p>
+<ol>
+<li><strong><code>aws_vpc</code> Data Source</strong>: Retrieve details of a specific VPC by its ID or name.</li>
+<li><strong><code>aws_subnet</code> Data Source</strong>: Retrieve details of subnets within a VPC.</li>
+<li><code>aws_security_group</code> Data Source: Retrieve details of security groups associated with a 
+VPC.</li>
+<li><code>aws_instance</code> Data Source: Retrieve details of existing EC2 instances within a VPC</li>
+</ol>
+<h4 id="93-managing-unmanaged-resources-in-terraform">93. Managing Unmanaged Resources in Terraform</h4>
+<p><strong>Approach</strong>: Use Terraform import command to bring existing unmanaged resources under 
+Terraform's control. This allows you to manage them alongside your IaC code</p>
+<h4 id="94-passing-arguments-to-vpc-during-import">94. Passing Arguments to VPC During Import</h4>
+<p>Method: Use the <code>--var</code> flag with the terraform import command to pass arguments:</p>
+<pre><code>terraform import aws_vpc.example &quot;vpc-1234567890abcdef0&quot; --
+var=&quot;cidr_block=10.0.0.0/16&quot;
+</code></pre>
+<h4 id="95-what-is-the-master-slave-architecture-in-jenkins">95. What is the master-slave architecture in Jenkins?</h4>
+<p>A master-slave architecture in Jenkins allows you to distribute build tasks across multiple nodes (slaves). This provides:</p>
+<ul>
+<li><strong>Parallel Execution</strong>: Run builds concurrently on multiple nodes, reducing build times.</li>
+<li><strong>Resource Optimization</strong>: Utilize different hardware configurations for different build tasks.</li>
+<li><strong>Scalability</strong>: Scale your Jenkins infrastructure by adding more slave nodes</li>
+</ul>
+<h4 id="96-how-do-you-integrate-ldap-with-aws-and-jenkins">96. How do you integrate LDAP with AWS and Jenkins?</h4>
+<p>A: You can integrate LDAP with AWS and Jenkins by:</p>
+<ol>
+<li><strong>Configuring LDAP</strong>: Set up an LDAP server and configure it to authenticate users.</li>
+<li><strong>AWS IAM</strong>: Create an IAM role with permissions to access the LDAP server.</li>
+<li><strong>Jenkins Configuration</strong>: Configure Jenkins to use the LDAP server for authentication</li>
+</ol>
+<h4 id="97-what-are-some-key-features-of-github">97. What are some key features of GitHub?</h4>
+<ul>
+<li>● <strong>Version Control</strong>: Track changes to code over time.</li>
+<li>● <strong>Collaboration</strong>: Facilitate collaboration among developers.</li>
+<li>● <strong>Pull Requests</strong>: Enable code reviews and approvals.</li>
+<li>● <strong>Issues</strong>: Track bugs, feature requests, and other tasks.</li>
+<li>● <strong>Projects</strong>: Organize and manage work items.</li>
+</ul>
+<h4 id="98-what-are-some-key-features-of-jenkins">98. What are some key features of Jenkins?</h4>
+<ul>
+<li>● <strong>Continuous Integration (CI)</strong>: Automate build, test, and deployment processes.</li>
+<li>● <strong>Continuous Delivery (CD)</strong>: Deploy applications to different environments.</li>
+<li>● <strong>Pipeline as Code:</strong> Define pipelines using code (Jenkinsfile).</li>
+<li>● <strong>Plugins</strong>: Extend Jenkins functionality with a wide range of plugins.</li>
+<li>● <strong>Master-Slave Architecture</strong>: Distribute build tasks across multiple nodes.</li>
+</ul>
+<h4 id="99-what-are-the-benefits-and-uses-of-cicd">99.  What are the benefits and uses of CI/CD?</h4>
+<ul>
+<li><strong>Faster Delivery</strong>: Reduce the time it takes to deliver new features and updates.</li>
+<li><strong>Improved Quality</strong>: Catch bugs and errors early in the development process.</li>
+<li><strong>Increased Efficiency:</strong> Automate repetitive tasks, freeing up developers to focus on innovation.</li>
+<li><strong>Reduced Risk</strong>: Deploy changes more frequently and with less risk</li>
+</ul>
+<p>Uses of CI/CD:</p>
+<ul>
+<li><strong>Software Development</strong>: Automate build, test, and deployment processes.</li>
+<li><strong>Infrastructure Management</strong>: Provision and configure infrastructure automatically.</li>
+<li><strong>Data Pipelines</strong>: Automate data processing and analysis tasks</li>
+</ul>
+<h4 id="100-what-is-a-github-workflow-and-how-is-it-used">100. What is a GitHub workflow, and how is it used?</h4>
+<p>A: A GitHub workflow is a set of automated tasks that are triggered by events in a GitHub repository. You 
+use workflows to:</p>
+<ul>
+<li><strong>Build and Test Code</strong>: Automate build and test processes.</li>
+<li><strong>Deploy Application</strong>s: Deploy applications to different environments.</li>
+<li><strong>Run Code Analysis</strong>: Perform code quality checks and security scans</li>
+</ul>
+<h4 id="101-how-do-you-handle-merge-conflicts-in-git">101 How do you handle merge conflicts in Git?</h4>
+<ol>
+<li><strong>Identifying Conflicts</strong>: Git will identify conflicts when merging branches.</li>
+<li><strong>Resolving Conflicts</strong>: Manually resolve conflicts by editing the affected files.</li>
+<li><strong>Staging Changes</strong>: Stage the resolved files using git add.</li>
+<li><strong>Committing Changes</strong>: Commit the changes with a descriptive message using git commit</li>
+</ol>
+<h4 id="102-what-steps-do-you-take-when-a-build-fails-in-jenkins">102. What steps do you take when a build fails in Jenkins?</h4>
+<p>A: When a build fails in Jenkins, you should:</p>
+<ol>
+<li><strong>Analyze Logs</strong>: Review the build logs to identify the cause of the failure.</li>
+<li><strong>Troubleshoot</strong>: Investigate the issue and try to resolve it.</li>
+<li><strong>Fix Code:</strong> If the failure is due to a code error, fix the code and rebuild.</li>
+<li><strong>Update Configuration</strong>: If the failure is due to a configuration issue, update the Jenkins 
+configuration.</li>
+<li><strong>Rollback</strong>: If necessary, roll back to a previous working version of the application</li>
+</ol>
+<h4 id="103-how-do-you-execute-jobs-in-aws">103 How do you execute jobs in AWS?</h4>
+<p>A: You can execute jobs in AWS using:</p>
+<ul>
+<li><strong>AWS Batch:</strong> A fully managed batch computing service for running large-scale, compute-intensive jobs.</li>
+<li><strong>AWS Lambda</strong>: A serverless computing service for running code in response to events.</li>
+<li><strong>AWS ECS</strong>: A container orchestration service for deploying and managing containerized applications.</li>
+</ul>
+<h4 id="104-what-are-ansible-roles-and-how-do-you-use-them">104. What are Ansible roles, and how do you use them?</h4>
+<p>A: Ansible roles are a way to organize and reuse Ansible playbooks. </p>
+<p>They encapsulate tasks, variables, and dependencies related to a specific component or service. You use roles to</p>
+<ul>
+<li><strong>Modularize Playbooks</strong>: Break down complex playbooks into smaller, reusable units.</li>
+<li><strong>Simplify Deployment</strong>: Deploy multiple components or services with a single role.</li>
+<li><strong>Improve Maintainability</strong>: Make it easier to manage and update Ansible configurations.</li>
+</ul>
+<h4 id="105-how-do-you-ensure-data-persistence-with-docker-volumes">105  How do you ensure data persistence with Docker volumes?</h4>
+<p>A: Use Docker volumes to persist data outside the container:</p>
+<ul>
+<li><strong>Named Volumes</strong>: Create named volumes that can be shared between containers.</li>
+<li><strong>Data Volume</strong>s: Mount data volumes from the host machine into the container.</li>
+<li><strong>Bind Mounts</strong>: Mount directories from the host machine into the container.</li>
+</ul>
+<h4 id="106-what-are-the-key-differences-between-docker-and-kubernetes">106 What are the key differences between Docker and Kubernetes?</h4>
+<ul>
+<li><strong>Scope</strong>: Docker focuses on containerization, while Kubernetes focuses on container orchestration.</li>
+<li><strong>Management</strong>: Docker manages individual containers, while Kubernetes manages clusters of containers.</li>
+<li><strong>Scalability</strong>: Kubernetes provides advanced features for scaling and managing large-scale  deployments.</li>
+<li><strong>Networking</strong>: Kubernetes offers more sophisticated networking capabilities for container communication</li>
+</ul>
+<h4 id="107-how-do-you-securely-store-credentials-in-github">107 How do you securely store credentials in GitHub?</h4>
+<p>A: You can securely store credentials in GitHub using:</p>
+<ul>
+<li><strong>GitHub Secrets</strong>: Use GitHub Secrets to store sensitive information securely.</li>
+<li><strong>Environment Variables</strong>: Set environment variables in your GitHub workflow to access credentials.</li>
+<li><strong>GitHub Actions</strong>: Use GitHub Actions to manage credentials and access them within your workflow.</li>
+</ul>
+<h4 id="108-where-is-the-jenkinsfile-typically-stored">108  Where is the Jenkinsfile typically stored?</h4>
+<ul>
+<li><strong>GitHub Secrets</strong>: Use GitHub Secrets to store sensitive information securely.</li>
+<li><strong>Environment Variables:</strong> Set environment variables in your GitHub workflow to access credentials.</li>
+<li><strong>GitHub Actions</strong>: Use GitHub Actions to manage credentials and access them within your workflow.</li>
+</ul>
+<h4 id="109-where-is-the-jenkinsfile-typically-stored">109 Where is the Jenkinsfile typically stored?</h4>
+<p>A: The Jenkinsfile is typically stored in the root directory of your Git repository</p>
+<h4 id="110-how-do-you-execute-a-shell-script-within-a-python-script">110 How do you execute a shell script within a Python script?</h4>
+<p><strong>Use the subprocess module:</strong></p>
+<pre><code>import subprocess
+
+subprocess.run([&quot;/path/to/script.sh&quot;])
+</code></pre>
+<h4 id="111-how-do-you-communicate-with-a-jenkins-server-and-a-kubernetes-cluster">111 How do you communicate with a Jenkins server and a Kubernetes cluster?</h4>
+<p>A: You can communicate with a Jenkins server and a Kubernetes cluster using:</p>
+<ul>
+<li><strong>Jenkins Plugins</strong>: Use Jenkins plugins like the Kubernetes plugin to interact with a Kubernetes 
+cluster.</li>
+<li><strong>API Calls</strong>: Use the Kubernetes API to interact with the cluster programmatically.</li>
+<li><strong>kubectl</strong>: Use kubectl commands from within Jenkins to manage Kubernetes resources</li>
+</ul>
+<h4 id="112-do-you-only-update-docker-images-in-kubernetes-or-do-you-also-update-replicas-storage-levels-and-cpu-allocation">112 Do you only update Docker images in Kubernetes, or do you also update replicas, storage levels, and CPU allocation?</h4>
+<p>A: You can update various Kubernetes resources, including:</p>
+<ul>
+<li>● <strong>Docker Images</strong>: Update the container image used by a deployment.</li>
+<li>● <strong>Replicas</strong>: Scale up or down the number of replicas for a deployment.</li>
+<li>● <strong>Storage Levels</strong>: Adjust storage capacity for persistent volumes.</li>
+<li>● <strong>CPU Allocation</strong>: Modify CPU and memory resource requests and limits for containers.</li>
+</ul>
+<h4 id="113-can-you-define-environment-variables-inside-your-jenkins-pipeline">113. Can you define environment variables inside your Jenkins pipeline?</h4>
+<p>A: Yes, you can define environment variables inside your Jenkins pipeline using:</p>
+<ul>
+<li><strong>Pipeline Script</strong>: Use the environment directive within your Jenkinsfile to define environment variables. </li>
+<li><strong>Global Variables</strong>: Configure global environment variables in Jenkins settings.</li>
+<li><strong>Credentials</strong>: Store sensitive information as credentials and access them within the pipeline</li>
+</ul>
+<h4 id="114-what-is-the-role-of-artifacts-in-jenkins-and-why-do-we-need-to-push-them-to-nexus-instead-of-building-and-storing-them-locally">114 What is the role of artifacts in Jenkins, and why do we need to push them to Nexus instead of building and storing them locally?</h4>
+<p>A: Artifacts are the output of a build process, such as compiled code, container images, or test reports. 
+Pushing artifacts to Nexus (a repository manager) provides:</p>
+<ul>
+<li><strong>Version Control</strong>: Track different versions of artifacts.</li>
+<li><strong>Dependency Management</strong>: Manage dependencies between projects.</li>
+<li><strong>Security</strong>: Control access to artifacts and ensure their integrity</li>
+</ul>
+<p><strong>115. If you’re developing a Python-based application, how do you separate the packages needed for your 
+local deployment to avoid interfering with globally installed packages</strong></p>
+<p>A: Use virtual environments:</p>
+<ol>
+<li>Create Virtual Environment: Use <code>python -m venv &lt;env_name&gt;</code> to create a virtual environment.</li>
+<li>Activate Environment: Activate the environment using <code>source &lt;env_name&gt;/bin/activate</code>.</li>
+<li>Install Packages: Install packages specific to your project using <code>pip install &lt;package_name&gt;</code>.</li>
+</ol>
+<h4 id="116-what-are-the-prerequisites-before-importing-a-vpc-in-terraform"><strong>116 What are the prerequisites before importing a VPC in Terraform?</strong></h4>
+<p>A: Before importing a VPC, you need:</p>
+<ul>
+<li>Terraform Configuration: A Terraform configuration file defining the VPC resource you want to import.</li>
+<li>Resource ID: The unique identifier (ID) of the VPC in AWS.</li>
+<li>Resource Type: The correct Terraform resource type (e.g., <code>aws_vpc</code>)</li>
+</ul>
+<h3 id="117-if-an-s3-bucket-was-created-through-terraform-but-someone-manually-added-a-policy-to-it-how-do-you-handle-this-situation-using-iac">117. If an S3 bucket was created through Terraform but someone manually added a policy to it, how do you handle this situation using IaC?</h3>
+<p>A: You can use Terraform's terraform plan command to detect differences between the current state of 
+the S3 bucket and your IaC configuration. This will highlight the manually added policy. You can then:</p>
+<ul>
+<li><strong>Update IaC</strong>: Modify your Terraform configuration to include the manually added policy, ensuring 
+consistency.</li>
+<li><strong>Ignore</strong>: If the policy is acceptable, use the ignore_changes option in Terraform to exclude it from 
+future plans.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2021-9999 Jacob Xi
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      
+    
+  </body>
+</html>

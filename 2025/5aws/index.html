@@ -1,0 +1,6236 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Jacob's 系统性能&Linux调优技术与实战教程">
+      
+      
+        <meta name="author" content="Jacob Xi">
+      
+      
+        <link rel="canonical" href="https://chao-xi.github.io/jxperfbook/2025/5aws/">
+      
+      
+        <link rel="prev" href="../4Linux_tb/">
+      
+      
+        <link rel="next" href="../6monitor/">
+      
+      
+      <link rel="icon" href="../../images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>5 AWS 面试 - Jacob Performance&Linux Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="light-green" data-md-color-accent="light-green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#5-aws" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="Jacob Performance&amp;Linux Book" class="md-header__button md-logo" aria-label="Jacob Performance&Linux Book" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Jacob Performance&Linux Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              5 AWS 面试
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Chao-Xi/jxperfbook.git" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jxperfbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Jacob Performance&amp;Linux Book" class="md-nav__button md-logo" aria-label="Jacob Performance&Linux Book" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    Jacob Performance&Linux Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Chao-Xi/jxperfbook.git" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jxperfbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Welcome
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    系统基础设施优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            系统基础设施优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/1CPU_Cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 代码让CPU执行得更快 — CPU缓存
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/2Mem_Pool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 内存池提升内存分配的效率
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/3Hash_index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 哈希表利用索引管理亿级对象
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/4PageCache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 磁盘高效地传输文件零拷贝：PageCache
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/5Coroutine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 协程快速地实现高并发服务：Coroutine
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/6Locks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 据业务场景选择合适的锁
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    系统层网络优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            系统层网络优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/1broadcast_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 一对多通讯如何实现
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/2C10M/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 C10M是如何实现事件驱动
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/3tcp3shakehand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 提升TCP三次握手的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/4tcpshutdown/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 提升TCP四次挥手的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/5tcpchachepool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 TCP缓冲区兼顾并发数量与传输速度
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/6tcpcongestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 调整TCP拥塞控制的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    分布式系统优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            分布式系统优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/1Mon_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 通过监控找到性能瓶颈
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/2perf_cap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 舍弃一致性去换取性能的CAP理论
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/3perf_akf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 AKF立方体可扩展性来提高性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/4perf_nwr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 NWR算法修改读写模型以提升性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/5nginx_openresty/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 负载均衡：选择Nginx还是OpenResty
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/6hash_consistent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 一致性哈希的均衡负载
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/7cache_expire/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第七节 过期缓存防止缓存被流量打穿
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/8message_queue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第八节 消息队列基于异步消息提升性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/9map_reduce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第九节 MapReduce通过集群实现离线计算
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/10DB_choice/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第十节 权衡关系数据库与NoSQL数据库
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    IT运维面试问题总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            IT运维面试问题总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/1Linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 IT运维面试问题总结- Linux基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/2Linux_SVC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 IT运维面试问题总结-基础服务、磁盘管理、虚拟平台和系统管理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/3Linux_tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 IT运维面试问题总结-运维工具、开源应用(Ceph、Docker、Apache、Nginx等)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/4Linux_db_dia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 IT运维面试问题总结-数据库、监控、网络管理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/5k8s_OpenShift/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 IT运维面试问题总结-简述Etcd、Kubernetes、Lvs、HAProxy等
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/6Py_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 Python面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/7Pro_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第七节 prometheus：要点总结及面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/8Data_ana_interview1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L8 Data Analyst Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/8Data_ana_interview2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第八节 分析岗笔试/面试知识点
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/9Data_ML_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L9 Top 50 Machine Learning Interview Questions & Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/10Deep_learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L10 30 Frequently asked Deep Learning Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/11Redis_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L11 Redis 核心技术考题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/12ES_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L12 ES 期末考试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/13istio_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L13 Istio面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/14sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L14 SRE本质就是一个懂运维的资深开发
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/15prometheus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L15 Top Prometheus Interview Questions and Answers (2022)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/16jenkins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L16 Top Jenkins Interview Questions and Answers (2022)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/17devops_int2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L17 DevOps Engineer: 30+ Interview Questions and Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/18helm2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L18 Helm指南：Kubernetes包管理器简介
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Python 面试题与总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Python 面试题与总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/1Apple_3sum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1、Apple Interview(3Sum)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/2Python_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2、Python Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/3GS_longest_substr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3、Longest substring
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/4GS_remove_sort_list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4、Remove duplicate in Sort List
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/5Sort_list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5、Reverse Sort List
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/6RM_dup_dict/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6、Remove duplicate from dictionary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/7Find_max/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7、Find Maxmium number count in list and nth number
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/8gs_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8、GS Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/9Substring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9、Find substring inside String
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/10reverse_string/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10、Reverse String
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/11zeroinN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11、Count how many zero in N!
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/12JumpGame/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12、Jump Game
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/13Gs_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13、GS interview preparation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux 面试题与总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Linux 面试题与总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/1Linux_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L1 1min 内对 Linux 进行性能诊断
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/2Linux_load_avg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L2 当面试官问你load average时，怎么回答？
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/3Linux_inode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L3 文件系统inode
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/4Linux_ops_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L4 运维必须掌握的Linux面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/5Linux_network_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L5 常见网络编程面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/6Git_principle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L6 Git 实用技巧记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/7LoadBalancer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L7 深入浅出负载均衡
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/8Linux_all/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L8 Linux 面试题 合集CDN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/9Linux_five/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L9 Linux面试最高频的5个基本问题（CPU+COMMMAND)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/10haproxy_learn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L10 HAProxy从零开始到掌握
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/12Linux_vir_file/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L12 从 lsof 开始，深入理解 Linux 虚拟文件系统
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/linux_rew/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux review
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/13Linux_ts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L13 Linux故障排查思路及常用命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/14Linux_iptables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L14 Linux iptables命令详解
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/15linux_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L15 Linux网络基础与性能优化
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Companies Interview
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Companies Interview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/1Ms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Microsoft Interview2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/2Ms_al/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Microsoft Interview Algorithm 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/3ubs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 UBS interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/4MorganS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Morgan Stanly 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/5apple/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Apple 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/6aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 AWS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/7tesla/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Tesla
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/my/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    My Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/int_anws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    架构师面试合集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux 常用命令
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Linux 常用命令
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/0shell_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Shell命令行一些快捷键组合
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/0shell_linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Linux常用命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/16linux_ops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Linux 实用运维命令 - Update
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/1shell_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Shell 分析服务器日志命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/1log_man/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Log: 用 awk + grep + sed搞定日志处理神器组合拳
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/2linux_locate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Linux 系统下查找文件命令总结
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/3devops_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Basic Shell Scripting for Devops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/4Basic_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 基本 shell 脚本 系统+文件+卷+时间
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/5install_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Shell Package 安装+配置脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/6mon_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 监控 Shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/7net_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 网络+数据库 Shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/8secret_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8 Secret shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/9script_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9 Linux script 录播
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/10linux_unlink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10 使用 unlink 删除文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/11linux_ip_port/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11 如何在 Linux 下限制端口仅对指定 IP 开放访问
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/12socat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12 Linux 命令 socat
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/14linux_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14 Linux shell 脚本详解学习 2023
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/15grep_learn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15 使用grep分析日志
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/17file_opt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16 Linux File Operation (df/du/rsync/批量删除/定时备份)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/18linux_var/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17 Shell script中的8个常用的特殊变量
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/19curl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18 Curl的10个高级用法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/20shell_dir/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19 Shell脚本执行不再受限，不进入所在目录也能成功运行
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/21shell_eva/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20 Bash脚本多函数使用eval提高脚本编写效率！
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/22find/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21 使用find命令轻松查找文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/22find/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21 使用find命令轻松查找文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/24xargs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23 xargs命令的使用技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/25shell_script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24 快速提升Shell脚本能力
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/26linux_zombie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25 如何清理 Linux 僵尸进程？
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/27Inode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26 Linux inode 介绍与清理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/28vim/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27 Vim 技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/29awk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    28 Linux AWK 文本处理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/30nohup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    29 nohup命令：在Linux中轻松实现后台运行和守护进程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/31ln/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    30 文件系统中的“分身术”ln命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/32Linux_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    31 Linux 系统日志之深入解析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/33bash/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    32 Linux 中 `.bashrc`、`.bash-profile` 和 `.profile` 之间的区别
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/34linux_6logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    33 6大Linux命令线上日志排查
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/35port_detect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    34 未安装telnet 和 nc 等工具，如何测试端口是否开放
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/36dudf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    35 df命令显示磁盘空间不足而du命令显示还有很多空闲空间
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/37linux_cond/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    36 Shell脚本的流程控制知识点汇总(2024)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Bash Programming 技巧
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Bash Programming 技巧
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/1bash_prom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 简洁的 Bash Programming 技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/2bash_skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 简洁的 Bash Programming 技巧续篇
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/3bash_skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Bash Pitfalls: 编程易犯的错误（一）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/4bash_python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 在Python中执行Linux Shell脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    AutoSys
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            AutoSys
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/1autosys_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 AutoSys: A Beginner’s Guide AutoSys Workload Automation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/1Autosys_tot1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Autosys Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/2Autosys_jil/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Autosys JIL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/3Autosys_comp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Autosys Components, Configuration & Validation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/4Autosys_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Austosys command
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/5Autosys_job_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Manage Job in the Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/6autosys_vir_resouce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Autotsys virtual resource management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/7autosys_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Shell Script to check Autosys agent installed
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    2025 - 面试准备
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            2025 - 面试准备
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025-Intro
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 CI/CD 之路-GitOps 面试题合集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Docker面试10大必考题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Kubernetes 面试题精解：从入门到进阶(2025)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4Linux_tb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Linux 系统故障时
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    5 AWS 面试
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 AWS 面试
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-ec2" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 什么是 EC2 实例类型？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-s3simple-storage-service-ebselastic-block-store" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 解释 S3（Simple Storage Service）和 EBS（Elastic Block Store）的区别
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-aws-vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 什么是 AWS VPC？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-security-groups-network-acls" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 解释 Security Groups 和 Network ACLs 的区别
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-aws-shield-ddos" class="md-nav__link">
+    <span class="md-ellipsis">
+      5 什么是 AWS Shield？它如何保护你的应用程序免受 DDoS 攻击？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. 你如何设计一个高可用和容错的架构来处理大量用户请求？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-auto-scaling-load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. 你如何使用 Auto Scaling 和 Load Balancer 来保证应用的可伸缩性和高可用性？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-aws-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. 什么是 AWS 定价模型？如何优化 AWS 成本
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-aws-cost-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. 你如何使用 AWS Cost Explorer 来监控和管理成本？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-ec2" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. 问题：如何排查 EC2 实例启动失败的问题？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. 如果你的应用程序在 AWS 上变得非常慢，你会如何进行性能调优
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. 如何实现跨多个 AWS 区域的数据同步？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. 你如何确保 AWS 上的高可用性？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-auto-scaling-load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      14. 你如何使用 Auto Scaling 和 Load Balancer 来保证应用的可伸缩性和高可用性？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. AWS 上如何实现分布式文件系统？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      16. 如何使用 AWS 提供的数据库服务处理高并发场景？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      17.如何使用 AWS 实现应用程序的日志记录和监控？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      18. 如何在 AWS 上进行自动化运维和配置管理？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      19.如何优化 AWS 成本？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      20. 你如何在 AWS 中实现灾难恢复？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-aws-cloudwatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      21. 什么是 AWS CloudWatch？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      22. 如何选择合适的 AWS 存储服务？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-aws-iamidentity-and-access-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      23. 解释 AWS IAM（Identity and Access Management）及其组件
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-s3" class="md-nav__link">
+    <span class="md-ellipsis">
+      24. S3 的存储类有哪些？如何选择合适的存储类？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-amazon-rds" class="md-nav__link">
+    <span class="md-ellipsis">
+      25. 什么是 Amazon RDS？它的优势是什么？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#26-aws-lambda" class="md-nav__link">
+    <span class="md-ellipsis">
+      26. 什么是 AWS Lambda？它的主要用途是什么？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#27-auto-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      27. 什么是 Auto Scaling？它如何工作？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#28-aws-cloudformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      28. 什么是 AWS CloudFormation？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#29-aws-lb" class="md-nav__link">
+    <span class="md-ellipsis">
+      29. AWS 中的 LB 有几种类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="29. AWS 中的 LB 有几种类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-alb-application-load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 应用负载均衡器（ALB - Application Load Balancer）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-nlb-network-load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 网络负载均衡器（NLB - Network Load Balancer）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-clb-classic-load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 经典负载均衡器（CLB - Classic Load Balancer）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30-aws-k8s-test-pre-prod" class="md-nav__link">
+    <span class="md-ellipsis">
+      30. 在 AWS 中如何为 k8s 规划 Test 环境，Pre 环境和 Prod 环境呢
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="30. 在 AWS 中如何为 k8s 规划 Test 环境，Pre 环境和 Prod 环境呢">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 使用多个 Kubernetes 集群
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#amazon-eks" class="md-nav__link">
+    <span class="md-ellipsis">
+      创建集群并使用 Amazon EKS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 使用 Kubernetes 命名空间进行环境隔离
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-aws-iam" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 配置 AWS IAM 角色和策略
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-cicd" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 配置 CI/CD 管道
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-aws-vpcsubnets-security-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. 配置 AWS VPC、Subnets 和 Security Groups
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. 配置自动化伸缩和资源管理
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. 监控和日志
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#31-aws-vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      31. 如何在 AWS 中创建 VPC 呢？
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="31. 如何在 AWS 中创建 VPC 呢？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      方法 1：使用 AWS 管理控制台
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      步骤 2：打开 VPC 控制台
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      步骤 3：创建 VPC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      步骤 4：创建子网
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-internet-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      步骤 5：创建 Internet Gateway
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      步骤 6：配置路由表
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7acl" class="md-nav__link">
+    <span class="md-ellipsis">
+      步骤 7：配置安全组和网络ACL
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-aws-cli-vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      方法 2：使用 AWS CLI 创建 VPC
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32-ssh-ec2" class="md-nav__link">
+    <span class="md-ellipsis">
+      32. 你正在尝试通过 SSH 连接到一个 EC2 实例，但连接失败。
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6monitor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 监控生态面试通关秘籍
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7cri/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 从容器到调度：准备好这些 CRI 面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8sap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8 SAP面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../9db_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9 数据库面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10prometheus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10 Prometheus面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11istio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11 深度剖析 Istio (2025)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12 Python Interview - Full
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            SRE
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15Apple_SRE_prp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025 Apple SRE PRP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1SRE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 SRE Interview Questions and Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13tiktok/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 2025 最新字节跳动运维云原生面经分享
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2Ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Ansible Interview Question
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 250 Linux Scenario Based Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3kubernetes_sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Kubernetes SRE part1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3kubernetes_sre2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Kubernetes SRE part2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Git Scenario-Based Questions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            SRE
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/0interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 SRE 面试2025
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/1linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 SRE Linux All2025
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/2ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Ansible 从入门到放弃
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15Apple_SRE_prp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025 Apple SRE PRP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/3git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 GIT CE TEST
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE_Linux
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            SRE_Linux
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/2Linux_test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Linux Fundamentals
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/1k8s_dev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Using Kubernetes as a Developer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/3code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Script Learning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/4sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 SRE Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/5agile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Agile Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/6cloud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Cloud Native Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    英语学习
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16">
+            <span class="md-nav__icon md-icon"></span>
+            英语学习
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Eng/1work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 职场英语
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-ec2" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 什么是 EC2 实例类型？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-s3simple-storage-service-ebselastic-block-store" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 解释 S3（Simple Storage Service）和 EBS（Elastic Block Store）的区别
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-aws-vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 什么是 AWS VPC？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-security-groups-network-acls" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 解释 Security Groups 和 Network ACLs 的区别
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-aws-shield-ddos" class="md-nav__link">
+    <span class="md-ellipsis">
+      5 什么是 AWS Shield？它如何保护你的应用程序免受 DDoS 攻击？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. 你如何设计一个高可用和容错的架构来处理大量用户请求？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-auto-scaling-load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. 你如何使用 Auto Scaling 和 Load Balancer 来保证应用的可伸缩性和高可用性？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-aws-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. 什么是 AWS 定价模型？如何优化 AWS 成本
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-aws-cost-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. 你如何使用 AWS Cost Explorer 来监控和管理成本？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-ec2" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. 问题：如何排查 EC2 实例启动失败的问题？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. 如果你的应用程序在 AWS 上变得非常慢，你会如何进行性能调优
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. 如何实现跨多个 AWS 区域的数据同步？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. 你如何确保 AWS 上的高可用性？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-auto-scaling-load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      14. 你如何使用 Auto Scaling 和 Load Balancer 来保证应用的可伸缩性和高可用性？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. AWS 上如何实现分布式文件系统？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      16. 如何使用 AWS 提供的数据库服务处理高并发场景？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      17.如何使用 AWS 实现应用程序的日志记录和监控？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      18. 如何在 AWS 上进行自动化运维和配置管理？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      19.如何优化 AWS 成本？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      20. 你如何在 AWS 中实现灾难恢复？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-aws-cloudwatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      21. 什么是 AWS CloudWatch？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      22. 如何选择合适的 AWS 存储服务？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-aws-iamidentity-and-access-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      23. 解释 AWS IAM（Identity and Access Management）及其组件
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-s3" class="md-nav__link">
+    <span class="md-ellipsis">
+      24. S3 的存储类有哪些？如何选择合适的存储类？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-amazon-rds" class="md-nav__link">
+    <span class="md-ellipsis">
+      25. 什么是 Amazon RDS？它的优势是什么？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#26-aws-lambda" class="md-nav__link">
+    <span class="md-ellipsis">
+      26. 什么是 AWS Lambda？它的主要用途是什么？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#27-auto-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      27. 什么是 Auto Scaling？它如何工作？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#28-aws-cloudformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      28. 什么是 AWS CloudFormation？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#29-aws-lb" class="md-nav__link">
+    <span class="md-ellipsis">
+      29. AWS 中的 LB 有几种类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="29. AWS 中的 LB 有几种类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-alb-application-load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 应用负载均衡器（ALB - Application Load Balancer）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-nlb-network-load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 网络负载均衡器（NLB - Network Load Balancer）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-clb-classic-load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 经典负载均衡器（CLB - Classic Load Balancer）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30-aws-k8s-test-pre-prod" class="md-nav__link">
+    <span class="md-ellipsis">
+      30. 在 AWS 中如何为 k8s 规划 Test 环境，Pre 环境和 Prod 环境呢
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="30. 在 AWS 中如何为 k8s 规划 Test 环境，Pre 环境和 Prod 环境呢">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 使用多个 Kubernetes 集群
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#amazon-eks" class="md-nav__link">
+    <span class="md-ellipsis">
+      创建集群并使用 Amazon EKS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 使用 Kubernetes 命名空间进行环境隔离
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-aws-iam" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 配置 AWS IAM 角色和策略
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-cicd" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 配置 CI/CD 管道
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-aws-vpcsubnets-security-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. 配置 AWS VPC、Subnets 和 Security Groups
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. 配置自动化伸缩和资源管理
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. 监控和日志
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#31-aws-vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      31. 如何在 AWS 中创建 VPC 呢？
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="31. 如何在 AWS 中创建 VPC 呢？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      方法 1：使用 AWS 管理控制台
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      步骤 2：打开 VPC 控制台
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      步骤 3：创建 VPC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      步骤 4：创建子网
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-internet-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      步骤 5：创建 Internet Gateway
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      步骤 6：配置路由表
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7acl" class="md-nav__link">
+    <span class="md-ellipsis">
+      步骤 7：配置安全组和网络ACL
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-aws-cli-vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      方法 2：使用 AWS CLI 创建 VPC
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32-ssh-ec2" class="md-nav__link">
+    <span class="md-ellipsis">
+      32. 你正在尝试通过 SSH 连接到一个 EC2 实例，但连接失败。
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="5-aws">5 AWS 面试</h1>
+<h3 id="1-ec2">1. 什么是 EC2 实例类型？</h3>
+<p>Amazon EC2 实例类型是根据计算、内存、存储和网络需求提供的不同配置。AWS 提供多种实例类型，以满足不同的工作负载需求</p>
+<ul>
+<li><strong>计算优化实例</strong>： 适用于需要强大计算能力的应用程序。例如，C 系列实例。</li>
+<li><strong>内存优化实例</strong>： 适用于需要大量内存的应用程序。例如，R 系列实例。</li>
+<li><strong>存储优化实例</strong>： 适用于需要高速、低延迟存储的应用程序。例如，I 系列实例。</li>
+<li><strong>通用型实例</strong>： 适用于平衡的计算、内存和网络需求。例如，T 系列（适合短期突发的计算负载）和 M 系列。</li>
+<li><strong>加速计算实例</strong>： 适用于 GPU 计算的应用。例如，P 系列、G 系列实例。</li>
+</ul>
+<h3 id="2-s3simple-storage-service-ebselastic-block-store">2. 解释 S3（Simple Storage Service）和 EBS（Elastic Block Store）的区别</h3>
+<ul>
+<li>S3 是一个对象存储服务，适用于存储静态文件（如图片、视频、备份文件等）。它通过 URL 访问，并具有高可扩展性和可用性。</li>
+<li>EBS 是块存储服务，适用于 EC2 实例，需要挂载在实例上才能使用。它通常用于数据库、文件系统等需要低延迟、持续性存储的场景</li>
+</ul>
+<h3 id="3-aws-vpc">3. 什么是 AWS VPC？</h3>
+<p><strong>AWS VPC（Virtual Private Cloud</strong> 是 Amazon Web Services 提供的一项服务，允许用户在 AWS 云中创建一个隔离的网络环境。</p>
+<p><strong>VPC 使得您可以自定义 IP 地址范围、子网、路由表、网络网关等。</strong></p>
+<ul>
+<li>子网： 在 VPC 中，<strong>您可以划分子网（Subnet）</strong>，每个子网可以是公有或私有的。<strong>公有子网可以通过 Internet Gateway 访问互联网，私有子网则通常用于没有直接访问互联网的资源。</strong></li>
+<li><strong>Internet Gateway： 允许与互联网通</strong>信。</li>
+<li><strong>NAT Gateway/Instance： 在私有子网中运行的实例通过 NAT 网关或实例访问互联网。</strong></li>
+<li><strong>路由表</strong>： 控制流量如何在子网之间、子网与外部之间流动</li>
+</ul>
+<h3 id="4-security-groups-network-acls">4 解释 Security Groups 和 Network ACLs 的区别</h3>
+<p><strong>Security Groups</strong> 是 <strong>AWS 实例级别的防火墙</strong>，<strong>它们是<mark>有状态的</mark>，意味着如果你允许某个流量进来，它会自动允许相关的响应流量出去</strong></p>
+<p><strong>Network ACLs 是子网级别的防火墙，支持入站和出站规则</strong>。<strong>它是<mark>无状态的</mark>，即你需要显式配置允许的入站和出站规则</strong>。Network ACLs 更常用于实现更细粒度的网络访问控制。</p>
+<h3 id="5-aws-shield-ddos">5 什么是 AWS Shield？它如何保护你的应用程序免受 DDoS 攻击？</h3>
+<p><strong>AWS Shield 是 AWS 提供的 DDoS 防护服务</strong>，分为两种：<strong>Shield Standard 和 Shield Advanced。</strong></p>
+<ul>
+<li>
+<p>Shield Standard 默认启用，提供基础 DDoS 防护；</p>
+</li>
+<li>
+<p>而 Shield Advanced 提供更强的防护，并能够自动响应大规模的 DDoS 攻击，帮助保护应用程序免受流量淹没、网络层攻击等威胁</p>
+</li>
+</ul>
+<h3 id="6">6. 你如何设计一个高可用和容错的架构来处理大量用户请求？</h3>
+<p>为了设计一个高可用和容错的架构，<strong>首先要确保应用程序跨多个 Availability Zones 部署，并使用 Elastic Load Balancer（ELB）分发流量。</strong></p>
+<p>接着，<strong>可以利用 Auto Scaling 自动增加或减少实例数量以应对流量波动</strong>。</p>
+<p><strong>数据库方面，可以使用 RDS Multi-AZ 或 DynamoDB 提供高可用性和自动故障转移。为了避免单点故障，可以考虑使用 Route 53 配合健康检查实现流量的智能路由。</strong></p>
+<h3 id="7-auto-scaling-load-balancer">7. 你如何使用 Auto Scaling 和 Load Balancer 来保证应用的可伸缩性和高可用性？</h3>
+<p>通过 Auto Scaling，可以根据设定的指标（如 CPU 使用率、内存、网络流量等）自动调整 EC2 实例的数量，确保在流量高峰时刻应用能够自动扩展，流量较低时刻则减少实例数以节省成本。</p>
+<p>同时，Elastic Load Balancer（ELB）会均匀地分配流量到健康的 EC2 实例上，保证即使某个实例故障，也能继续保持应用的高可用性</p>
+<h3 id="8-aws-aws">8. 什么是 AWS 定价模型？如何优化 AWS 成本</h3>
+<p>AWS 提供几种定价模型：</p>
+<ul>
+<li><strong>按需定价（On-Demand）</strong>： 根据实际使用的计算能力按小时或秒计费。</li>
+<li><strong>预留实例（Reserved Instances）</strong>： <strong>为长期使用的实例预先支付，享受折扣</strong>。</li>
+<li><strong>现货实例（Spot Instances）</strong>： <strong>基于空闲计算能力，以较低的价格竞拍实例，但可能会被中断</strong>。</li>
+<li><strong>按量计费（Pay-As-You-Go）</strong>： 根据使用的存储、流量等资源按量收费。</li>
+</ul>
+<p>为了优化成本，可以选择合适的定价模型，例如使用现货实例来处理非关键任务，预留实例来处理长期负载，<strong>并利用 AWS Trusted Advisor 和 Cost Explorer 分析和优化资源使用</strong>。</p>
+<h3 id="9-aws-cost-explorer">9. 你如何使用 AWS Cost Explorer 来监控和管理成本？</h3>
+<p>AWS Cost Explorer 允许你查看和分析 AWS 服务的费用数据。</p>
+<p>你可以查看不同服务的费用报告、按服务分组、按时间区间进行比较，甚至设置预算警报，提醒你费用超出预期。通过定期检查和分析使用情况，可以识别不必要的资源，及时调整架构，以降低成本。</p>
+<p>AWS Cost Explorer 允许你查看和分析 AWS 服务的费用数据。你可以查看不同服务的费用报告、按服务分组、按时间区间进行比较，甚至设置预算警报，提醒你费用超出预期。通过定期检查和分析使用情况，可以识别不必要的资源，及时调整架构，以降低成本。</p>
+<h3 id="10-ec2">10. 问题：如何排查 EC2 实例启动失败的问题？</h3>
+<p>首先，检查实例的 系统日志，查看是否有启动过程中的错误信息。</p>
+<p>其次，确保实例的 安全组 和 网络 ACLs 配置正确，确保允许正确的入站和出站流量。</p>
+<p><strong>你也可以通过 AWS EC2 Instance Status Checks 来查看实例的健康状况。如果实例的启动失败是因为某些启动脚本错误，也可以通过 EC2 User Data 进行调试。</strong></p>
+<h3 id="11-aws">11. 如果你的应用程序在 AWS 上变得非常慢，你会如何进行性能调优</h3>
+<p>首先，通过 CloudWatch 监控应用程序的 CPU 使用率、内存、网络流量等性能指标，找出瓶颈所在。</p>
+<p><strong>如果是计算资源限制，可以考虑增加 EC2 实例的规格或使用 Auto Scaling 来动态扩展实例</strong>。</p>
+<p>如果是数据库问题，可以考虑优化 RDS 查询，使用缓存机制（如 ElastiCache）来减少数据库的负担。此外，还可以利用 CloudFront 加速内容分发，提升用户体验。</p>
+<h3 id="12-aws">12. 如何实现跨多个 AWS 区域的数据同步？</h3>
+<p><strong>可以使用 Amazon S3 Cross-Region Replication (CRR) 实现跨区域的数据同步</strong>。CRR 允许你自动将一个区域的 S3 存储桶中的数据复制到另一个区域。</p>
+<p>对于 RDS 数据库，可<strong>以使用 Read Replicas 或 Cross-Region Replication 来同步数据</strong>。</p>
+<p><strong>对于 DynamoDB，可以通过启用 DynamoDB Global Tables 来实现多区域数据复制</strong></p>
+<h3 id="13-aws">13. 你如何确保 AWS 上的高可用性？</h3>
+<p>要确保高可用性，可以采取以下措施：</p>
+<ul>
+<li>将应用部署在多个 <strong>Availability Zones 中，这样即使某个区域发生故障，其他区域的服务仍然可用</strong>。</li>
+<li><strong>使用 Elastic Load Balancer (ELB) 在多个 EC2 实例间均衡负载，确保流量分配到健康实例</strong>。</li>
+<li>配置 Auto Scaling 来自动增加或减少 EC2 实例的数量，以应对流量的变化。</li>
+<li>对数据库使用 Multi-AZ RDS 或 Aurora 以确保数据库的高可用性和自动故障转移。</li>
+<li><strong>使用 Route 53 和健康检查来实现智能 DNS 路由，确保流量能够正确地路由到健康的资源</strong></li>
+</ul>
+<h3 id="14-auto-scaling-load-balancer">14. 你如何使用 Auto Scaling 和 Load Balancer 来保证应用的可伸缩性和高可用性？</h3>
+<p>通过 Auto Scaling，可以根据设定的指标（如 CPU 使用率、内存、网络流量等）自动调整 EC2 实例的数量，确保在流量高峰时刻应用能够自动扩展，流量较低时刻则减少实例数以节省成本。</p>
+<p>同时，Elastic Load Balancer（ELB） 会均匀地分配流量到健康的 EC2 实例上，保证即使某个实例故障，也能继续保持应用的高可用性</p>
+<h3 id="15-aws">15. AWS 上如何实现分布式文件系统？</h3>
+<p><strong>AWS 提供了 Amazon EFS (Elastic File System)，它是一个可扩展的分布式文件系统，适用于共享文件存储，可以跨多个 EC2 实例进行访问</strong>。</p>
+<p>它支持 NFS 协议，适用于大多数 Linux 服务器应用。同时，Amazon FSx 提供了 Windows 文件服务器的支持，适合 Windows 环境中的分布式文件系统</p>
+<h3 id="16-aws">16. 如何使用 AWS 提供的数据库服务处理高并发场景？</h3>
+<ul>
+<li><strong>Amazon RDS（Relational Database Service）</strong>： 对于关系型数据库，可以选择 Multi-AZ 部署，这样可以在主数据库实例发生故障时自动切换到备份实例，保证高可用性。<strong>同时，使用 Read Replicas 来分担读取负载，提高读性能</strong>。</li>
+<li><strong>Amazon DynamoDB： 对于高吞吐量要求的 NoSQL 数据库，可以使用 DynamoDB，它是一个完全托管的、无服务器的数据库，能够自动扩展以应对高并发流量。</strong></li>
+<li>Amazon Aurora： Aurora 是兼容 MySQL 和 PostgreSQL 的关系型数据库，它提供高性能，并能自动扩展，适合大规模、高并发的应用场景。</li>
+</ul>
+<h3 id="17-aws">17.如何使用 AWS 实现应用程序的日志记录和监控？</h3>
+<p>AWS 提供了多个服务来实现日志记录和监控：</p>
+<ul>
+<li>Amazon CloudWatch： 用于监控 AWS 资源和应用程序的性能。你可以创建自定义指标，<strong>设置阈值，并通过 CloudWatch Alarm 发送警报</strong>。</li>
+<li><strong>AWS CloudTrail： 用于记录 AWS 账户的 API 调用，帮助你监控和审计所有用户操作和 AWS 服务的变化</strong>。</li>
+<li><strong>Amazon CloudWatch Logs： 用于收集和存储日志文件</strong>。<ul>
+<li>你可以将应用程序的日志发送到 CloudWatch Logs 进行存储，并使用它进行故障排查和分析。</li>
+</ul>
+</li>
+<li><strong>AWS X-Ray： 用于分析和调试分布式应用，帮助识别性能瓶颈和错误</strong>。</li>
+</ul>
+<h3 id="18-aws">18. 如何在 AWS 上进行自动化运维和配置管理？</h3>
+<ul>
+<li><strong>AWS Systems Manager</strong>： AWS Systems Manager 提供了集中管理和自动化的能力，可以用于管理 EC2 实例、自动化补丁管理、软件配置等。</li>
+<li><strong>AWS CloudFormation</strong>： <strong>用于通过声明式模板自动化资源的部署和管理，支持基础设施即代码（IaC）</strong>。</li>
+<li><strong>AWS OpsWorks： 基于 Chef 和 Puppet，提供了配置管理服务，可以用于自动化管理服务器和应用程序的配置</strong>。</li>
+<li><strong>AWS Lambda： 可用于自动化无服务器架构中的任务，例如自动化的资源启动、停止等操作</strong>。</li>
+</ul>
+<h3 id="19-aws">19.如何优化 AWS 成本？</h3>
+<ul>
+<li>选择合适的实例类型： 使用适合工作负载的 EC2 实例类型，例如计算优化、内存优化或存储优化实例。可以使用 AWS Compute Optimizer 来推荐最适合的实例类型。</li>
+<li><strong>使用预留实例（Reserved Instances）</strong>： 对于长期稳定的负载，可以选择预留实例，享受折扣。</li>
+<li><strong>使用现货实例（Spot Instances）</strong>： 对于弹性强、不需要 24/7 运行的工作负载，可以使用现货实例来大幅降低计算成本。</li>
+<li><strong>利用 Auto Scaling</strong>： 根据实际流量自动调整 EC2 实例的数量，避免资源浪费。</li>
+<li><strong>删除未使用的资源</strong>： <strong>定期审查 AWS 环境，删除未使用的 EBS 卷、未关联的 Elastic IP 等资源。</strong></li>
+<li><strong>使用 AWS Trusted Advisor</strong>： 它提供了针对成本、性能、安全性等方面的优化建议。</li>
+</ul>
+<h3 id="20-aws">20. 你如何在 AWS 中实现灾难恢复？</h3>
+<p>在 AWS 中，可以采用以下策略来实现灾难恢复：</p>
+<ul>
+<li><strong>多区域部署</strong>： 将应用和数据跨多个 AWS 区域部署，确保即使某个区域发生故障，其他区域仍然可用。</li>
+<li><strong>自动故障转移</strong>： <strong>使用 Amazon Route 53 配合健康检查</strong>，自动将流量切换到健康的区域或实例。</li>
+<li><strong>跨区域备份</strong>： 使用 Amazon S3 跨区域复制功能，确保数据的安全性。对于数据库，可以使用 <strong>RDS Cross-Region Replication</strong> 来实现备份和故障转移。</li>
+<li><strong>定期备份： 使用 AWS Backup 自动执行 Amazon EBS、RDS、DynamoDB、EFS 等资源的定期备份</strong></li>
+</ul>
+<h3 id="21-aws-cloudwatch">21. 什么是 AWS CloudWatch？</h3>
+<p>AWS CloudWatch 是一种监控和日志记录服务，可以提供 AWS 资源和应用程序的实时指标、日志和报警功能。</p>
+<ul>
+<li><strong>监控指标</strong>： CloudWatch 可用于监控 EC2、RDS、Lambda、S3、EBS 等 AWS 资源的性能。</li>
+<li><strong>日志收集</strong>： 通过 CloudWatch Logs 收集并分析来自应用程序、操作系统和其他资源的日志。</li>
+<li><strong>报警设置</strong>： 可以设置阈值报警，当某些指标超过设定值时触发报警。</li>
+<li><strong>自动化响应： 基于 CloudWatch 的监控和报警，可以自动触发 AWS Lambda 函数或 Auto Scaling 操作。</strong></li>
+</ul>
+<h3 id="22-aws">22. 如何选择合适的 AWS 存储服务？</h3>
+<p>AWS 提供多种存储服务，适用于不同的用例。选择合适的存储服务时需要考虑以下因素：</p>
+<ul>
+<li>Amazon S3： <strong>适用于存储静态文件、备份和归档</strong>。</li>
+<li>EBS： 适用于需要持久存储的 EC2 实例。</li>
+<li>EFS： <strong>适用于需要共享文件存储的应用，支持多个实例并发访问</strong>。</li>
+<li><strong>Glacier： 适用于长期存储和归档数据</strong>。</li>
+<li>DynamoDB： 适用于低延迟、高吞吐量的 NoSQL 数据存储。</li>
+<li><strong>RDS： 适用于托管关系数据库，支持自动备份和高可用性配置</strong>。</li>
+</ul>
+<p>根据数据访问频率、数据类型和成本要求选择合适的存储解决方案。</p>
+<h3 id="23-aws-iamidentity-and-access-management">23. 解释 AWS IAM（Identity and Access Management）及其组件</h3>
+<p>AWS IAM 是一种 Web 服务，它帮助您管理对 AWS 服务和资源的访问权限。它包括以下关键组件：</p>
+<ul>
+<li><strong>用户（User）</strong>： 代表一个 AWS 账户中的个人用户，可以为其分配访问权限。</li>
+<li><strong>组（Group）</strong>： 将多个用户进行分组，简化权限管理。用户组与权限策略结合使用。</li>
+<li><strong>角色（Role）</strong>： 角色与用户不同，角色不直接关联到单个用户，而是供 AWS 服务或其他账户的身份临时使用。</li>
+<li><strong>权限策略（Policy）</strong>： 权<strong>限策略是 · 格式的文档，定义了哪些资源可以被哪些主体访问</strong>。</li>
+<li><strong>多因素认证（MFA）</strong>： 一种安全机制，需要用户提供两种身份认证方式，增加访问 AWS 资源的安全性。</li>
+</ul>
+<h3 id="24-s3">24. S3 的存储类有哪些？如何选择合适的存储类？</h3>
+<p>Amazon S3 提供多种存储类，用于优化成本和访问需求：</p>
+<ul>
+<li><strong>标准存储（Standard）</strong>： 适用于频繁访问的对象，具有低延迟和高吞吐量。</li>
+<li><strong>标准-低频存储（Standard-IA）</strong>： 适用于不常访问的对象，但需要高可用性。较便宜，但数据检索费用较高。</li>
+<li><strong>一时访问（One Zone-IA）</strong>： 适用于不常访问的数据，但可以容忍丢失的情况。存储在单个可用区，成本更低。</li>
+<li><strong>归档存储（Glacier）</strong>： 适用于需要长期存储且访问频率极低的对象，检索成本较高，检索时间较长。</li>
+<li><strong>深度归档存储（Glacier Deep Archive）</strong>： 比 Glacier 更便宜，适用于长期归档数据。</li>
+</ul>
+<p>选择存储类的依据通常是访问频率、数据的重要性以及存储成本。高频访问的数据适合使用标准存储，而低频访问的数据可以使用标准-低频存储或归档存储来节省成本。</p>
+<h3 id="25-amazon-rds">25. 什么是 Amazon RDS？它的优势是什么？</h3>
+<p>Amazon RDS（Relational Database Service）是 AWS 提供的托管关系数据库服务，支持多种数据库引擎，包括 MySQL、PostgreSQL、SQL Server、MariaDB 和 Oracle。</p>
+<p>优势</p>
+<ul>
+<li><strong>易于使用</strong>： 提供数据库实例的自动化管理，您无需关心底层硬件和数据库管理。</li>
+<li><strong>自动化备份</strong>： 支持自动备份和快照，确保数据安全。</li>
+<li><strong>高可用性</strong>： 可以配置多可用区部署（Multi-AZ），提供数据库的高可用性和灾难恢复。</li>
+<li><strong>自动扩展</strong>： 可以根据负载自动扩展存储和计算资源。</li>
+<li><strong>安全性</strong>： 集成 IAM、VPC、安全组、加密等多种安全功能。</li>
+<li><strong>性能优化： 支持多种存储类型，如通用 SSD（gp2）、预配置 IOPS（io1），并支持读写分离</strong></li>
+</ul>
+<h3 id="26-aws-lambda">26. 什么是 AWS Lambda？它的主要用途是什么？</h3>
+<p><strong>AWS Lambda 是 AWS 提供的无服务器计算服务，使开发人员能够运行代码而无需管理服务器</strong>。您只需上传代码并配置触发事件，Lambda 会自动处理所有资源的分配、伸缩和管理</p>
+<p>主要用途：</p>
+<ul>
+<li><strong>事件驱动的计算</strong>： AWS Lambda 可以与其他 AWS 服务（如 S3、DynamoDB、SNS、CloudWatch）集成，响应事件触发代码。</li>
+<li><strong>按需计算</strong>： 根据请求数和持续时间按需计费，无需预先配置或管理服务器。</li>
+<li><strong>自动伸缩： Lambda 自动根据请求量伸缩，适合高并发的应用</strong>。</li>
+<li><strong>简化架构： 无需关心底层基础设施的管理，减少运维负担</strong></li>
+</ul>
+<p>Lambda 适用于诸如文件处理、数据处理、实时分析、API 后端服务等应用场景。</p>
+<h3 id="27-auto-scaling">27. 什么是 Auto Scaling？它如何工作？</h3>
+<p>Auto Scaling 是 AWS 提供的自动伸缩服务，用于根据应用需求自动调整计算资源的数量。</p>
+<p><strong>它主要用于 EC2 实例、负载均衡器和数据库的自动扩展。</strong></p>
+<p>Auto Scaling 是 AWS 提供的自动伸缩服务，用于根据应用需求自动调整计算资源的数量。它主要用于 EC2 实例、负载均衡器和数据库的自动扩展。</p>
+<p><strong>工作原理</strong>：</p>
+<ol>
+<li><strong>设置扩展策略</strong>： 您可以设置最小实例数、最大实例数和期望的实例数。</li>
+<li><strong>定义触发条件</strong>： <strong>Auto Scaling 根据负载（如 CPU 使用率、内存、请求数等）自动进行扩展和收缩</strong>。</li>
+<li><strong>动态调整</strong>： 当负载增加时，Auto Scaling 会自动启动新的实例；当负载减少时，它会终止不必要的实例。</li>
+<li><strong>负载均衡： Auto Scaling 与 Elastic Load Balancer（ELB）集成，确保流量均匀分配到各个实例</strong>。</li>
+</ol>
+<p>优势：</p>
+<ul>
+<li><strong>高可用性</strong>： 通过自动扩展和收缩，确保应用始终具有足够的资源来应对负载变化。</li>
+<li><strong>成本优化</strong>： 仅在需要时运行更多实例，降低了成本</li>
+</ul>
+<h3 id="28-aws-cloudformation">28. 什么是 AWS CloudFormation？</h3>
+<p><strong>AWS CloudFormation 是 AWS 提供的基础设施即代码服务，可以通过模板来定义 AWS 基础设施资源并自动化其创建和管理。</strong></p>
+<p>CloudFormation 允许您使用 JSON 或 YAML 格式编写模板，描述所需的 AWS 资源，自动化部署和更新。</p>
+<p>优势：</p>
+<ul>
+<li><strong>可重复性</strong>： 通过模板，您可以一键创建相同的资源配置。</li>
+<li><strong>版本控制</strong>： 模板可以被版本化，跟踪基础设施的更改。</li>
+<li><strong>自动化管理</strong>： 可以自动化资源的创建、更新、删除等管理任务。</li>
+<li><strong>跨区域、跨账户支持</strong>： 可以通过同一个模板在不同区域和账户中管理资源。</li>
+</ul>
+<h3 id="29-aws-lb">29. AWS 中的 LB 有几种类型</h3>
+<p>在 AWS 中，负载均衡器（LB） 有三种主要类型，每种类型适用于不同的使用场景：</p>
+<h4 id="1-alb-application-load-balancer">1. 应用负载均衡器（ALB - Application Load Balancer）</h4>
+<ul>
+<li><strong>适用层次： 第 7 层（应用层）</strong>。</li>
+<li><strong>功能</strong>： <strong>ALB 用于 HTTP 和 HTTPS 流量的负载均衡，能够基于请求的内容（如 URL 路径、主机名、HTTP 头等）进行智能路由</strong>。它非常适合微服务架构和容器化应用的需求。</li>
+<li>特点：<ul>
+<li>支持内容感知路由（基于 URL 路径、查询字符串、请求头等）。</li>
+<li>支持 WebSocket 和 HTTP/2。</li>
+<li>适用于复杂的路由规则和基于请求内容的负载均衡。</li>
+<li>支持与 AWS ECS、EKS 等服务的集成。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-nlb-network-load-balancer">2. 网络负载均衡器（NLB - Network Load Balancer）</h4>
+<ul>
+<li><strong>适用层次： 第 4 层（传输层）</strong></li>
+<li>功能： NLB 适用于需要极高性能和低延迟的应用，<strong>特别是处理 TCP 和 UDP 流量的场景</strong>。NLB 能够处理数百万个请求，同时保持非常低的延迟。</li>
+<li><strong>特点</strong>：<ul>
+<li><strong>适用于高吞吐量、低延迟的网络层流量（TCP/UDP</strong>）。</li>
+<li><strong>支持静态 IP 和弹性 IP</strong>。</li>
+<li>自动扩展，支持容错和高可用性。</li>
+<li>支持负载均衡到 EC2 实例、容器以及基于 IP 地址的目标。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-clb-classic-load-balancer">3. 经典负载均衡器（CLB - Classic Load Balancer）</h4>
+<ul>
+<li><strong>适用层次： 第 4 层（传输层）和第 7 层（应用层</strong></li>
+<li>功能： <strong>CLB 是最早的 AWS 负载均衡器类型，适用于传统的 EC2 实例，支持 HTTP、HTTPS 和 TCP 流量。它提供了基本的负载均衡功能，但不具备 ALB 和 NLB 的高级功能。</strong></li>
+<li>特点：<ul>
+<li>适用于较为简单的负载均衡需求。</li>
+<li>支持 HTTP、HTTPS 和 TCP 协议。</li>
+<li>不支持基于内容的路由和 HTTP/2。</li>
+<li>目前 AWS 建议用户迁移到 ALB 或 NLB。</li>
+</ul>
+</li>
+</ul>
+<p>总结：</p>
+<ul>
+<li><strong>ALB： 适用于需要基于内容进行路由的 HTTP/HTTPS 流量，特别适用于微服务和容器化应用</strong>。</li>
+<li><strong>NLB： 适用于高性能、低延迟的 TCP/UDP 流量，适合大规模的网络流量处理</strong>。</li>
+<li><strong>CLB： 适用于传统应用和较简单的负载均衡需求，AWS 建议逐步过渡到 ALB 或 NLB</strong>。</li>
+</ul>
+<p>选择合适的负载均衡器类型，取决于您的应用场景和性能要求。</p>
+<h3 id="30-aws-k8s-test-pre-prod">30. 在 AWS 中如何为 k8s 规划 Test 环境，Pre 环境和 Prod 环境呢</h3>
+<p>在 AWS 中为 Kubernetes <strong>集群（K8s）规划测试环境（test）、预发布环境（pre）、生产环境（prod）时</strong>，您可以根据不同的需求使用不同的 AWS 服务和 Kubernetes 集群配置。为了实现环境隔离、管理和扩展性，以下是几种推荐的方法来规划和管理这些环境。</p>
+<h4 id="1-kubernetes"><strong>1. 使用多个 Kubernetes 集群</strong></h4>
+<p>在 AWS 上，您可以为每个环境创建独立的 Kubernetes 集群，这样可以有效地隔离不同的环境。每个集群可以运行在不同的 VPC（虚拟私有云）中，提供更高的安全性和网络隔离。</p>
+<p><strong>创建多个 VPC 或子网</strong></p>
+<p>为了确保不同环境的隔离，您可以为每个环境创建独立的 VPC，或者至少在同一 VPC 中使用不同的子网进行环境隔离</p>
+<ul>
+<li>Test 环境： 可以配置为开发/测试环境，规模较小，使用少量节点和资源。</li>
+<li>Pre 环境： 接近生产环境，使用更多的节点，并包含与生产环境相似的配置和服务。</li>
+<li>Prod 环境： 完全隔离的生产环境，具有高可用性、负载均衡器、自动扩展组等，以确保可靠性和性能。</li>
+</ul>
+<h4 id="amazon-eks">创建集群并使用 Amazon EKS</h4>
+<p>Amazon Elastic Kubernetes Service（EKS）是 AWS 上托管的 Kubernetes 服务，它允许您快速部署、管理和扩展 Kubernetes 集群。</p>
+<ul>
+<li>每个环境创建独立的 EKS 集群，如 eks-test-cluster, eks-pre-cluster, eks-prod-cluster。</li>
+<li><strong>使用 EKS 集群管理工具（如 eksctl）来创建和管理集群</strong>。</li>
+</ul>
+<p>示例命令创建 EKS 集群（使用 eksctl）：</p>
+<pre><code>eksctl create cluster --name test-cluster --region us-west-2 --nodegroup-name test-nodes --node-type t3.medium --nodes 2
+eksctl create cluster --name pre-cluster --region us-west-2 --nodegroup-name pre-nodes --node-type t3.medium --nodes 3
+eksctl create cluster --name prod-cluster --region us-west-2 --nodegroup-name prod-nodes --node-type t3.large --nodes 5
+</code></pre>
+<h4 id="2-kubernetes">2. 使用 Kubernetes 命名空间进行环境隔离</h4>
+<p>如果不希望为每个环境创建单独的 Kubernetes 集群，您可以使用 命名空间（namespace） 来在同一个集群中隔离不同的环境。这对于较小的项目或资源使用较低的环境是可行的。</p>
+<ul>
+<li>Test 环境： 创建一个 test 命名空间。</li>
+<li>Pre 环境： 创建一个 pre 命名空间。</li>
+<li>Prod 环境： 创建一个 prod 命名空间。</li>
+</ul>
+<p>在这种情况下，您仍然只需要一个 Kubernetes 集群，但每个环境有自己的命名空间，以确保它们相互隔离。</p>
+<p>示例命令创建命名空间：</p>
+<pre><code>kubectl create namespace test
+kubectl create namespace pre
+kubectl create namespace prod
+</code></pre>
+<h4 id="3-aws-iam">3. 配置 AWS IAM 角色和策略</h4>
+<p>为了确保不同环境的安全性和访问控制，您可以为每个环境配置 AWS IAM（身份和访问管理）角色和策略，并限制每个环境的访问权限</p>
+<ul>
+<li>创建 IAM 角色： 为每个环境创建独立的 IAM 角色，例如 test-role, pre-role, prod-role。</li>
+<li>定义 IAM 策略： 为每个环境定义细粒度的访问控制策略，确保用户或服务仅能访问其相应环境的资源。</li>
+</ul>
+<h4 id="4-cicd">4. 配置 CI/CD 管道</h4>
+<p>您可以配置 CI/CD 管道来自动化应用程序的部署和更新，确保每个环境的版本控制和生命周期管理。</p>
+<p><strong>使用 AWS CodePipeline 和 CodeBuild</strong></p>
+<ul>
+<li>Test 环境： CI/CD 流水线可以在 test 环境中自动构建和部署应用。</li>
+<li>Pre 环境： 应用先部署到 pre 环境进行集成测试。</li>
+<li>Prod 环境： 最终将应用部署到 prod 环境，进行蓝绿部署或滚动更新</li>
+</ul>
+<p><strong>使用 GitOps 管理</strong></p>
+<p><strong>如果使用 GitOps 方法（如 ArgoCD 或 Flux）</strong>，您可以将每个环境的配置和部署过程管理为 Git 仓库中的代码和配置。根据环境分别维护不同的分支或目录</p>
+<p>GitOps 部署示例：</p>
+<ul>
+<li>main 分支部署到 prod 环境。</li>
+<li>staging 分支部署到 pre 环境。</li>
+<li>dev 分支部署到 test 环境。</li>
+</ul>
+<h4 id="5-aws-vpcsubnets-security-groups">5. 配置 AWS VPC、Subnets 和 Security Groups</h4>
+<p>为确保环境的隔离性，您可以在不同的 VPC 中为每个环境提供网络隔离。例如，prod 环境可能需要更严格的安全规则和网络隔离，而 test 和 pre 环境可以使用较宽松的配置。</p>
+<ul>
+<li><strong>VPC 和子网： 每个环境有自己的 VPC 或至少在同一 VPC 下的不同子网。</strong></li>
+<li>安全组： 为每个环境配置不同的安全组，以控制对 Kubernetes API 服务器的访问、Pod 的网络访问等。</li>
+</ul>
+<h4 id="6_1">6. 配置自动化伸缩和资源管理</h4>
+<p>为了确保不同环境具有合理的资源利用率和成本控制，您可以使用 AWS 的 自动伸缩组 和 Kubernetes 的 资源限制 来为每个环境分配适当的计算资源。</p>
+<ul>
+<li>Test 环境： 通常较小，适合使用小型实例或较少的节点。</li>
+<li>Pre 环境： 与生产环境类似，但可以按需调整。</li>
+<li>Prod 环境： 需要高可用性和扩展性，适合使用更强大的实例、自动伸缩组等。</li>
+</ul>
+<h4 id="7">7. 监控和日志</h4>
+<p><strong>使用 AWS CloudWatch 和 Prometheus/Grafana 集成来监控不同环境的资源和应用性能</strong>。确保在生产环境中启用更严格的日志记录和监控。</p>
+<p>配置环境指标</p>
+<ul>
+<li>Test 环境： 监控测试用例、构建过程等。</li>
+<li>Pre 环境： 监控集成测试、部署流程等。</li>
+<li>Prod 环境： 监控业务流量、应用性能、自动扩缩等。</li>
+</ul>
+<p><strong>总结：如何规划 K8s 集群的不同环境</strong></p>
+<ul>
+<li><strong>创建多个独立的 EKS 集群</strong>： 为 test、pre 和 prod 环境分别创建独立的 EKS 集群，确保完全隔离。</li>
+<li><strong>使用 Kubernetes 命名空间</strong>： 如果您不需要完全隔离集群，可以在同一集群中使用命名空间来划分不同的环境。</li>
+<li><strong>网络隔离</strong>： 使用 AWS VPC 和子网来确保每个环境的网络隔离，避免交叉访问。</li>
+<li><strong>CI/CD 管道： 通过 AWS CodePipeline、Jenkins 或 GitOps 来自动化部署和版本控制</strong>。</li>
+<li><strong>安全和权限</strong>： 为每个环境配置不同的 AWS IAM 角色和策略，以确保访问控制。</li>
+<li><strong>监控和日志： 使用 AWS CloudWatch、Prometheus 和 Grafana 等工具监控不同环境的健康状况和性能。</strong></li>
+</ul>
+<h3 id="31-aws-vpc">31. 如何在 AWS 中创建 VPC 呢？</h3>
+<p>在 AWS 中创建 VPC（虚拟私有云）是为了提供一个逻辑上隔离的网络环境，您可以在其中运行 EC2 实例、容器、数据库等。以下是如何在 AWS 中创建 VPC 的步骤。</p>
+<h4 id="1-aws"><strong>方法 1：使用 AWS 管理控制台</strong></h4>
+<p>步骤 1：登录到 AWS 管理控制台</p>
+<ol>
+<li>打开 AWS 管理控制台。</li>
+<li>登录您的 AWS 帐号。</li>
+</ol>
+<h4 id="2-vpc"><strong>步骤 2：打开 VPC 控制台</strong></h4>
+<ol>
+<li>在控制台的搜索栏中，输入 VPC 并选择 VPC 服务。</li>
+<li>点击左侧的 "Your VPCs"（您的 VPC）。</li>
+</ol>
+<h4 id="3-vpc">步骤 3：创建 VPC</h4>
+<ol>
+<li>在 VPC 面板中，点击 Create VPC（创建 VPC）按钮。</li>
+<li>填写所需的配置项：<ul>
+<li>Name tag（名称标签）： 为您的 VPC 起一个名称（如：my-vpc）。</li>
+<li>IPv4 CIDR block： 选择一个 IP 地址块，通常可以使用 10.0.0.0/16（代表 65536 个 IP 地址），或者 192.168.0.0/16 等。</li>
+<li>IPv6 CIDR block（可选）： 如果需要 IPv6 支持，可以选择启用并分配一个 IPv6 地址块。</li>
+<li>Tenancy： 选择 "default"（默认）或 "dedicated"（专用）用于实例的托管。</li>
+</ul>
+</li>
+<li>点击 Create（创建）按钮。</li>
+</ol>
+<h4 id="4">步骤 4：创建子网</h4>
+<ol>
+<li>创建完 VPC 后，点击左侧的 Subnets（子网）。</li>
+<li>点击 Create subnet（创建子网）按钮。</li>
+<li>填写子网信息：<ul>
+<li>VPC： 选择刚才创建的 VPC。</li>
+<li>Subnet name（子网名称）： 为子网命名（例如：subnet-1）。</li>
+<li>Availability Zone（可用区）： 选择一个可用区（例如：us-west-2a）。</li>
+<li>IPv4 CIDR block： 为子网分配一个子网 IP 地址块（例如：10.0.1.0/24）。</li>
+</ul>
+</li>
+<li>点击 Create（创建）。</li>
+</ol>
+<h4 id="5-internet-gateway">步骤 5：创建 Internet Gateway</h4>
+<ol>
+<li>在左侧导航栏中，选择 Internet Gateways。</li>
+<li>点击 Create internet gateway（创建 Internet 网关）。</li>
+<li>输入一个名称（例如：my-igw）并点击 Create（创建）。</li>
+<li>创建完成后，选择您刚创建的 Internet 网关，并点击 Attach to VPC（附加到 VPC）。</li>
+<li>选择您之前创建的 VPC 并点击 Attach（附加）。</li>
+</ol>
+<h4 id="6_2">步骤 6：配置路由表</h4>
+<ol>
+<li>在 VPC 控制台的左侧，点击 Route Tables（路由表）。</li>
+<li>选择一个默认的路由表并点击 Edit routes（编辑路由）。</li>
+<li>在 Routes 部分，点击 Add route（添加路由）。<ul>
+<li><strong>Destination（目标）： 0.0.0.0/0（这表示所有流量）</strong>。</li>
+<li><strong>Target（目标）： 选择您刚创建的 Internet 网关</strong>。</li>
+</ul>
+</li>
+<li>点击 Save routes（保存路由）。</li>
+</ol>
+<h4 id="7acl">步骤 7：配置安全组和网络ACL</h4>
+<ol>
+<li><strong>安全组： 安全组是实例的虚拟防火墙，可以配置入站和出站规则</strong>。<ul>
+<li>在左侧导航栏中，选择 Security Groups（安全组），然后点击 Create security group（创建安全组）。</li>
+<li><strong>配置安全组规则（例如：允许 SSH 访问端口 22，HTTP 访问端口 80，HTTPS 访问端口 443 等）</strong>。</li>
+</ul>
+</li>
+<li><strong>网络 ACL： 网络 ACL（访问控制列表）用于控制子网级别的流量</strong>。<ul>
+<li><strong>在左侧导航栏中，选择 Network ACLs（网络 ACL），然后点击 Create network ACL（创建网络 ACL）</strong>。</li>
+<li>置入站和出站规则。</li>
+</ul>
+</li>
+</ol>
+<h3 id="2-aws-cli-vpc">方法 2：使用 AWS CLI 创建 VPC</h3>
+<p>您还可以使用 AWS CLI 来创建和管理 VPC。以下是使用 CLI 创建 VPC 的命令示例。</p>
+<pre><code>aws configure
+</code></pre>
+<p>步骤 2：创建 VPC</p>
+<p>使用以下命令创建一个新的 VPC：</p>
+<pre><code>aws ec2 create-vpc --cidr-block 10.0.0.0/16 --region us-west-2
+</code></pre>
+<p>这将创建一个新的 VPC，CIDR 块为 <code>10.0.0.0/16</code>，并在 us-west-2 区域创建。</p>
+<p><strong>步骤 3：创建子网</strong></p>
+<p>您可以使用以下命令为 VPC 创建子网</p>
+<pre><code>aws ec2 create-subnet --vpc-id vpc-xxxxxxxx --cidr-block 10.0.1.0/24 --availability-zone us-west-2a
+</code></pre>
+<p><strong>步骤 4：创建 Internet 网关</strong></p>
+<p>创建一个 Internet 网关并将其附加到 VPC：</p>
+<pre><code>aws ec2 create-internet-gateway
+aws ec2 attach-internet-gateway --vpc-id vpc-xxxxxxxx --internet-gateway-id igw-xxxxxxxx
+</code></pre>
+<p><strong>步骤 5：配置路由表</strong></p>
+<p>使用以下命令添加路由</p>
+<pre><code>aws ec2 create-route-table --vpc-id vpc-xxxxxxxx
+aws ec2 create-route --route-table-id rtb-xxxxxxxx --destination-cidr-block 0.0.0.0/0 --gateway-id igw-xxxxxxxx
+</code></pre>
+<p>总结</p>
+<ol>
+<li>使用 AWS 管理控制台，您可以通过图形界面轻松创建 VPC，并进行后续的子网、Internet 网关、路由表等配置。</li>
+<li><strong>使用 AWS CLI，您可以通过命令行快速创建 VPC，并为其配置子网、路由表等</strong>。</li>
+</ol>
+<p>无论哪种方式，都可以根据您的具体需求在 AWS 中创建一个隔离的 VPC，以供 Kubernetes 或其他服务使用。</p>
+<h3 id="32-ssh-ec2">32. 你正在尝试通过 SSH 连接到一个 EC2 实例，但连接失败。</h3>
+<p>当你尝试通过 SSH 连接到一个 EC2 实例时，如果连接失败，可以从以下几个常见的原因着手排查：</p>
+<p><strong>1. 检查安全组配置</strong></p>
+<p>确保 EC2 实例关联的 安全组（Security Group）允许 SSH 连接。</p>
+<p><strong>确保允许端口 22： EC2 实例的安全组应该允许来自你本地 IP 的 22 端口（SSH）的流量。</strong></p>
+<p>在 AWS 控制台，选择 EC2 实例 &gt; 安全组 &gt; 入站规则 &gt; 确保有一条规则允许端口 22（SSH），并且来源设置为 你的IP 或 0.0.0.0/0（全开放，但风险较大）</p>
+<p><strong>2. 检查密钥对（Key Pair）</strong></p>
+<p>确保你使用了正确的 密钥对（.pem 文件）来进行 SSH 连接，并且密钥文件的权限设置正确。</p>
+<p><strong>密钥权限</strong>： 运行以下命令，<strong>确保 .pem 文件的权限设置为只读：</strong></p>
+<pre><code>chmod 400 your-key.pem
+</code></pre>
+<p>正确的密钥文件： 你在连接时需要指定正确的密钥文件（.pem），并且该密钥必须与你创建 EC2 实例时所选的密钥对相匹配</p>
+<p><strong>3. 检查实例状态</strong></p>
+<p>确保实例处于 running 状态并且能够接受 SSH 连接。</p>
+<p>• 在 AWS 控制台上检查实例的状态，确保它没有停止或正在初始化。</p>
+<p><strong>4. 检查 EC2 实例的公有 IP 或 DNS 名称</strong></p>
+<p>确认你使用的是正确的 公有 IP 地址 或 公有 DNS 名称 来连接 EC2 实例。你可以在 EC2 控制台的实例详情页面找到这一信息。</p>
+<p><strong>5. 检查网络 ACL 和路由表</strong></p>
+<p>确保实例所在的 VPC 中的网络 ACL 和路由表没有阻止来自你 IP 的流量。</p>
+<ul>
+<li>网络 ACL（网络访问控制列表）应允许所有进出流量，或者至少允许端口 22 的流量。</li>
+<li>路由表应该确保 EC2 实例能够与互联网进行通信（如果是公有子网，路由表应该指向一个 Internet 网关）。</li>
+</ul>
+<p><strong>6. 检查实例的密钥是否正确</strong></p>
+<p>确保你使用的密钥对是正确的。如果你使用的是 EC2 Instance Connect 或者其他的认证方式，请确保配置正确。</p>
+<p><strong>7. 使用实例连接工具（EC2 Instance Connect）</strong></p>
+<p>如果 SSH 连接失败，可以尝试使用 EC2 Instance Connect 来连接实例。它允许你通过浏览器直接连接到 EC2 实例，而不需要使用本地 SSH 客户端。</p>
+<p>在 AWS 控制台的 EC2 实例页面上，选择实例并点击 Connect 按钮，选择 EC2 Instance Connect。</p>
+<p><strong>8. VPC 和子网的配置</strong></p>
+<p>确保实例所在的 <strong>VPC 和子网的 路由表 和 NAT 网关 配置正确</strong>，尤其是在使用私有子网时。私有子网中的实例通常不能直接访问互联网，您需要配置 NAT 网关 来允许 SSH 连接。</p>
+<p><strong>9. 系统日志和实例控制台</strong></p>
+<p>如果你没有成功连接并且怀疑实例配置问题，可以查看 实例的系统日志：</p>
+<p>在 EC2 控制台，选择实例 &gt; Actions &gt; Monitor and troubleshoot &gt; Get system log，查看系统日志是否有任何错误信息。</p>
+<p><strong>10. 使用 -vvv 选项调试 SSH 连接</strong></p>
+<p>在命令行中，增加<code>-vvv</code> 选项来启用 SSH 的详细输出，有助于调试连接问题：</p>
+<pre><code>ssh -i your-key.pem ec2-user@&lt;instance-public-ip&gt; -vvv
+</code></pre>
+<p>总结</p>
+<ol>
+<li><strong>安全组： 确保端口 22 开放，允许你的 IP</strong>。</li>
+<li><strong>密钥文件： 确认你使用了正确的 .pem 文件，并设置了正确的权限</strong>。</li>
+<li><strong>实例状态： 确保实例运行并有公有 IP 或 DNS</strong>。</li>
+<li><strong>网络配置： 检查网络 ACL、路由表、子网配置，确保流量可以到达实例</strong></li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2021-9999 Jacob Xi
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      
+    
+  </body>
+</html>

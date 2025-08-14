@@ -1,0 +1,5977 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Jacob's 系统性能&Linux调优技术与实战教程">
+      
+      
+        <meta name="author" content="Jacob Xi">
+      
+      
+        <link rel="canonical" href="https://chao-xi.github.io/jxperfbook/2025/3kubernetes_sre/">
+      
+      
+        <link rel="prev" href="../3linux/">
+      
+      
+        <link rel="next" href="../3kubernetes_sre2/">
+      
+      
+      <link rel="icon" href="../../images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>5 Kubernetes SRE part1 - Jacob Performance&Linux Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="light-green" data-md-color-accent="light-green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-what-is-the-difference-between-a-deployment-and-a-statefulset-in-kubernetes" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="Jacob Performance&amp;Linux Book" class="md-header__button md-logo" aria-label="Jacob Performance&Linux Book" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Jacob Performance&Linux Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              5 Kubernetes SRE part1
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Chao-Xi/jxperfbook.git" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jxperfbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Jacob Performance&amp;Linux Book" class="md-nav__button md-logo" aria-label="Jacob Performance&Linux Book" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    Jacob Performance&Linux Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Chao-Xi/jxperfbook.git" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jxperfbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Welcome
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    系统基础设施优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            系统基础设施优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/1CPU_Cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 代码让CPU执行得更快 — CPU缓存
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/2Mem_Pool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 内存池提升内存分配的效率
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/3Hash_index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 哈希表利用索引管理亿级对象
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/4PageCache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 磁盘高效地传输文件零拷贝：PageCache
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/5Coroutine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 协程快速地实现高并发服务：Coroutine
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/6Locks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 据业务场景选择合适的锁
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    系统层网络优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            系统层网络优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/1broadcast_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 一对多通讯如何实现
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/2C10M/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 C10M是如何实现事件驱动
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/3tcp3shakehand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 提升TCP三次握手的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/4tcpshutdown/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 提升TCP四次挥手的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/5tcpchachepool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 TCP缓冲区兼顾并发数量与传输速度
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/6tcpcongestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 调整TCP拥塞控制的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    分布式系统优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            分布式系统优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/1Mon_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 通过监控找到性能瓶颈
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/2perf_cap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 舍弃一致性去换取性能的CAP理论
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/3perf_akf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 AKF立方体可扩展性来提高性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/4perf_nwr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 NWR算法修改读写模型以提升性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/5nginx_openresty/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 负载均衡：选择Nginx还是OpenResty
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/6hash_consistent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 一致性哈希的均衡负载
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/7cache_expire/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第七节 过期缓存防止缓存被流量打穿
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/8message_queue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第八节 消息队列基于异步消息提升性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/9map_reduce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第九节 MapReduce通过集群实现离线计算
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/10DB_choice/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第十节 权衡关系数据库与NoSQL数据库
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    IT运维面试问题总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            IT运维面试问题总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/1Linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 IT运维面试问题总结- Linux基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/2Linux_SVC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 IT运维面试问题总结-基础服务、磁盘管理、虚拟平台和系统管理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/3Linux_tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 IT运维面试问题总结-运维工具、开源应用(Ceph、Docker、Apache、Nginx等)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/4Linux_db_dia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 IT运维面试问题总结-数据库、监控、网络管理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/5k8s_OpenShift/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 IT运维面试问题总结-简述Etcd、Kubernetes、Lvs、HAProxy等
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/6Py_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 Python面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/7Pro_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第七节 prometheus：要点总结及面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/8Data_ana_interview1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L8 Data Analyst Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/8Data_ana_interview2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第八节 分析岗笔试/面试知识点
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/9Data_ML_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L9 Top 50 Machine Learning Interview Questions & Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/10Deep_learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L10 30 Frequently asked Deep Learning Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/11Redis_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L11 Redis 核心技术考题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/12ES_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L12 ES 期末考试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/13istio_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L13 Istio面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/14sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L14 SRE本质就是一个懂运维的资深开发
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/15prometheus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L15 Top Prometheus Interview Questions and Answers (2022)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/16jenkins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L16 Top Jenkins Interview Questions and Answers (2022)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/17devops_int2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L17 DevOps Engineer: 30+ Interview Questions and Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/18helm2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L18 Helm指南：Kubernetes包管理器简介
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Python 面试题与总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Python 面试题与总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/1Apple_3sum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1、Apple Interview(3Sum)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/2Python_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2、Python Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/3GS_longest_substr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3、Longest substring
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/4GS_remove_sort_list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4、Remove duplicate in Sort List
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/5Sort_list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5、Reverse Sort List
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/6RM_dup_dict/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6、Remove duplicate from dictionary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/7Find_max/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7、Find Maxmium number count in list and nth number
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/8gs_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8、GS Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/9Substring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9、Find substring inside String
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/10reverse_string/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10、Reverse String
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/11zeroinN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11、Count how many zero in N!
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/12JumpGame/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12、Jump Game
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap5/13Gs_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13、GS interview preparation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux 面试题与总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Linux 面试题与总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/1Linux_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L1 1min 内对 Linux 进行性能诊断
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/2Linux_load_avg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L2 当面试官问你load average时，怎么回答？
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/3Linux_inode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L3 文件系统inode
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/4Linux_ops_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L4 运维必须掌握的Linux面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/5Linux_network_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L5 常见网络编程面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/6Git_principle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L6 Git 实用技巧记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/7LoadBalancer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L7 深入浅出负载均衡
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/8Linux_all/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L8 Linux 面试题 合集CDN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/9Linux_five/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L9 Linux面试最高频的5个基本问题（CPU+COMMMAND)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/10haproxy_learn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L10 HAProxy从零开始到掌握
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/12Linux_vir_file/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L12 从 lsof 开始，深入理解 Linux 虚拟文件系统
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/linux_rew/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux review
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/13Linux_ts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L13 Linux故障排查思路及常用命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/14Linux_iptables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L14 Linux iptables命令详解
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/15linux_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L15 Linux网络基础与性能优化
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Companies Interview
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Companies Interview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/1Ms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Microsoft Interview2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/2Ms_al/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Microsoft Interview Algorithm 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/3ubs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 UBS interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/4MorganS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Morgan Stanly 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/5apple/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Apple 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/6aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 AWS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/7tesla/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Tesla
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/my/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    My Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/int_anws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    架构师面试合集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux 常用命令
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Linux 常用命令
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/0shell_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Shell命令行一些快捷键组合
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/0shell_linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Linux常用命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/16linux_ops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Linux 实用运维命令 - Update
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/1shell_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Shell 分析服务器日志命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/1log_man/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Log: 用 awk + grep + sed搞定日志处理神器组合拳
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/2linux_locate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Linux 系统下查找文件命令总结
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/3devops_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Basic Shell Scripting for Devops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/4Basic_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 基本 shell 脚本 系统+文件+卷+时间
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/5install_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Shell Package 安装+配置脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/6mon_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 监控 Shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/7net_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 网络+数据库 Shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/8secret_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8 Secret shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/9script_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9 Linux script 录播
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/10linux_unlink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10 使用 unlink 删除文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/11linux_ip_port/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11 如何在 Linux 下限制端口仅对指定 IP 开放访问
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/12socat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12 Linux 命令 socat
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/14linux_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14 Linux shell 脚本详解学习 2023
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/15grep_learn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15 使用grep分析日志
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/17file_opt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16 Linux File Operation (df/du/rsync/批量删除/定时备份)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/18linux_var/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17 Shell script中的8个常用的特殊变量
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/19curl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18 Curl的10个高级用法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/20shell_dir/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19 Shell脚本执行不再受限，不进入所在目录也能成功运行
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/21shell_eva/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20 Bash脚本多函数使用eval提高脚本编写效率！
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/22find/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21 使用find命令轻松查找文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/22find/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21 使用find命令轻松查找文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/24xargs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23 xargs命令的使用技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/25shell_script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24 快速提升Shell脚本能力
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/26linux_zombie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25 如何清理 Linux 僵尸进程？
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/27Inode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26 Linux inode 介绍与清理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/28vim/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27 Vim 技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/29awk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    28 Linux AWK 文本处理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/30nohup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    29 nohup命令：在Linux中轻松实现后台运行和守护进程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/31ln/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    30 文件系统中的“分身术”ln命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/32Linux_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    31 Linux 系统日志之深入解析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/33bash/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    32 Linux 中 `.bashrc`、`.bash-profile` 和 `.profile` 之间的区别
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/34linux_6logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    33 6大Linux命令线上日志排查
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/35port_detect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    34 未安装telnet 和 nc 等工具，如何测试端口是否开放
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/36dudf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    35 df命令显示磁盘空间不足而du命令显示还有很多空闲空间
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/37linux_cond/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    36 Shell脚本的流程控制知识点汇总(2024)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Bash Programming 技巧
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Bash Programming 技巧
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/1bash_prom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 简洁的 Bash Programming 技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/2bash_skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 简洁的 Bash Programming 技巧续篇
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/3bash_skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Bash Pitfalls: 编程易犯的错误（一）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/4bash_python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 在Python中执行Linux Shell脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    AutoSys
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            AutoSys
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/1autosys_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 AutoSys: A Beginner’s Guide AutoSys Workload Automation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/1Autosys_tot1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Autosys Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/2Autosys_jil/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Autosys JIL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/3Autosys_comp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Autosys Components, Configuration & Validation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/4Autosys_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Austosys command
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/5Autosys_job_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Manage Job in the Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/6autosys_vir_resouce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Autotsys virtual resource management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/7autosys_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Shell Script to check Autosys agent installed
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    2025 - 面试准备
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            2025 - 面试准备
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025-Intro
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 CI/CD 之路-GitOps 面试题合集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Docker面试10大必考题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Kubernetes 面试题精解：从入门到进阶(2025)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4Linux_tb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Linux 系统故障时
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 AWS 面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6monitor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 监控生态面试通关秘籍
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7cri/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 从容器到调度：准备好这些 CRI 面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8sap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8 SAP面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../9db_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9 数据库面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10prometheus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10 Prometheus面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11istio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11 深度剖析 Istio (2025)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12 Python Interview - Full
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            SRE
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15Apple_SRE_prp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025 Apple SRE PRP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1SRE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 SRE Interview Questions and Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13tiktok/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 2025 最新字节跳动运维云原生面经分享
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2Ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Ansible Interview Question
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 250 Linux Scenario Based Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    5 Kubernetes SRE part1
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Kubernetes SRE part1
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-is-the-difference-between-a-deployment-and-a-statefulset-in-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What is the difference between a Deployment and a StatefulSet in Kubernetes?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-explain-how-kubernetes-handles-rolling-updates-and-rollbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Explain how Kubernetes handles rolling updates and rollbacks.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-what-are-kubernetes-daemonsets-and-give-a-real-world-use-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. What are Kubernetes DaemonSets and give a real-world use case?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-what-are-the-differences-between-configmap-and-secret-in-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. What are the differences between ConfigMap and Secret in Kubernetes?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-what-is-the-role-of-etcd-in-a-kubernetes-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. What is the role of etcd in a Kubernetes cluster?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-how-does-kubernetes-networking-work-explain-the-pod-to-pod-communication" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. How does Kubernetes networking work? Explain the Pod-to-Pod communication.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-what-are-kubernetes-network-policies-and-how-do-they-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. What are Kubernetes Network Policies and how do they work?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-explain-the-kubernetes-control-plane-components-and-their-responsibilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Explain the Kubernetes control plane components and their responsibilities
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-what-is-the-role-of-kubernetes-ingress-and-how-does-it-differ-from-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. What is the role of Kubernetes Ingress and how does it differ from a Service?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-how-do-you-perform-debugging-in-kubernetes-when-a-pod-is-not-starting" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. How do you perform debugging in Kubernetes when a pod is not starting?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-what-is-a-kubernetes-job-and-how-does-it-differ-from-a-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. What is a Kubernetes Job and how does it differ from a Deployment?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-what-are-init-containers-in-kubernetes-and-why-are-they-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. What are Init Containers in Kubernetes and why are they used?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-what-are-taints-and-tolerations-in-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. What are taints and tolerations in Kubernetes?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-what-are-sidecar-containers-and-how-are-they-used-in-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. What are sidecar containers and how are they used in Kubernetes?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-what-are-kubernetes-volumes-and-how-do-they-differ-from-docker-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      16. What are Kubernetes Volumes and how do they differ from Docker volumes?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-explain-kubernetes-persistentvolumes-pv-and-persistentvolumeclaims-pvc" class="md-nav__link">
+    <span class="md-ellipsis">
+      17. Explain Kubernetes PersistentVolumes (PV) and PersistentVolumeClaims (PVC).
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-what-is-a-kubernetes-serviceaccount-and-when-do-you-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      18. What is a Kubernetes ServiceAccount and when do you use it?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-what-is-a-kubernetes-horizontal-pod-autoscaler-hpa-and-how-does-it-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      20. What is a Kubernetes Horizontal Pod Autoscaler (HPA) and how does it work?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-what-are-kubernetes-admission-controllers" class="md-nav__link">
+    <span class="md-ellipsis">
+      24. What are Kubernetes Admission Controllers?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30-what-is-kubernetes-pod-disruption-budget-pdb" class="md-nav__link">
+    <span class="md-ellipsis">
+      30. What is Kubernetes Pod Disruption Budget (PDB)?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33-what-is-a-kubernetes-replicaset-and-how-does-it-differ-from-a-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      33. What is a Kubernetes ReplicaSet and how does it differ from a Deployment?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="33. What is a Kubernetes ReplicaSet and how does it differ from a Deployment?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#34-how-does-kubernetes-handle-pod-scheduling" class="md-nav__link">
+    <span class="md-ellipsis">
+      34. How does Kubernetes handle pod scheduling?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-what-is-the-kubernetes-api-server-and-its-role" class="md-nav__link">
+    <span class="md-ellipsis">
+      35. What is the Kubernetes API Server and its role?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-what-is-kubernetes-ingress-and-how-does-it-differ-from-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      36. What is Kubernetes Ingress and how does it differ from a Service?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-how-does-kubernetes-handle-cluster-upgrades" class="md-nav__link">
+    <span class="md-ellipsis">
+      37. How does Kubernetes handle cluster upgrades?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38-what-is-kubernetes-horizontal-pod-autoscaler-hpa-and-how-is-it-configured" class="md-nav__link">
+    <span class="md-ellipsis">
+      38. What is Kubernetes Horizontal Pod Autoscaler (HPA) and how is it configured?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#39-what-is-kubernetes-serviceaccount-and-how-is-it-used-for-api-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      39. What is Kubernetes ServiceAccount and how is it used for API access?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-how-does-kubernetes-handle-high-availability-ha-for-control-plane-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      42. How does Kubernetes handle high availability (HA) for control plane components?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-what-is-the-purpose-of-kubelet-in-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      44. What is the purpose of kubelet in Kubernetes?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#49-what-are-kubernetes-endpoints-and-how-are-they-related-to-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      49. What are Kubernetes Endpoints and how are they related to Services?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#50-what-is-the-purpose-of-kubectl-drain-and-kubectl-cordon" class="md-nav__link">
+    <span class="md-ellipsis">
+      50. What is the purpose of kubectl drain and kubectl cordon?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3kubernetes_sre2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Kubernetes SRE part2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Git Scenario-Based Questions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            SRE
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/0interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 SRE 面试2025
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/1linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 SRE Linux All2025
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/2ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Ansible 从入门到放弃
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15Apple_SRE_prp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025 Apple SRE PRP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/3git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 GIT CE TEST
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE_Linux
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            SRE_Linux
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/2Linux_test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Linux Fundamentals
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/1k8s_dev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Using Kubernetes as a Developer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/3code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Script Learning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre/4sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 SRE Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/5agile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Agile Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sreln/6cloud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Cloud Native Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    英语学习
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16">
+            <span class="md-nav__icon md-icon"></span>
+            英语学习
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Eng/1work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 职场英语
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-is-the-difference-between-a-deployment-and-a-statefulset-in-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What is the difference between a Deployment and a StatefulSet in Kubernetes?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-explain-how-kubernetes-handles-rolling-updates-and-rollbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Explain how Kubernetes handles rolling updates and rollbacks.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-what-are-kubernetes-daemonsets-and-give-a-real-world-use-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. What are Kubernetes DaemonSets and give a real-world use case?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-what-are-the-differences-between-configmap-and-secret-in-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. What are the differences between ConfigMap and Secret in Kubernetes?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-what-is-the-role-of-etcd-in-a-kubernetes-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. What is the role of etcd in a Kubernetes cluster?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-how-does-kubernetes-networking-work-explain-the-pod-to-pod-communication" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. How does Kubernetes networking work? Explain the Pod-to-Pod communication.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-what-are-kubernetes-network-policies-and-how-do-they-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. What are Kubernetes Network Policies and how do they work?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-explain-the-kubernetes-control-plane-components-and-their-responsibilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Explain the Kubernetes control plane components and their responsibilities
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-what-is-the-role-of-kubernetes-ingress-and-how-does-it-differ-from-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. What is the role of Kubernetes Ingress and how does it differ from a Service?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-how-do-you-perform-debugging-in-kubernetes-when-a-pod-is-not-starting" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. How do you perform debugging in Kubernetes when a pod is not starting?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-what-is-a-kubernetes-job-and-how-does-it-differ-from-a-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. What is a Kubernetes Job and how does it differ from a Deployment?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-what-are-init-containers-in-kubernetes-and-why-are-they-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. What are Init Containers in Kubernetes and why are they used?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-what-are-taints-and-tolerations-in-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. What are taints and tolerations in Kubernetes?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-what-are-sidecar-containers-and-how-are-they-used-in-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. What are sidecar containers and how are they used in Kubernetes?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-what-are-kubernetes-volumes-and-how-do-they-differ-from-docker-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      16. What are Kubernetes Volumes and how do they differ from Docker volumes?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-explain-kubernetes-persistentvolumes-pv-and-persistentvolumeclaims-pvc" class="md-nav__link">
+    <span class="md-ellipsis">
+      17. Explain Kubernetes PersistentVolumes (PV) and PersistentVolumeClaims (PVC).
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-what-is-a-kubernetes-serviceaccount-and-when-do-you-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      18. What is a Kubernetes ServiceAccount and when do you use it?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-what-is-a-kubernetes-horizontal-pod-autoscaler-hpa-and-how-does-it-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      20. What is a Kubernetes Horizontal Pod Autoscaler (HPA) and how does it work?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-what-are-kubernetes-admission-controllers" class="md-nav__link">
+    <span class="md-ellipsis">
+      24. What are Kubernetes Admission Controllers?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30-what-is-kubernetes-pod-disruption-budget-pdb" class="md-nav__link">
+    <span class="md-ellipsis">
+      30. What is Kubernetes Pod Disruption Budget (PDB)?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33-what-is-a-kubernetes-replicaset-and-how-does-it-differ-from-a-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      33. What is a Kubernetes ReplicaSet and how does it differ from a Deployment?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="33. What is a Kubernetes ReplicaSet and how does it differ from a Deployment?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#34-how-does-kubernetes-handle-pod-scheduling" class="md-nav__link">
+    <span class="md-ellipsis">
+      34. How does Kubernetes handle pod scheduling?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-what-is-the-kubernetes-api-server-and-its-role" class="md-nav__link">
+    <span class="md-ellipsis">
+      35. What is the Kubernetes API Server and its role?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-what-is-kubernetes-ingress-and-how-does-it-differ-from-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      36. What is Kubernetes Ingress and how does it differ from a Service?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-how-does-kubernetes-handle-cluster-upgrades" class="md-nav__link">
+    <span class="md-ellipsis">
+      37. How does Kubernetes handle cluster upgrades?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38-what-is-kubernetes-horizontal-pod-autoscaler-hpa-and-how-is-it-configured" class="md-nav__link">
+    <span class="md-ellipsis">
+      38. What is Kubernetes Horizontal Pod Autoscaler (HPA) and how is it configured?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#39-what-is-kubernetes-serviceaccount-and-how-is-it-used-for-api-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      39. What is Kubernetes ServiceAccount and how is it used for API access?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-how-does-kubernetes-handle-high-availability-ha-for-control-plane-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      42. How does Kubernetes handle high availability (HA) for control plane components?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-what-is-the-purpose-of-kubelet-in-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      44. What is the purpose of kubelet in Kubernetes?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#49-what-are-kubernetes-endpoints-and-how-are-they-related-to-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      49. What are Kubernetes Endpoints and how are they related to Services?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#50-what-is-the-purpose-of-kubectl-drain-and-kubectl-cordon" class="md-nav__link">
+    <span class="md-ellipsis">
+      50. What is the purpose of kubectl drain and kubectl cordon?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+  <h1>5 Kubernetes SRE part1</h1>
+
+<h4 id="1-what-is-the-difference-between-a-deployment-and-a-statefulset-in-kubernetes">1. What is the difference between a Deployment and a StatefulSet in Kubernetes?</h4>
+<p>A Deployment is used for stateless applications where the state of the application does not need to be preserved. </p>
+<p>It manages replica sets and ensures that the desired number of pod replicas are running.</p>
+<p>A StatefulSet, on the other hand, is used for stateful applications where each pod needs to be uniquely identified and must retain its state even after rescheduling.</p>
+<p><strong>It assigns a stable identity (DNS name and persistent volume) to each pod</strong></p>
+<p><strong>Key differences:</strong></p>
+<ul>
+<li><strong>Pod Identity</strong>: StatefulSet pods have stable hostnames (e.g., web-0, web-1) while Deployment pods do not</li>
+<li><strong>Storage</strong>: <em>StatefulSets are typically used with persistent volume claims (PVCs) that are retained even when pods are deleted.</em></li>
+<li><strong>Scaling behavior</strong>: StatefulSets create/delete pods in order, while Deployments do it in parallel.</li>
+</ul>
+<p><strong>Example Use Case:</strong></p>
+<ul>
+<li>Deployment: Web servers, microservices.</li>
+<li>StatefulSet: Databases like MySQL, MongoDB, Kafka</li>
+</ul>
+<p><strong>Deployment</strong></p>
+<ul>
+<li>Pods are anonymous</li>
+<li>Pods don't have stable storage</li>
+<li>Easy scaling (add/remove pods)</li>
+<li>Stateless applications</li>
+</ul>
+<p><strong>StatefulSet</strong></p>
+<ul>
+<li>Each pod has a unique identity (pod-0, pod-1)</li>
+<li>Each pod has its own persistent volume</li>
+<li>Scaling pods is more controlled with stable identities</li>
+<li>Stateful applications (e.g., databases)</li>
+</ul>
+<h4 id="2-explain-how-kubernetes-handles-rolling-updates-and-rollbacks">2. Explain how Kubernetes handles rolling updates and rollbacks.</h4>
+<p>Kubernetes supports <strong>rolling updates using the Deployment controller</strong>. </p>
+<p>It updates pods in a controlled fashion to minimize downtime. </p>
+<p>The process gradually replaces old pods with new ones, ensuring that some pods are always running</p>
+<p>RollingUpdate Strategy: Default update strategy in Deployments.</p>
+<ul>
+<li><strong>maxUnavailable</strong>: How many pods can be unavailable during the update.</li>
+<li><strong>maxSurge</strong>: How many extra pods can be created during the update.</li>
+</ul>
+<p><strong>Rollback</strong>:</p>
+<p>If a rollout fails or a bug is introduced, Kubernetes allows you to rollback to the previous version</p>
+<pre><code>kubectl rollout undo deployment &lt;deployment-name&gt;
+
+kubectl rollout status deployment my-deployment
+
+kubectl rollout history deployment my-deployment
+
+kubectl rollout undo deployment my-deployment
+</code></pre>
+<p>Benefits:</p>
+<ul>
+<li>Zero-downtime deployment.</li>
+<li>Version tracking of rollouts.</li>
+<li>Fast recovery from bad deployments.</li>
+</ul>
+<h4 id="3-what-are-kubernetes-daemonsets-and-give-a-real-world-use-case">3. What are Kubernetes DaemonSets and give a real-world use case?</h4>
+<p>A DaemonSet ensures that a copy of a pod runs on every node (or a subset of nodes) in the cluster</p>
+<p>Use Cases:</p>
+<ul>
+<li><strong>Running a node-level monitoring agent</strong> (e.g., Prometheus Node Exporter).</li>
+<li><strong>Running a log collector</strong> (e.g., Fluentd, Filebeat).</li>
+<li><strong>Running a storage driver or system daemon</strong>.</li>
+</ul>
+<p>When a new node is added to the cluster, the DaemonSet controller automatically schedules the pod on the new node.</p>
+<h4 id="4-what-are-the-differences-between-configmap-and-secret-in-kubernetes">4. What are the differences between ConfigMap and Secret in Kubernetes?</h4>
+<p>Both ConfigMap and Secret are used to inject configuration into pods, but they serve different purposes</p>
+<p><strong>ConfigMap</strong></p>
+<ul>
+<li>Store non-sensitive config data</li>
+<li>Plain text</li>
+<li>Not encrypted</li>
+<li>Yes</li>
+</ul>
+<p><strong>Secret</strong></p>
+<ul>
+<li>Store sensitive data (passwords, tokens)</li>
+<li>Base64 encoded</li>
+<li>Can be encrypted at rest (KMS)</li>
+<li>Yes</li>
+</ul>
+<h4 id="5-what-is-the-role-of-etcd-in-a-kubernetes-cluster">5. What is the role of etcd in a Kubernetes cluster?</h4>
+<p>etcd is a distributed key-value store used by Kubernetes to store all cluster data. </p>
+<p><strong>It acts as the source of truth for the Kubernetes control plane.</strong></p>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li><strong>Stores configuration data, cluster state, secrets, and service discovery info</strong>.</li>
+<li>Supports consistent reads and writes across the cluster.</li>
+</ul>
+<p>Key Features:</p>
+<ul>
+<li><strong>Highly available and distributed</strong>.</li>
+<li><strong>Uses Raft consensus algorithm for leader election and consistency</strong>.</li>
+<li>Requires backup and disaster recovery strategy.</li>
+</ul>
+<p>Security Considerations:</p>
+<ul>
+<li>TLS encryption.</li>
+<li>Authentication and access control.</li>
+</ul>
+<pre><code>To view keys in etcd (if directly accessing):
+
+ETCDCTL_API=3 etcdctl get &quot;&quot; --prefix --keys-only
+</code></pre>
+<h4 id="6-how-does-kubernetes-networking-work-explain-the-pod-to-pod-communication">6. How does Kubernetes networking work? Explain the Pod-to-Pod communication.</h4>
+<p><strong>Kubernetes networking is based on a flat network model</strong>, where all pods can communicate with each other without NAT (Network Address Translation), regardless of the node they’re on.</p>
+<p><strong>Core Networking Rules:</strong></p>
+<ol>
+<li>Every pod gets its own IP address.</li>
+<li>All pods can reach each other directly via IP.</li>
+<li>Containers within a pod share the same network namespace (localhost).</li>
+<li><strong>Communication between pods across nodes is handled by CNI plugins (e.g., Calico,Flannel, Cilium).</strong></li>
+</ol>
+<p><strong>Pod-to-Pod Communication Steps:</strong></p>
+<ul>
+<li>Pod A wants to reach Pod B using Pod B’s IP.</li>
+<li>If both pods are on the same node: traffic stays local.</li>
+<li>If on different nodes: the packet is routed via virtual network interfaces provided by the CNI plugin.</li>
+</ul>
+<pre><code>kubectl exec -it pod-a -- curl &lt;pod-b-ip&gt;:&lt;port&gt;
+</code></pre>
+<h4 id="7-what-are-kubernetes-network-policies-and-how-do-they-work">7. What are Kubernetes Network Policies and how do they work?</h4>
+<p><strong>A NetworkPolicy in Kubernetes is a resource used to control traffic flow at the IP address or port level between pods</strong></p>
+<p>Default Behavior:</p>
+<p><strong>By default, all pods can communicate with all other pods. NetworkPolicies restrict this.</strong></p>
+<p>Features:</p>
+<ul>
+<li>*Allow/deny ingress (incoming) or egress (outgoing) traffic.</li>
+<li>Based on labels, namespaces, and IP blocks.</li>
+<li><strong>Require a CNI plugin that supports NetworkPolicy (e.g., Calico, Cilium)</strong></li>
+</ul>
+<p><strong>Example: Allow ingress traffic to pods with label app=db only from app=web:</strong></p>
+<pre><code>apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+ name: allow-web-to-db
+spec:
+  podSelector:
+    matchLabels:
+      app: db
+ingress:
+- from:
+  - podSelector:
+     matchLabels:
+       app: web
+</code></pre>
+<p>Note: NetworkPolicies are additive — start from "deny all" and explicitly allow traffic.</p>
+<p>Network Policies control the communication between pods and services in a Kubernetes cluster, <strong>based on IP addresses or labels. These policies are used to enforce security rules, isolating applications and reducing the attack surface</strong></p>
+<p>Key Features:</p>
+<ul>
+<li><strong>Can restrict incoming and outgoing traffic to/from pods</strong>.</li>
+<li>Works by defining ingress (incoming) and egress (outgoing) rules.</li>
+<li>Can target specific pod selectors or namespaces.</li>
+</ul>
+<pre><code>apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+    name: allow-frontend
+spec:
+    podSelector:
+        matchLabels:
+            app: frontend
+ingress:
+- from:
+    - podSelector:
+        matchLabels:
+            app: backend
+ports:
+- protocol: TCP
+    port: 80
+</code></pre>
+<h4 id="8-explain-the-kubernetes-control-plane-components-and-their-responsibilities">8. Explain the Kubernetes control plane components and their responsibilities</h4>
+<p>The Kubernetes control plane is the brain of the cluster and consists of several components:</p>
+<ol>
+<li>kube-apiserver: Entry point for all REST API requests. Validates and processes requests.</li>
+<li>etcd: Stores all cluster state and configuration data.</li>
+<li>kube-scheduler: Assigns pods to nodes based on resource availability and constraints.</li>
+<li>kube-controller-manager: Runs all controllers (e.g., Node, Deployment, ReplicaSet controllers) to ensure the desired state.</li>
+<li>cloud-controller-manager: Manages cloud provider-specific control loops (like load balancers, volumes)</li>
+</ol>
+<p>Workflow Example:</p>
+<ul>
+<li>You apply a deployment YAML.</li>
+<li>kube-apiserver receives it.</li>
+<li>etcd stores the desired state.</li>
+<li>kube-controller-manager ensures replicas match.</li>
+<li>kube-scheduler assigns pods to nodes.</li>
+</ul>
+<p>This architecture allows scalability, self-healing, and declarative infrastructure.</p>
+<h4 id="9-what-is-the-role-of-kubernetes-ingress-and-how-does-it-differ-from-a-service">9. What is the role of Kubernetes Ingress and how does it differ from a Service?</h4>
+<p>An Ingress is a Kubernetes resource that manages external access to services, typically HTTP/HTTPS traffic. </p>
+<p><strong>It acts as a Layer 7 (application layer) reverse proxy.</strong></p>
+<p><strong>Service</strong></p>
+<p>L4 (TCP/UDP) / Expose internal or external service / Yes / TLS Support Manually via Service/LoadBalance</p>
+<p><strong>Ingress</strong></p>
+<p>L7 (HTTP/HTTPS) / Expose multiple services under a single IP / No (path/host-based rules) / Built-in SSL termination</p>
+<pre><code>apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-ingress
+spec:
+ rules:
+ - host: example.com
+ http:
+  paths:
+  - path: /app1
+    pathType: Prefix
+    backend:
+      service:
+        name: app1-service
+        port:
+          number: 80
+</code></pre>
+<p><strong>Ingress Controllers</strong>(e.g., NGINX, Traefik) are required to implement ingress rules.</p>
+<h4 id="10-how-do-you-perform-debugging-in-kubernetes-when-a-pod-is-not-starting">10. How do you perform debugging in Kubernetes when a pod is not starting?</h4>
+<p><strong>1. Describe the pod:</strong></p>
+<pre><code>kubectl describe pod &lt;pod-name&gt;
+</code></pre>
+<p>Check events at the bottom — look for image pull errors, scheduling issues, resource limits.</p>
+<p><strong>2. Check logs:</strong></p>
+<pre><code>kubectl logs &lt;pod-name&gt;
+
+If multiple containers:
+kubectl logs &lt;pod-name&gt; -c &lt;container-name&gt;
+</code></pre>
+<p><strong>3. Check status</strong></p>
+<pre><code>kubectl get pods
+</code></pre>
+<p>Look for status like CrashLoopBackOff, ImagePullBackOff, Pending.</p>
+<p><strong>4. Exec into container (if running):</strong></p>
+<pre><code>kubectl exec -it &lt;pod-name&gt; -- /bin/sh
+</code></pre>
+<p><strong>5. Use ephemeral debug containers:</strong></p>
+<pre><code>kubectl debug -it &lt;pod-name&gt; --image=busybox
+</code></pre>
+<p><strong>6.Check node status:</strong></p>
+<pre><code>kubectl get nodes
+kubectl describe node &lt;node-name&gt;
+</code></pre>
+<p><strong>Common Issues:</strong></p>
+<ul>
+<li>Missing ConfigMap/Secret</li>
+<li>Insufficient resources</li>
+<li>Incorrect image or tag</li>
+<li>Network policy restrictions</li>
+<li>Node taints or affinity rules</li>
+</ul>
+<h4 id="11-what-is-a-kubernetes-job-and-how-does-it-differ-from-a-deployment">11. What is a Kubernetes Job and how does it differ from a Deployment?</h4>
+<p>A Job in Kubernetes is used to run one-time or batch tasks that terminate once completed successfully. It ensures that a pod runs to completion (success or failure) and can be retried if it fails.</p>
+<p>A Deployment, by contrast, is used for long-running, stateless applications that must be kept running continuously.</p>
+<p><strong>Use Cases for Job:</strong></p>
+<ul>
+<li>Database migrations</li>
+<li>Sending notification emails</li>
+<li>Data backups</li>
+</ul>
+<p><strong>Types of Jobs:</strong></p>
+<ul>
+<li><strong>One-off Job</strong>: Runs a pod to completion once.</li>
+<li><strong>Parallel Job</strong>: Runs multiple pods in parallel.</li>
+<li><strong>Completions &amp; Parallelism</strong>: Controls number of successful completions and concurrent pods.</li>
+</ul>
+<h4 id="12-what-are-init-containers-in-kubernetes-and-why-are-they-used">12. What are Init Containers in Kubernetes and why are they used?</h4>
+<p>Init Containers are specialized containers that run <strong>before the main application container in a pod</strong>. They are used to perform setup tasks such as:</p>
+<ul>
+<li>Waiting for a service to become available</li>
+<li>Cloning a git repository</li>
+<li>Setting environment preconditions</li>
+</ul>
+<p>Features:</p>
+<ul>
+<li>Run <strong>sequentially</strong> before app containers.</li>
+<li>Must complete <strong>successfully</strong> before main containers start.</li>
+<li>Support different images and tools than main containers</li>
+</ul>
+<pre><code>initContainers:
+- name: wait-for-db
+  image: busybox
+  command: ['sh', '-c', 'until nslookup mydb; do echo waiting; sleep 2; done']
+</code></pre>
+<p>Benefits:</p>
+<ul>
+<li>Separation of concerns.</li>
+<li>Improved modularity and debugging.</li>
+<li>Retry logic before main workload runs.</li>
+</ul>
+<h4 id="13-what-are-taints-and-tolerations-in-kubernetes">13. What are taints and tolerations in Kubernetes?</h4>
+<p>Taints are applied to nodes to prevent pods from being scheduled on them unless the pod has a matching toleration</p>
+<pre><code>kubectl taint nodes &lt;node-name&gt; key=value:NoSchedule
+</code></pre>
+<p>Taint Effects:</p>
+<ul>
+<li><strong>NoSchedule</strong>: Pod will not be scheduled unless it tolerates the taint.</li>
+<li><strong>PreferNoSchedule</strong>: Avoid scheduling if possible.</li>
+<li><strong>NoExecute</strong>: Pod is evicted if already running.</li>
+</ul>
+<p>Use Cases:</p>
+<ul>
+<li><strong>Reserve nodes for specific workloads (e.g., GPU jobs).</strong></li>
+<li><strong>Ensure critical workloads get priority on dedicated nodes.</strong></li>
+</ul>
+<h4 id="15-what-are-sidecar-containers-and-how-are-they-used-in-kubernetes">15. What are sidecar containers and how are they used in Kubernetes?</h4>
+<p><strong>A sidecar container is a helper container that runs in the same pod as the main application and provides supporting functionality.</strong></p>
+<p>Common Use Cases:</p>
+<ul>
+<li>Logging agents (e.g., Filebeat)</li>
+<li>Proxies (e.g., Envoy in Istio)</li>
+<li>Data synchronization tools</li>
+<li>Service mesh communication</li>
+</ul>
+<pre><code>containers:
+- name: app
+  image: myapp
+- name: sidecar
+  image: busybox
+command: [&quot;tail&quot;, &quot;-f&quot;, &quot;/dev/null&quot;]
+</code></pre>
+<ul>
+<li>• Shares the same network namespace and volumes.</li>
+<li>• Can start and stop independently of the main container.</li>
+<li>• Promotes modularity and separation of concerns.</li>
+</ul>
+<h4 id="16-what-are-kubernetes-volumes-and-how-do-they-differ-from-docker-volumes">16. What are Kubernetes Volumes and how do they differ from Docker volumes?</h4>
+<p>In Kubernetes, a Volume is a directory accessible to containers in a pod that is preserved across container restarts.</p>
+<p>Differences from Docker Volumes:</p>
+<ul>
+<li><strong>Kubernetes volumes are tied to the pod's lifecycle, not the container.</strong></li>
+<li>Kubernetes supports different volume types (e.g., hostPath, emptyDir, configMap, persistentVolumeClaim).</li>
+</ul>
+<p>Common Volume Types:</p>
+<ul>
+<li>emptyDir: Temporary storage shared between containers.</li>
+<li>hostPath: Maps a file/directory from the host node.</li>
+<li>persistentVolumeClaim: For persistent storage (e.g., AWS EBS, NFS).</li>
+</ul>
+<pre><code>volumes:
+- name: data
+  emptyDir: {}
+</code></pre>
+<ul>
+<li>Share data between containers.</li>
+<li>Preserve logs or cache.</li>
+<li>Mount external storage (persistent).</li>
+</ul>
+<h4 id="17-explain-kubernetes-persistentvolumes-pv-and-persistentvolumeclaims-pvc">17. Explain Kubernetes PersistentVolumes (PV) and PersistentVolumeClaims (PVC).</h4>
+<ol>
+<li>Admin creates a PV or defines a StorageClass.</li>
+<li>User creates a PVC.</li>
+<li>Kubernetes binds a matching PV to the PVC.</li>
+<li>Pod mounts the PVC.</li>
+</ol>
+<p>Access Modes:</p>
+<ul>
+<li>• ReadWriteOnce — one node read/write.</li>
+<li>• ReadOnlyMany — multiple nodes read-only.</li>
+<li>• ReadWriteMany — multiple nodes read/write.</li>
+</ul>
+<h4 id="18-what-is-a-kubernetes-serviceaccount-and-when-do-you-use-it">18. What is a Kubernetes ServiceAccount and when do you use it?</h4>
+<p>A ServiceAccount provides an identity for pods to access the Kubernetes API or external</p>
+<p>Default Behavior:</p>
+<ul>
+<li>• Every pod is associated with a default service account in its namespace.</li>
+<li>• Tokens are automatically mounted into pods via /var/run/secrets/....</li>
+</ul>
+<p>Use Cases:</p>
+<ul>
+<li>• Granting fine-grained API permissions via RBAC.</li>
+<li>• Interacting with cloud provider APIs (e.g., via Workload Identity).</li>
+</ul>
+<pre><code>apiVersion: v1
+kind: ServiceAccount
+metadata:
+name: read-only
+
+
+Mounting in Pod:
+
+spec:
+serviceAccountName: read-only
+
+
+RBAC Binding Example:
+
+kind: RoleBinding
+roleRef:
+ kind: Role
+ name: pod-reader
+ apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: ServiceAccount
+  name: read-only
+</code></pre>
+<h4 id="20-what-is-a-kubernetes-horizontal-pod-autoscaler-hpa-and-how-does-it-work">20. What is a Kubernetes Horizontal Pod Autoscaler (HPA) and how does it work?</h4>
+<p>The Horizontal Pod Autoscaler (HPA) automatically scales the number of pods in a deployment, replication controller, or statefulset based on CPU/memory usage or custom metrics.</p>
+<p>How it Works:</p>
+<ul>
+<li>• Monitors pod metrics via the Metrics Server.</li>
+<li>• If usage exceeds target thresholds, it increases replicas.</li>
+<li>• If usage drops, it scales down.</li>
+</ul>
+<pre><code>kubectl autoscale deployment myapp --cpu-percent=50 --min=2 --max=10
+</code></pre>
+<pre><code>apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+spec:
+ minReplicas: 2
+ maxReplicas: 10
+ metrics:
+ - type: Resource
+   resource:
+    name: cpu
+    target:
+     type: Utilization
+     averageUtilization: 50
+</code></pre>
+<p>Dependencies:</p>
+<ul>
+<li>• Metrics Server must be installed.</li>
+<li>• Works with custom metrics (Prometheus Adapter) in v2.</li>
+</ul>
+<h4 id="24-what-are-kubernetes-admission-controllers">24. What are Kubernetes Admission Controllers?</h4>
+<p>Admission Controllers are plugins that intercept requests to the Kubernetes API after authentication and authorization but before persistence.</p>
+<p>Two Types:</p>
+<ul>
+<li>• Validating Admission Controllers: Validate the request (e.g., resource quota).</li>
+<li>• Mutating Admission Controllers: Modify the request (e.g., inject sidecar).</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li>• NamespaceLifecycle: Prevents deletion of system namespaces.</li>
+<li>
+<p>• LimitRanger: Enforces resource limits.</p>
+</li>
+<li>
+<p>• MutatingAdmissionWebhook: Used by Istio, Linkerd to inject proxies.</p>
+</li>
+<li>• ValidatingAdmissionWebhook: Used for custom validations.</li>
+</ul>
+<p>Use Case:</p>
+<p><strong>Injecting a monitoring agent in all pods using a Mutating Admission Webhook.</strong></p>
+<h4 id="30-what-is-kubernetes-pod-disruption-budget-pdb">30. What is Kubernetes Pod Disruption Budget (PDB)?</h4>
+<p>A <strong>PodDisruptionBudget</strong> ensures that a minimum number or percentage of pods in a deployment/statefulset remain available <strong>during voluntary</strong> disruptions, such as:</p>
+<ul>
+<li>Node drain</li>
+<li>Rolling updates</li>
+<li>Maintenance tasks</li>
+</ul>
+<p>PDB Example:</p>
+<pre><code>apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: myapp-pdb
+spec:
+minAvailable: 2
+selector:
+ matchLabels:
+ app: myapp
+</code></pre>
+<p><strong>Key Parameters:</strong></p>
+<ul>
+<li>minAvailable: Minimum pods that must be running.</li>
+<li>maxUnavailable: Maximum pods that can be down.</li>
+</ul>
+<p><strong>PDB does not apply to involuntary disruptions (e.g., hardware failure).</strong></p>
+<h3 id="33-what-is-a-kubernetes-replicaset-and-how-does-it-differ-from-a-deployment">33. What is a Kubernetes ReplicaSet and how does it differ from a Deployment?</h3>
+<p>A ReplicaSet ensures that a specified number of pod replicas are running at all times. It is primarily used to maintain pod availability and redundancy.</p>
+<p>Differences with Deployment:</p>
+<ul>
+<li><strong>A Deployment is a higher-level controller that manages ReplicaSets and provides rolling updates, rollbacks, and more.</strong></li>
+<li>A ReplicaSet is responsible for maintaining the desired pod count but does not manage deployments, upgrades, or rollbacks.</li>
+</ul>
+<h4 id="34-how-does-kubernetes-handle-pod-scheduling">34. How does Kubernetes handle pod scheduling?</h4>
+<p>Kubernetes uses the <strong>Scheduler</strong> to assign pods to nodes in the cluster based on resource availability, constraints, and other scheduling policies</p>
+<p>Scheduling Steps:</p>
+<ol>
+<li><strong>Predicate Phase</strong>: Filters nodes that don't meet pod requirements (e.g., resource requests, taints).</li>
+<li><strong>Priority Phase</strong>: Prioritizes nodes based on constraints like affinity and anti-affinity rules, resource usage, etc</li>
+<li><strong>Binding Phase</strong>: Assigns the pod to the selected node.</li>
+</ol>
+<p>Types of Scheduling Constraints:</p>
+<ul>
+<li>• <strong>Node Affinity</strong>: Scheduling based on node labels.</li>
+<li>• <strong>Taints and Tolerations</strong>: Restricting pod scheduling on specific nodes.</li>
+<li>• <strong>Pod Affinity/Anti-Affinity</strong>: Scheduling based on other pods in the cluster.</li>
+</ul>
+<pre><code>affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+     nodeSelectorTerms:
+     - matchExpressions:
+      - key: &quot;kubernetes.io/hostname&quot;
+        operator: In
+        values:
+        - node1
+</code></pre>
+<h4 id="35-what-is-the-kubernetes-api-server-and-its-role">35. What is the Kubernetes API Server and its role?</h4>
+<p>The <strong>Kubernetes API Server</strong> is the central control plane component that exposes the </p>
+<p>Kubernetes API and handles all requests to the cluster.</p>
+<p>Role:</p>
+<ul>
+<li>• Receives and validates API requests.</li>
+<li>• <strong>Acts as the interface between clients (kubectl, controllers, etc.) and the cluster.</strong></li>
+<li>• Stores resource state in etcd.</li>
+<li>• <strong>Communicates with other components (e.g., Scheduler, Controller Manager)</strong>.</li>
+</ul>
+<h4 id="36-what-is-kubernetes-ingress-and-how-does-it-differ-from-a-service">36. What is Kubernetes Ingress and how does it differ from a Service?</h4>
+<p><strong>Ingress is a set of rules that allow inbound connections to reach the services in a Kubernetes cluster, often managing HTTP/HTTPS traffic.</strong></p>
+<p>Differences from Service:</p>
+<p><strong>Service</strong> provides a stable endpoint for accessing a set of pods, generally used for internal communication.</p>
+<p><strong>Ingress</strong> manages external access, typically for HTTP/S traffic, by defining routing rules based on URL paths, hostnames, etc.</p>
+<pre><code>apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+spec:
+  rules:
+  - host: www.example.com
+    http:
+     paths:
+     - path: /foo
+       pathType: Prefix
+       backend:
+        service:
+          name: foo-service
+        port:
+         number: 80
+</code></pre>
+<p>Benefits:</p>
+<ul>
+<li>URL path-based routing.</li>
+<li>SSL termination.</li>
+<li>Load balancing and reverse proxy features.</li>
+</ul>
+<h4 id="37-how-does-kubernetes-handle-cluster-upgrades">37. How does Kubernetes handle cluster upgrades?</h4>
+<p>Kubernetes handles cluster upgrades in a rolling fashion to minimize downtime. The upgrade process includes:</p>
+<p><strong>1. Control Plane Upgrades:</strong></p>
+<p>Upgrade kube-apiserver, kube-controller-manager, kube-scheduler first. Ensure backward compatibility with existing nodes.</p>
+<p><strong>3. Node Upgrades:</strong></p>
+<ul>
+<li>Upgrade nodes one at a time to avoid disrupting the entire cluster.</li>
+<li>Use kubectl drain to evict pods and kubectl uncordon to bring nodes back online.</li>
+</ul>
+<p>Best Practices:</p>
+<ul>
+<li>Test the upgrade in a non-production environment.</li>
+<li>Upgrade kubelet and kubectl to the matching version after upgrading the control plane.</li>
+</ul>
+<h4 id="38-what-is-kubernetes-horizontal-pod-autoscaler-hpa-and-how-is-it-configured">38. What is Kubernetes Horizontal Pod Autoscaler (HPA) and how is it configured?</h4>
+<p>The Horizontal Pod Autoscaler (HPA) automatically adjusts the number of replicas of a pod based on observed metrics (e.g., CPU, memory, custom metrics).</p>
+<p><strong>How it works:</strong></p>
+<p>HPA monitors the metrics (usually from the Metrics Server) and adjusts pod replicas to meet the target utilization.</p>
+<p><strong>Configuration Example:</strong></p>
+<pre><code>kubectl autoscale deployment myapp --cpu-percent=50 --min=1 --max=10
+</code></pre>
+<p><strong>Custom Metrics:</strong></p>
+<p>To scale based on custom metrics, you need to use an adapter like the Prometheus Adapter.</p>
+<pre><code>apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+    name: myapp-hpa
+spec:
+    minReplicas: 2
+    maxReplicas: 10
+metrics:
+ - type: Resource
+   resource:
+    name: cpu
+    target:
+        type: Utilization
+        averageUtilization: 50
+</code></pre>
+<h4 id="39-what-is-kubernetes-serviceaccount-and-how-is-it-used-for-api-access">39. What is Kubernetes ServiceAccount and how is it used for API access?</h4>
+<p>A ServiceAccount provides an identity for pods to interact with the Kubernetes API.</p>
+<p>Key Features:</p>
+<ul>
+<li>Service accounts are used for <strong>API authentication.</strong></li>
+<li>They allow fine-grained RBAC policies to <strong>control access</strong>.</li>
+<li>A default service account is automatically created in each namespace.</li>
+</ul>
+<h4 id="42-how-does-kubernetes-handle-high-availability-ha-for-control-plane-components">42. How does Kubernetes handle high availability (HA) for control plane components?</h4>
+<p>To achieve high availability for the Kubernetes control plane:</p>
+<ol>
+<li>Multiple API Servers: Deploy multiple kube-apiserver instances behind a load balancer.</li>
+<li>Etcd Cluster: Set up a distributed etcd cluster with an odd number of nodes (3, 5, etc.) to ensure quorum.</li>
+<li>Control Plane Pods: Deploy multiple replicas of components like kube-scheduler and kube-controller-manager.</li>
+</ol>
+<h4 id="44-what-is-the-purpose-of-kubelet-in-kubernetes">44. What is the purpose of kubelet in Kubernetes?</h4>
+<p>The kubelet is an agent that runs on each node in the cluster and ensures the containers in the pods are running as expected.</p>
+<p>Responsibilities:</p>
+<ul>
+<li>• Watches the API server for pod specifications and ensures the desired state is met on the node.</li>
+<li>• Monitors containers and restarts them if necessary (e.g., if they crash).</li>
+<li>• Reports node health to the API server.</li>
+</ul>
+<h4 id="49-what-are-kubernetes-endpoints-and-how-are-they-related-to-services">49. What are Kubernetes Endpoints and how are they related to Services?</h4>
+<p>Endpoints are objects that represent the IP addresses of the pods that back a Kubernetes Service.</p>
+<p>When a Service is created, Kubernetes automatically creates Endpoints objects that match the pods selected by the Service's label selector.</p>
+<p>How They Work:</p>
+<ul>
+<li>• <strong>The Service proxy forwards requests to the endpoints associated with the service.</strong></li>
+<li>• When a pod is added or removed, the list of endpoints is updated.</li>
+</ul>
+<h4 id="50-what-is-the-purpose-of-kubectl-drain-and-kubectl-cordon">50. What is the purpose of kubectl drain and kubectl cordon?</h4>
+<p>These commands are used for node maintenance.</p>
+<ul>
+<li><strong>kubectl cordon</strong>: Marks a node as unschedulable, preventing new pods from being scheduled on it.</li>
+<li><strong>kubectl drain:</strong> Evicts all pods from the node, marking the node as unschedulable and preparing it for maintenance.</li>
+</ul>
+<pre><code>kubectl cordon node1
+kubectl drain node1 --ignore-daemonsets
+</code></pre>
+<ul>
+<li>Draining a node before maintenance (e.g., upgrading hardware or OS).</li>
+<li>Temporarily isolating a node from the cluster.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2021-9999 Jacob Xi
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      
+    
+  </body>
+</html>

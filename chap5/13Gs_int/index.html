@@ -1,0 +1,6893 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Jacob's 系统性能&Linux调优技术与实战教程">
+      
+      
+        <meta name="author" content="Jacob Xi">
+      
+      
+        <link rel="canonical" href="https://chao-xi.github.io/jxperfbook/chap5/13Gs_int/">
+      
+      
+        <link rel="prev" href="../12JumpGame/">
+      
+      
+        <link rel="next" href="../../chap6/1Linux_perf/">
+      
+      
+      <link rel="icon" href="../../images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>13、GS interview preparation - Jacob Performance&Linux Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="light-green" data-md-color-accent="light-green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#gs-interview-preparation" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="Jacob Performance&amp;Linux Book" class="md-header__button md-logo" aria-label="Jacob Performance&Linux Book" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Jacob Performance&Linux Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              13、GS interview preparation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Chao-Xi/jxperfbook.git" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jxperfbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Jacob Performance&amp;Linux Book" class="md-nav__button md-logo" aria-label="Jacob Performance&Linux Book" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    Jacob Performance&Linux Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Chao-Xi/jxperfbook.git" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jxperfbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Welcome
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    系统基础设施优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            系统基础设施优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/1CPU_Cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 代码让CPU执行得更快 — CPU缓存
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/2Mem_Pool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 内存池提升内存分配的效率
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/3Hash_index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 哈希表利用索引管理亿级对象
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/4PageCache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 磁盘高效地传输文件零拷贝：PageCache
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/5Coroutine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 协程快速地实现高并发服务：Coroutine
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap1/6Locks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 据业务场景选择合适的锁
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    系统层网络优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            系统层网络优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/1broadcast_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 一对多通讯如何实现
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/2C10M/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 C10M是如何实现事件驱动
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/3tcp3shakehand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 提升TCP三次握手的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/4tcpshutdown/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 提升TCP四次挥手的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/5tcpchachepool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 TCP缓冲区兼顾并发数量与传输速度
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap2/6tcpcongestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 调整TCP拥塞控制的性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    分布式系统优化
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            分布式系统优化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/1Mon_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 通过监控找到性能瓶颈
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/2perf_cap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 舍弃一致性去换取性能的CAP理论
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/3perf_akf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 AKF立方体可扩展性来提高性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/4perf_nwr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 NWR算法修改读写模型以提升性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/5nginx_openresty/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 负载均衡：选择Nginx还是OpenResty
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/6hash_consistent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 一致性哈希的均衡负载
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/7cache_expire/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第七节 过期缓存防止缓存被流量打穿
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/8message_queue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第八节 消息队列基于异步消息提升性能
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/9map_reduce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第九节 MapReduce通过集群实现离线计算
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap3/10DB_choice/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第十节 权衡关系数据库与NoSQL数据库
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    IT运维面试问题总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            IT运维面试问题总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/1Linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一节 IT运维面试问题总结- Linux基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/2Linux_SVC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第二节 IT运维面试问题总结-基础服务、磁盘管理、虚拟平台和系统管理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/3Linux_tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第三节 IT运维面试问题总结-运维工具、开源应用(Ceph、Docker、Apache、Nginx等)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/4Linux_db_dia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第四节 IT运维面试问题总结-数据库、监控、网络管理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/5k8s_OpenShift/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第五节 IT运维面试问题总结-简述Etcd、Kubernetes、Lvs、HAProxy等
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/6Py_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第六节 Python面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/7Pro_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第七节 prometheus：要点总结及面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/8Data_ana_interview1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L8 Data Analyst Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/8Data_ana_interview2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第八节 分析岗笔试/面试知识点
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/9Data_ML_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L9 Top 50 Machine Learning Interview Questions & Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/10Deep_learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L10 30 Frequently asked Deep Learning Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/11Redis_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L11 Redis 核心技术考题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/12ES_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L12 ES 期末考试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/13istio_rev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L13 Istio面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/14sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L14 SRE本质就是一个懂运维的资深开发
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/15prometheus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L15 Top Prometheus Interview Questions and Answers (2022)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/16jenkins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L16 Top Jenkins Interview Questions and Answers (2022)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/17devops_int2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L17 DevOps Engineer: 30+ Interview Questions and Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap4/18helm2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L18 Helm指南：Kubernetes包管理器简介
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Python 面试题与总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Python 面试题与总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1Apple_3sum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1、Apple Interview(3Sum)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2Python_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2、Python Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3GS_longest_substr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3、Longest substring
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4GS_remove_sort_list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4、Remove duplicate in Sort List
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5Sort_list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5、Reverse Sort List
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6RM_dup_dict/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6、Remove duplicate from dictionary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7Find_max/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7、Find Maxmium number count in list and nth number
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8gs_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8、GS Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../9Substring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9、Find substring inside String
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10reverse_string/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10、Reverse String
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11zeroinN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11、Count how many zero in N!
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12JumpGame/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12、Jump Game
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    13、GS interview preparation
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    13、GS interview preparation
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#char" class="md-nav__link">
+    <span class="md-ellipsis">
+      Char
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Char">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#non-repeating-character" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non Repeating Character
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#string" class="md-nav__link">
+    <span class="md-ellipsis">
+      String
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="String">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-reverse-words-in-a-given-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 Reverse words in a given string
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#find-the-first-repeated-word-in-a-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      Find the first repeated word in a string
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      最长公共前缀
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#array" class="md-nav__link">
+    <span class="md-ellipsis">
+      Array
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Array">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#two-sum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Two Sum
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-if-two-arrays-are-equal-or-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check if two arrays are equal or not
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sort-an-array-in-wave-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sort an array in wave form
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stock-buy-and-sell" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stock buy and sell
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1-2-3-4-5-6-7-8-9-10-8" class="md-nav__link">
+    <span class="md-ellipsis">
+      在数组 { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 } 中，查找 8 是否出现过。
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sort
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sort">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bubble-sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bubble Sort
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insert-sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      Insert Sort
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merge-sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      Merge Sort
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Sort
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tree
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sum-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sum Tree
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#binary-tree-to-dll" class="md-nav__link">
+    <span class="md-ellipsis">
+      Binary Tree to DLL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#determine-if-a-binary-tree-is-height-balanced" class="md-nav__link">
+    <span class="md-ellipsis">
+      determine if a binary tree is height-balanced?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#find-the-kth-smallest-element-in-a-given-a-binary-search-tree-bst" class="md-nav__link">
+    <span class="md-ellipsis">
+      Find the kth smallest element in a given a binary search tree (BST)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#given-the-root-of-a-binary-tree-determine-if-it-is-a-valid-binary-search-tree-bst" class="md-nav__link">
+    <span class="md-ellipsis">
+      Given the root of a binary tree, determine if it is a valid binary search tree (BST).
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tree-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tree Order
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stack
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-minimum-element-from-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get minimum element from stack
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queue-using-stacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Queue using Stacks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linked-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked lists
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Linked lists">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#intersection-point-in-y-shapped-linked-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Intersection Point in Y Shapped Linked Lists
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reverse-linked-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reverse Linked List
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#others" class="md-nav__link">
+    <span class="md-ellipsis">
+      Others
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Others">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#two-rectangles-overlap-or-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      two rectangles overlap or not
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux 面试题与总结
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Linux 面试题与总结
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/1Linux_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L1 1min 内对 Linux 进行性能诊断
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/2Linux_load_avg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L2 当面试官问你load average时，怎么回答？
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/3Linux_inode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L3 文件系统inode
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/4Linux_ops_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L4 运维必须掌握的Linux面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/5Linux_network_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L5 常见网络编程面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/6Git_principle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L6 Git 实用技巧记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/7LoadBalancer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L7 深入浅出负载均衡
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/8Linux_all/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L8 Linux 面试题 合集CDN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/9Linux_five/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L9 Linux面试最高频的5个基本问题（CPU+COMMMAND)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/10haproxy_learn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L10 HAProxy从零开始到掌握
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/12Linux_vir_file/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L12 从 lsof 开始，深入理解 Linux 虚拟文件系统
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/linux_rew/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux review
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/13Linux_ts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L13 Linux故障排查思路及常用命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/14Linux_iptables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L14 Linux iptables命令详解
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap6/15linux_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L15 Linux网络基础与性能优化
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Companies Interview
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Companies Interview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/1Ms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Microsoft Interview2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/2Ms_al/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Microsoft Interview Algorithm 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/3ubs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 UBS interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/4MorganS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Morgan Stanly 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/5apple/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Apple 2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/6aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 AWS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/7tesla/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Tesla
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/my/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    My Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap7/int_anws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    架构师面试合集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux 常用命令
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Linux 常用命令
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/0shell_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Shell命令行一些快捷键组合
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/0shell_linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Linux常用命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/16linux_ops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 Linux 实用运维命令 - Update
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/1shell_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Shell 分析服务器日志命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/1log_man/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Log: 用 awk + grep + sed搞定日志处理神器组合拳
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/2linux_locate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Linux 系统下查找文件命令总结
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/3devops_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Basic Shell Scripting for Devops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/4Basic_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 基本 shell 脚本 系统+文件+卷+时间
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/5install_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Shell Package 安装+配置脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/6mon_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 监控 Shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/7net_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 网络+数据库 Shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/8secret_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8 Secret shell 脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/9script_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9 Linux script 录播
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/10linux_unlink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10 使用 unlink 删除文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/11linux_ip_port/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11 如何在 Linux 下限制端口仅对指定 IP 开放访问
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/12socat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12 Linux 命令 socat
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/14linux_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14 Linux shell 脚本详解学习 2023
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/15grep_learn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15 使用grep分析日志
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/17file_opt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16 Linux File Operation (df/du/rsync/批量删除/定时备份)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/18linux_var/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17 Shell script中的8个常用的特殊变量
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/19curl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18 Curl的10个高级用法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/20shell_dir/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19 Shell脚本执行不再受限，不进入所在目录也能成功运行
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/21shell_eva/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20 Bash脚本多函数使用eval提高脚本编写效率！
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/22find/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21 使用find命令轻松查找文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/22find/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21 使用find命令轻松查找文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/24xargs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23 xargs命令的使用技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/25shell_script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24 快速提升Shell脚本能力
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/26linux_zombie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25 如何清理 Linux 僵尸进程？
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/27Inode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26 Linux inode 介绍与清理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/28vim/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27 Vim 技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/29awk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    28 Linux AWK 文本处理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/30nohup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    29 nohup命令：在Linux中轻松实现后台运行和守护进程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/31ln/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    30 文件系统中的“分身术”ln命令
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/32Linux_logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    31 Linux 系统日志之深入解析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/33bash/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    32 Linux 中 `.bashrc`、`.bash-profile` 和 `.profile` 之间的区别
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/34linux_6logs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    33 6大Linux命令线上日志排查
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/35port_detect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    34 未安装telnet 和 nc 等工具，如何测试端口是否开放
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/36dudf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    35 df命令显示磁盘空间不足而du命令显示还有很多空闲空间
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap8/37linux_cond/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    36 Shell脚本的流程控制知识点汇总(2024)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Bash Programming 技巧
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Bash Programming 技巧
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/1bash_prom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 简洁的 Bash Programming 技巧
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/2bash_skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 简洁的 Bash Programming 技巧续篇
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/3bash_skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Bash Pitfalls: 编程易犯的错误（一）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap9/4bash_python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 在Python中执行Linux Shell脚本
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    AutoSys
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            AutoSys
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/1autosys_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 AutoSys: A Beginner’s Guide AutoSys Workload Automation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/1Autosys_tot1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Autosys Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/2Autosys_jil/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Autosys JIL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/3Autosys_comp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Autosys Components, Configuration & Validation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/4Autosys_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Austosys command
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/5Autosys_job_cmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Manage Job in the Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/6autosys_vir_resouce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Autotsys virtual resource management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chap10/7autosys_shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Shell Script to check Autosys agent installed
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    2025 - 面试准备
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            2025 - 面试准备
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/0intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025-Intro
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/1cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 CI/CD 之路-GitOps 面试题合集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/2docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Docker面试10大必考题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/3kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Kubernetes 面试题精解：从入门到进阶(2025)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/4Linux_tb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Linux 系统故障时
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/5aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 AWS 面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/6monitor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 监控生态面试通关秘籍
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/7cri/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 从容器到调度：准备好这些 CRI 面试题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/8sap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8 SAP面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/9db_interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9 数据库面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/10prometheus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10 Prometheus面试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/11istio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11 深度剖析 Istio (2025)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/12python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12 Python Interview - Full
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            SRE
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/15Apple_SRE_prp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025 Apple SRE PRP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/1SRE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 SRE Interview Questions and Answers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/13tiktok/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 2025 最新字节跳动运维云原生面经分享
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/2Ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Ansible Interview Question
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/3linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 250 Linux Scenario Based Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/3kubernetes_sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Kubernetes SRE part1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/3kubernetes_sre2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Kubernetes SRE part2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/14git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Git Scenario-Based Questions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            SRE
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sre/0interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 SRE 面试2025
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sre/1linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 SRE Linux All2025
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sre/2ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Ansible 从入门到放弃
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/15Apple_SRE_prp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0 2025 Apple SRE PRP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sre/3git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 GIT CE TEST
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SRE_Linux
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            SRE_Linux
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sreln/2Linux_test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Linux Fundamentals
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sreln/1k8s_dev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Using Kubernetes as a Developer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sreln/3code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Script Learning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sre/4sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 SRE Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sreln/5agile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Agile Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/sreln/6cloud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Cloud Native Test
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    英语学习
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16">
+            <span class="md-nav__icon md-icon"></span>
+            英语学习
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Eng/1work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 职场英语
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#char" class="md-nav__link">
+    <span class="md-ellipsis">
+      Char
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Char">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#non-repeating-character" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non Repeating Character
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#string" class="md-nav__link">
+    <span class="md-ellipsis">
+      String
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="String">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-reverse-words-in-a-given-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 Reverse words in a given string
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#find-the-first-repeated-word-in-a-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      Find the first repeated word in a string
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      最长公共前缀
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#array" class="md-nav__link">
+    <span class="md-ellipsis">
+      Array
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Array">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#two-sum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Two Sum
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-if-two-arrays-are-equal-or-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check if two arrays are equal or not
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sort-an-array-in-wave-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sort an array in wave form
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stock-buy-and-sell" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stock buy and sell
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1-2-3-4-5-6-7-8-9-10-8" class="md-nav__link">
+    <span class="md-ellipsis">
+      在数组 { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 } 中，查找 8 是否出现过。
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sort
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sort">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bubble-sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bubble Sort
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insert-sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      Insert Sort
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merge-sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      Merge Sort
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Sort
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tree
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sum-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sum Tree
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#binary-tree-to-dll" class="md-nav__link">
+    <span class="md-ellipsis">
+      Binary Tree to DLL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#determine-if-a-binary-tree-is-height-balanced" class="md-nav__link">
+    <span class="md-ellipsis">
+      determine if a binary tree is height-balanced?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#find-the-kth-smallest-element-in-a-given-a-binary-search-tree-bst" class="md-nav__link">
+    <span class="md-ellipsis">
+      Find the kth smallest element in a given a binary search tree (BST)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#given-the-root-of-a-binary-tree-determine-if-it-is-a-valid-binary-search-tree-bst" class="md-nav__link">
+    <span class="md-ellipsis">
+      Given the root of a binary tree, determine if it is a valid binary search tree (BST).
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tree-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tree Order
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stack
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-minimum-element-from-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get minimum element from stack
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queue-using-stacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Queue using Stacks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linked-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked lists
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Linked lists">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#intersection-point-in-y-shapped-linked-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Intersection Point in Y Shapped Linked Lists
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reverse-linked-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reverse Linked List
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#others" class="md-nav__link">
+    <span class="md-ellipsis">
+      Others
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Others">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#two-rectangles-overlap-or-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      two rectangles overlap or not
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="gs-interview-preparation"><strong>GS interview preparation</strong></h1>
+<h2 id="char"><strong>Char</strong></h2>
+<h3 id="non-repeating-character"><strong>Non Repeating Character</strong></h3>
+<pre><code># Given a string S consisting of lowercase Latin Letters. Find the first non-repeating character in S.
+
+# Input:
+# S = hello
+# Output: h
+# Explanation: In the given string, the
+# first character which is non-repeating
+# is h, as it appears first and there is
+# no other 'h' in the string.
+
+# Input:
+# S = zxvczbtxyzvy
+# Output: c
+# Explanation: In the given string, 'c' is
+# the character which is non-repeating. 
+</code></pre>
+<pre><code>def main(str):
+    char_order = []
+    counts = {}
+    for c in str:
+        if c in counts:
+            counts[c]+=1
+        else:
+            counts[c] = 1 
+            char_order.append(c)
+
+    for c in char_order:
+        if counts[c] == 1:
+            return c
+
+    return None
+</code></pre>
+<pre><code>if  __name__ == &quot;__main__&quot;:
+    print(main(&quot;PythonforallPythonMustforall&quot;))
+    print(main('tutorialspointfordeveloper'))
+    print(main('AABBCC'))
+</code></pre>
+<pre><code>$ python 8onorepc.py 
+M
+u
+None
+</code></pre>
+<h2 id="string"><strong>String</strong></h2>
+<h3 id="1-reverse-words-in-a-given-string"><strong>1 Reverse words in a given string</strong></h3>
+<pre><code># Given a String S, reverse the string without reversing its individual words. 
+# Words are separated by dots.
+
+# Input:
+# S = i.like.this.program.very.much
+# Output: much.very.program.this.like.i
+# Explanation: After reversing the whole
+# string(not individual words), the input
+# string becomes
+# much.very.program.this.like.i
+
+# Input:
+# S = pqr.mno
+# Output: mno.pqr
+# Explanation: After reversing the whole
+# string , the input string becomes
+# mno.pqr
+</code></pre>
+<pre><code>def main(Str):
+    s = Str.split(&quot;.&quot;);
+    for i in range(len(s)-1,-1,-1):
+        print(s[i],end=&quot;.&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main(&quot;i.like.this.program.very.much&quot;)
+</code></pre>
+<p><strong>Output</strong></p>
+<pre><code>much.very.program.this.like.i.
+</code></pre>
+<h3 id="find-the-first-repeated-word-in-a-string"><strong>Find the first repeated word in a string</strong></h3>
+<p>Given a string, Find the 1st repeated word in a string</p>
+<p>Examples: </p>
+<pre><code>Input : &quot;Ravi had been saying that he had been there&quot;
+Output : had
+
+Input : &quot;Ravi had been saying that&quot;
+Output : No Repetition
+
+Input : &quot;he had had he&quot;
+Output : he
+</code></pre>
+<pre><code>def firstRepeatString(str):
+    char_list = []
+    counts = {}
+    count = 0
+    raw_list = str.split(' ')
+    for i in range(len(raw_list)):
+        if raw_list[i] in counts:
+            counts[raw_list[i]] += 1
+        else:
+            counts[raw_list[i]] = 1
+            char_list.append(raw_list[i])
+
+
+    for c in char_list:
+        if counts[c] &gt; 1:
+            print(c)
+            break
+
+firstRepeatString(&quot;he had had he&quot;)
+</code></pre>
+<pre><code>from collections import Counter 
+# Python program to find the first
+# repeated character in a string
+def firstRepeatedWord(sentence):
+
+    # splitting the string
+    lis = list(sentence.split(&quot; &quot;))
+
+    # Calculating frequency of every word
+    frequency = Counter(lis)
+
+    # Traversing the list of words
+    for i in lis:
+
+        # checking if frequency is greater than 1
+
+        if(frequency[i] &gt; 1):
+            # return the word
+            return i
+
+# Driver code
+sentence = &quot;Vikram had been saying that he had been there&quot;
+print(firstRepeatedWord(sentence))
+</code></pre>
+<pre><code>$ python3 21repreatstring.py 
+had
+</code></pre>
+<h3 id="_1"><strong>最长公共前缀</strong></h3>
+<p>编写一个函数来查找字符串数组中的最长公共前缀。</p>
+<p>如果不存在公共前缀，返回空字符串 ""。</p>
+<pre><code>示例 1:
+
+输入: [&quot;flower&quot;,&quot;flow&quot;,&quot;flight&quot;]
+输出: &quot;fl&quot;
+示例 2:
+
+输入: [&quot;dog&quot;,&quot;racecar&quot;,&quot;car&quot;]
+输出: &quot;&quot;
+解释: 输入不存在公共前缀。
+说明:
+
+所有输入只包含小写字母 a-z 。
+</code></pre>
+<p><strong>Option1</strong></p>
+<pre><code>示例 1:
+
+输入: [&quot;flower&quot;,&quot;flow&quot;,&quot;flight&quot;]
+输出: &quot;fl&quot;
+示例 2:
+
+输入: [&quot;dog&quot;,&quot;racecar&quot;,&quot;car&quot;]
+输出: &quot;&quot;
+解释: 输入不存在公共前缀。
+说明:
+
+所有输入只包含小写字母 a-z 。
+</code></pre>
+<pre><code>def longest_string(arr):
+    result = &quot;&quot;
+    for i in zip(*arr):
+        if len(set(i)) == 1:
+            result += i[0]
+        else:
+            break
+    return result
+
+arr = [&quot;a&quot;,&quot;ab&quot;,&quot;abc&quot;]
+print(longest_string(arr))
+</code></pre>
+<p><strong>Option2</strong></p>
+<pre><code>def longest_str(str):
+    if not str:
+        return &quot;&quot;
+    res = str[0]
+    i = 1
+    while i &lt; len(str):
+        while str[i].find(res) != 0:
+            res = res[0:len(res)-1]
+        i += 1
+    return res
+
+print(longest_str([&quot;aabc&quot;,&quot;ab&quot;]))
+</code></pre>
+<h2 id="array"><strong>Array</strong></h2>
+<h3 id="two-sum"><strong>Two Sum</strong></h3>
+<p>给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。</p>
+<p>你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。</p>
+<pre><code>给定 nums = [2, 7, 11, 15], target = 9
+因为 nums[0] + nums[1] = 2 + 7 = 9
+所以返回 [0, 1]
+</code></pre>
+<p><strong>Option1</strong></p>
+<pre><code>def twoSum(nums, target):
+    &quot;&quot;&quot;
+    :type nums: List[int]
+    :type target: int
+    :rtype: List[int]
+    &quot;&quot;&quot;
+    idxDict = dict()
+    for idx, num in enumerate(nums):
+        if target - num in idxDict:
+            return [idxDict[target - num], idx]
+        idxDict[num] = idx
+
+
+nums = [2, 7, 11, 15]
+target = 9
+
+print(twoSum(nums,target))
+</code></pre>
+<p><strong>Option2</strong></p>
+<pre><code>def twoSumNaive(num_arr, pair_sum):
+    # search first element in the array
+    for i in range(len(num_arr)-1):
+        # search other element in the array
+        for j in range(i + 1, len(num_arr)):
+        # if these two elemets sum to pair_sum, print the pair
+            if num_arr[i] + num_arr[j] == pair_sum:
+                print(&quot;Pair with sum&quot;, pair_sum,&quot;is: (&quot;, num_arr[i],&quot;,&quot;,num_arr[j],&quot;)&quot;)
+                print([i,j])
+
+# Driver Code
+num_arr = [3, 5, 2, -4, 8, 11]
+pair_sum = 7
+
+# Function call inside print
+twoSumNaive(num_arr, pair_sum) 
+
+# Pair with sum 7 is: ( 5 , 2 )
+# [1, 2]
+# Pair with sum 7 is: ( -4 , 11 )
+# [3, 5]
+</code></pre>
+<p><strong>Option3</strong></p>
+<pre><code>def twoSumHashing(num_arr, pair_sum):
+    sums = []
+    hashTable = {}
+
+    for i in range(len(num_arr)):
+        complement = pair_sum - num_arr[i]
+        if complement in hashTable:
+            print(&quot;Pair with sum&quot;, pair_sum,&quot;is: (&quot;, num_arr[i],&quot;,&quot;,complement,&quot;)&quot;)
+            # print([i,hashTable[pair_sum - num_arr[i]]])
+        hashTable[num_arr[i]] = num_arr[i]
+
+# Driver Code
+num_arr = [4, 5, 1, 8]
+pair_sum = 9
+
+# Calling function
+twoSumHashing(num_arr, pair_sum)
+</code></pre>
+<h3 id="check-if-two-arrays-are-equal-or-not"><strong>Check if two arrays are equal or not</strong></h3>
+<pre><code># Check if two arrays are equal or not
+# Given two given arrays of equal length, the task is to find if given arrays are equal or not. 
+# Two arrays are said to be equal if both of them contain the same set of elements, 
+# arrangements (or permutation) of elements may be different though.
+
+# Input  : arr1[] = {1, 2, 5, 4, 0};
+#          arr2[] = {2, 4, 5, 0, 1}; 
+# Output : Yes
+
+# Input  : arr1[] = {1, 2, 5, 4, 0, 2, 1};
+#          arr2[] = {2, 4, 5, 0, 1, 1, 2}; 
+# Output : Yes
+
+# Input : arr1[] = {1, 7, 1};
+#         arr2[] = {7, 7, 1};
+# Output : No
+</code></pre>
+<pre><code>def areEqual(arr1, arr2, n, m):
+
+    # If lengths of array are not
+    # equal means array are not equal
+    if (n != m):
+        return False
+
+    # Sort both arrays
+    arr1.sort()
+    arr2.sort()
+
+    # Linearly compare elements
+    for i in range(0, n - 1):
+        if (arr1[i] != arr2[i]):
+            return False
+
+    # If all elements were same.
+    return True
+
+
+# Driver Code
+arr1 = [3, 5, 2, 5, 2]
+arr2 = [2, 3, 5, 5, 2]
+n = len(arr1)
+m = len(arr2)
+
+if (areEqual(arr1, arr2, n, m)):
+    print(&quot;Yes&quot;)
+else:
+    print(&quot;No&quot;)
+</code></pre>
+<h3 id="sort-an-array-in-wave-form"><strong>Sort an array in wave form</strong></h3>
+<pre><code># Given an unsorted array of integers, 
+# sort the array into a wave like array. 
+# An array ‘arr[0..n-1]’ is sorted in wave form if arr[0] &gt;= arr[1] &lt;= arr[2] &gt;= arr[3] &lt;= arr[4] &gt;= …..
+
+#  Input:  arr[] = {10, 5, 6, 3, 2, 20, 100, 80}
+#  Output: arr[] = {10, 5, 6, 2, 20, 3, 100, 80} OR
+#                  {20, 5, 10, 2, 80, 6, 100, 3} OR
+#                  any other array that is in wave form
+
+#  Input:  arr[] = {20, 10, 8, 6, 4, 2}
+#  Output: arr[] = {20, 8, 10, 4, 6, 2} OR
+#                  {10, 8, 20, 2, 6, 4} OR
+#                  any other array that is in wave form
+
+#  Input:  arr[] = {2, 4, 6, 8, 10, 20}
+#  Output: arr[] = {4, 2, 8, 6, 20, 10} OR
+#                  any other array that is in wave form
+
+#  Input:  arr[] = {3, 6, 5, 10, 7, 20}
+#  Output: arr[] = {6, 3, 10, 5, 20, 7} OR
+#                  any other array that is in wave form
+</code></pre>
+<pre><code># Python function to sort the array arr[0..n-1] in wave form,
+# i.e., arr[0] &gt;= arr[1] &lt;= arr[2] &gt;= arr[3] &lt;= arr[4] &gt;= arr[5]
+def sortInWave(arr, n):
+
+    #sort the array
+    arr.sort()
+
+    # Swap adjacent elements
+    for i in range(0,n-1,2):
+        arr[i], arr[i+1] = arr[i+1], arr[i]
+
+    # Driver program
+arr = [10, 90, 49, 2, 1, 5, 23]
+sortInWave(arr, len(arr))
+for i in range(0,len(arr)):
+    print (arr[i],end=&quot; &quot;)
+</code></pre>
+<h3 id="stock-buy-and-sell"><strong>Stock buy and sell</strong></h3>
+<pre><code># The cost of stock on each day is given in an array A[] of size N. 
+# Find all the days on which you buy and sell the stock so that in between those days your profit is maximum.
+# Note: There may be multiple possible solutions. 
+# Return any one of them. Any correct solution will result in an output of 1, 
+# whereas wrong solutions will result in an output of 0.
+
+# Input:
+# N = 7
+# A[] = {100,180,260,310,40,535,695}
+# Output:
+# 1
+# Explanation:
+# One possible solution is (0 3) (4 6)
+# We can buy stock on day 0,
+# and sell it on 3rd day, which will 
+# give us maximum profit. Now, we buy 
+# stock on day 4 and sell it on day 6.
+
+# Input:
+# N = 5
+# A[] = {4,2,2,2,4}
+# Output:
+# 1
+# Explanation:
+# There are multiple possible solutions.
+# one of them is (3 4)
+# We can buy stock on day 3,
+# and sell it on 4th day, which will 
+# give us maximum profit.
+</code></pre>
+<pre><code>def maxProfit(pricelist):
+    max_profit = 0
+    result = []
+    for i in range(len(pricelist)-1):
+        for j in range(i+1, len(pricelist)):
+            profit = pricelist[j] - pricelist[i]
+            if profit &gt; max_profit:
+                max_profit = profit
+    return max_profit
+
+print(maxProfit([100,180,260,310,40,535,695]))
+</code></pre>
+<pre><code>655
+</code></pre>
+<pre><code>class Solution:
+    def maxProfit(self, priceslist):
+        min_price = float(&quot;inf&quot;)
+        max_profit = 0
+        for i in range(len(priceslist)):
+            if priceslist[i] &lt; min_price:
+                min_price = priceslist[i]
+            elif priceslist[i] - min_price &gt; max_profit:
+                max_profit = priceslist[i] - min_price
+        return max_profit
+
+s = Solution();
+
+
+print(s.maxProfit([100,180,260,310,40,535,695]))
+</code></pre>
+<ul>
+<li><code>float("inf")</code> used for setting a variable with an infinitely large value.</li>
+</ul>
+<h3 id="1-2-3-4-5-6-7-8-9-10-8">在数组 <code>{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }</code> 中，查找 8 是否出现过。</h3>
+<pre><code>def main():
+# 需要查找的数字
+    targetNumb = 8
+    arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    middle = 0
+    low = 0
+    high = len(arr) - 1
+    isfind = 0
+
+    while low &lt;= high:
+        middle = round((low + high) /2)
+        if arr[middle] ==  targetNumb:
+            print(f&quot;{targetNumb} in arr, and the index is {middle}&quot;)
+            isfind = 1
+            break
+        elif arr[middle] &gt; targetNumb:  #  说明该数在low~middle之间
+            high = middle - 1
+        else:                       #  说明该数在middle~high之间
+            low = middle + 1
+    if isfind == 0:
+        print(f&quot;{targetNumb} is not in the arr&quot;)
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+
+# 二分查找的时间复杂度是 O(logn)，
+</code></pre>
+<h2 id="sort"><strong>Sort</strong></h2>
+<h3 id="bubble-sort"><strong>Bubble Sort</strong></h3>
+<pre><code># 冒泡排序最好时间复杂度是 O(n)
+# 冒泡排序最坏时间复杂度会比较惨，是 O(n*n)。
+
+# 从第一个数据开始，依次比较相邻元素的大小。如果前者大于后者，则进行交换操作，把大的元素往后交换。通过多轮迭代，直到没有交换操作为止
+
+def main():
+    arr = [ 1, 0, 3, 4, 5, -6, 7, 8, 9, 10 ]
+    print(f&quot;The the original data order: {arr}&quot;)
+    for i in range(1,len(arr)):           # Start from 2nd one
+        for j in range(0, len(arr)-i):    # Start from 1st one
+           if arr[j] &gt; arr[j+1]:
+               temp = arr[j]
+               arr[j] = arr[j + 1]
+               arr[j + 1] = temp
+
+    print(f&quot;The the Bubble sort data order: {arr}&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<h3 id="insert-sort"><strong>Insert Sort</strong></h3>
+<pre><code># 1、插入排序的原理
+# 选取未排序的元素，插入到已排序区间的合适位置，直到未排序区间为空
+# 插入排序的平均时间复杂度是 O(n*n)。
+
+def main():
+    arr = [ 2, 3, 5, 1, 23, 6, 78, 34 ]
+    print(f&quot;The the original data order: {arr}&quot;)
+    for i in range(1,len(arr)):
+        temp = arr[i]
+        j = i - 1
+        for j in range(j,0-1):
+            if  arr[j] &gt; temp:
+                arr[j+1] = arr[j]
+            else:
+                break
+        arr[j+1] = temp
+
+    print(f&quot;The the sorted data order: {arr}&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<h3 id="merge-sort"><strong>Merge Sort</strong></h3>
+<pre><code>import sys
+
+def merge_sort(A):
+    merge_sort2(A, 0, len(A)-1)
+
+def merge_sort2(A, first, last):
+#  In Python 3, they made the / operator do a floating-point division, 
+#  and added the // operator to do integer division 
+    if first &lt; last:
+        middle = (first + last)//2
+        merge_sort2(A, first, middle)
+        merge_sort2(A, middle+1, last)
+        merge(A, first, middle, last)
+
+def merge(A, first, middle, last):
+    L = A[first:middle+1]
+    R = A[middle+1:last+1]
+    L.append(sys.maxsize)  #Reach the end of list
+    R.append(sys.maxsize)
+    i = j = 0
+    #Index i for left half and j for the right half
+    #Initialize was 0
+
+    for k in range (first, last+1):
+        if L[i] &lt;= R[j]:
+            A[k] = L[i]
+            i += 1
+        else:
+            A[k] = R[j]
+            j += 1
+
+A = [5,9,1,2,4,8,6,3,7]
+print(A)
+merge_sort(A)
+print(A)
+</code></pre>
+<h3 id="quick-sort"><strong>Quick Sort</strong></h3>
+<pre><code># This Function handles sorting part of quick sort
+# start and end points to first and last element of
+# an array respectively
+def partition(start, end, array):
+
+    # Initializing pivot's index to start
+    pivot_index = start
+    pivot = array[pivot_index]
+
+    # This loop runs till start pointer crosses
+    # end pointer, and when it does we swap the
+    # pivot with element on end pointer
+    while start &lt; end:
+
+        # Increment the start pointer till it finds an
+        # element greater than  pivot
+        while start &lt; len(array) and array[start] &lt;= pivot:
+            start += 1
+
+        # Decrement the end pointer till it finds an
+        # element less than pivot
+        while array[end] &gt; pivot:
+            end -= 1
+
+        # If start and end have not crossed each other,
+        # swap the numbers on start and end
+        if(start &lt; end):
+            array[start], array[end] = array[end], array[start]
+
+    # Swap pivot element with element on end pointer.
+    # This puts pivot on its correct sorted place.
+    array[end], array[pivot_index] = array[pivot_index], array[end]
+
+    # Returning end pointer to divide the array into 2
+    return end
+
+# The main function that implements QuickSort
+def quick_sort(start, end, array):
+
+    if (start &lt; end):
+
+        # p is partitioning index, array[p]
+        # is at right place
+        p = partition(start, end, array)
+
+        # Sort elements before partition
+        # and after partition
+        quick_sort(start, p - 1, array)
+        quick_sort(p + 1, end, array)
+
+# Driver code
+array = [ 10, 7, 8, 9, 1, 5 ]
+quick_sort(0, len(array) - 1, array)
+
+print(f'Sorted array: {array}')
+</code></pre>
+<h2 id="tree"><strong>Tree</strong></h2>
+<h3 id="sum-tree"><strong>Sum Tree</strong></h3>
+<pre><code># Given a Binary Tree. Return true if, for every node X in the tree other than the leaves, 
+# its value is equal to the sum of its left subtree's value and its right subtree's value. Else return false.
+
+# An empty tree is also a Sum Tree as the sum of an empty tree can be considered to be 0. 
+# A leaf node is also considered a Sum Tree.
+
+# Input:
+#     3
+#   /   \    
+#  1     2
+
+# Output: 1
+# Explanation:
+# The sum of left subtree and right subtree is
+# 1 + 2 = 3, which is the value of the root node.
+# Therefore,the given binary tree is a sum tree.
+</code></pre>
+<pre><code># A class to store a binary tree node
+class Node:
+    def __init__(self, key=None, left=None, right=None):
+        self.key = key
+        self.left = left
+        self.right = right
+
+
+# Recursive function to check if a given binary tree is a sum tree or not
+def isSumTree(root):
+
+    # base case: empty tree
+    if root is None:
+        return 0
+
+    # special case: leaf node
+    if root.left is None and root.right is None:
+        return root.key
+
+    left = isSumTree(root.left)
+    right = isSumTree(root.right)
+
+    # if the root's value is equal to the sum of all elements present in its
+    # left and right subtree
+    if left != -sys.maxsize and right != -sys.maxsize and root.key == left + right:
+        return 2 * root.key
+
+    return -sys.maxsize
+
+
+if __name__ == '__main__':
+
+#   Construct the following tree
+#              44
+#             /  \
+#            /    \
+#           9     13
+#          / \    / \
+#         4   5  6   7
+    root = Node(44)
+    root.left = Node(9)
+    root.right = Node(13)
+    root.left.left = Node(4)
+    root.left.right = Node(5)
+    root.right.left = Node(6)
+    root.right.right = Node(7)
+
+    if isSumTree(root) != -sys.maxsize:
+        print('Binary tree is a sum tree')
+    else:
+        print('Binary tree is not a sum tree')
+</code></pre>
+<h3 id="binary-tree-to-dll"><strong>Binary Tree to DLL</strong></h3>
+<pre><code># Given a Binary Tree (BT), convert it to a Doubly Linked List(DLL) In-Place. 
+# The left and right pointers in nodes are to be used as previous and next pointers respectively in converted DLL. 
+# The order of nodes in DLL must be same as Inorder of the given Binary Tree. 
+# The first node of Inorder traversal (leftmost node in BT) must be the head node of the DLL.
+
+# Input:
+#       1
+#     /  \
+#    3    2
+# Output:
+# 3 1 2 
+# 2 1 3 
+# Explanation: DLL would be 3&lt;=&gt;1&lt;=&gt;2
+
+# Input:
+#        10
+#       /   \
+#      20   30
+#    /   \
+#   40   60
+# Output:
+# 40 20 60 10 30 
+# 30 10 60 20 40
+# Explanation:  DLL would be 
+# 40&lt;=&gt;20&lt;=&gt;60&lt;=&gt;10&lt;=&gt;30.
+
+#Represent a node of binary tree    
+class Node:    
+    def __init__(self,data):    
+        self.data = data;    
+        self.left = None;    
+        self.right = None;    
+
+class BinaryTreeToDLL:    
+    def __init__(self):    
+        #Represent the root of binary tree    
+        self.root = None;    
+        #Represent the head and tail of the doubly linked list    
+        self.head = None;    
+        self.tail = None;    
+
+    #convertbtToDLL() will convert the given binary tree to corresponding doubly linked list    
+    def convertbtToDLL(self, node):    
+        #Checks whether node is None    
+        if(node == None):    
+            return;    
+
+        #Convert left subtree to doubly linked list    
+        self.convertbtToDLL(node.left);    
+
+        #If list is empty, add node as head of the list    
+        if(self.head == None):    
+            #Both head and tail will point to node    
+            self.head = self.tail = node;    
+        #Otherwise, add node to the end of the list    
+        else:    
+            #node will be added after tail such that tail's right will point to node    
+            self.tail.right = node;    
+            #node's left will point to tail    
+            node.left = self.tail;    
+            #node will become new tail    
+            self.tail = node;    
+
+        #Convert right subtree to doubly linked list    
+        self.convertbtToDLL(node.right);    
+
+    #display() will print out the nodes of the list    
+    def display(self):    
+        #Node current will point to head    
+        current = self.head;    
+        if(self.head == None):    
+            print(&quot;List is empty&quot;);    
+            return;    
+        print(&quot;Nodes of generated doubly linked list: &quot;);    
+        while(current != None):    
+            #Prints each node by incrementing pointer.    
+            print(current.data),    
+            current = current.right; 
+
+bt = BinaryTreeToDLL();    
+#Add nodes to the binary tree    
+bt.root = Node(1);    
+bt.root.left = Node(2);    
+bt.root.right = Node(3);    
+bt.root.left.left = Node(4);    
+bt.root.left.right = Node(5);    
+bt.root.right.left = Node(6);    
+bt.root.right.right = Node(7);    
+
+#Converts the given binary tree to doubly linked list    
+bt.convertbtToDLL(bt.root);    
+
+#Displays the nodes present in the list    
+bt.display();                        
+</code></pre>
+<pre><code>$ python3 11btdll.py 
+Nodes of generated doubly linked list: 
+4
+2
+5
+1
+6
+3
+7
+</code></pre>
+<h3 id="determine-if-a-binary-tree-is-height-balanced"><strong>determine if a binary tree is height-balanced?</strong></h3>
+<pre><code># How to determine if a binary tree is height-balanced?
+# A tree where no leaf is much farther away from the root than any other leaf. 
+# Different balancing schemes allow different definitions of “much farther” and different amounts of work to keep them balanced.
+# Consider a height-balancing scheme where following conditions should be checked to determine if a binary tree is balanced. 
+
+# An empty tree is height-balanced. A non-empty binary tree T is balanced if: 
+# 1) Left subtree of T is balanced 
+# 2) Right subtree of T is balanced 
+# 3) The difference between heights of left subtree and right subtree is not more than 1. 
+# The above height-balancing scheme is used in AVL trees. 
+# The diagram below shows two trees, one of them is height-balanced and other is not. 
+# The second tree is not height-balanced because height of left subtree is 2 more than height of right subtree.
+</code></pre>
+<p><strong>The difference between heights of left subtree and right subtree is not more than 1.</strong></p>
+<pre><code>class Node:
+    # Constructor to create a new Node
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+# function to find height of binary tree
+def height(root):
+
+    # base condition when binary tree is empty
+    if root is None:
+        return 0
+    return max(height(root.left), height(root.right)) + 1
+
+# function to check if tree is height-balanced or not
+def isBalanced(root):
+
+    # Base condition
+    if root is None:
+        return True
+
+    # for left and right subtree height
+    lh = height(root.left)
+    rh = height(root.right)
+
+    # allowed values for (lh - rh) are 1, -1, 0
+    if (abs(lh - rh) &lt;= 1) and isBalanced(
+    root.left) is True and isBalanced( root.right) is True:
+        return True
+
+    # if we reach here means tree is not
+    # height-balanced tree
+    return False
+
+# Driver function to test the above function
+root = Node(1)
+root.left = Node(2)
+root.right = Node(3)
+root.left.left = Node(4)
+root.left.right = Node(5)
+root.left.left.left = Node(8)
+if isBalanced(root):
+    print(&quot;Tree is balanced&quot;)
+else:
+    print(&quot;Tree is not balanced&quot;)
+</code></pre>
+<pre><code>$ python3 16blheight.py 
+Tree is not balanced
+</code></pre>
+<h3 id="find-the-kth-smallest-element-in-a-given-a-binary-search-tree-bst"><strong>Find the kth smallest element in a given a binary search tree (BST)</strong></h3>
+<p>Write a Python program to find the kth smallest element in a given a binary search tree.</p>
+<pre><code>class TreeNode(object):
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+def kth_smallest(root, k):
+    stack = []
+    while root or stack:
+        while root:
+            stack.append(root)
+            root = root.left
+        root = stack.pop()
+        k -= 1
+        if k == 0:
+            break
+        root = root.right
+    return root.val
+
+root = TreeNode(8)  
+root.left = TreeNode(5)  
+root.right = TreeNode(14) 
+root.left.left = TreeNode(4)  
+root.left.right = TreeNode(6) 
+root.left.right.left = TreeNode(8)  
+root.left.right.right = TreeNode(7)  
+root.right.right = TreeNode(24) 
+root.right.right.left = TreeNode(22)  
+
+print(kth_smallest(root, 2))
+print(kth_smallest(root, 3))
+</code></pre>
+<pre><code>5
+8
+</code></pre>
+<h3 id="given-the-root-of-a-binary-tree-determine-if-it-is-a-valid-binary-search-tree-bst">Given the root of a binary tree, determine if it is a valid binary search tree (BST).</h3>
+<pre><code># A valid BST is defined as follows:
+
+# The left subtree of a node contains only nodes with keys less than the node's key.
+# The right subtree of a node contains only nodes with keys greater than the node's key.
+# Both the left and right subtrees must also be binary search trees.
+
+# Input: root = [2,1,3]
+# Output: true
+
+# Input: root = [5,1,4,null,null,3,6]
+# Output: false
+# Explanation: The root node's value is 5 but its right child's value is 4.
+</code></pre>
+<p><strong>Option1</strong></p>
+<pre><code>class Solution:
+    def isValidateBST(self, root):
+        def dfs(lower, upper, node):
+            if not node:
+                return true
+            elif node.val&lt;=lower or node.val &gt;= upper:
+                return False
+            else:
+                return dfs(lower, node.val, node.left) and dfs(node.val, upper, node.right)
+
+        return dfs(float('-inf'),float('inf'),root)
+</code></pre>
+<p><strong>Option2</strong></p>
+<pre><code>def isValidBST(self, root):
+        if not root:
+            return True
+
+        def inOrder(root, order):
+            if root is None:
+                return
+            inOrder(root.left, order)
+            order.append(root.val)
+            inOrder(root.right, order)
+
+        order = []
+        inOrder(root, order)
+        for i in range(1, len(order)):
+            if order[i] &lt;= order[i-1]:
+                return False
+        return True
+
+</code></pre>
+<h3 id="tree-order"><strong>Tree Order</strong></h3>
+<p><strong>preorder</strong></p>
+<pre><code># 先序遍历
+
+class Node:
+    def __init__(self, data):
+        self.left = None
+        self.right = None
+        self.data = data
+
+# Insert Node
+    def insert(self, data):
+
+        if self.data:
+            if data &lt; self.data:
+                if self.left is None:
+                    self.left = Node(data)
+                else:
+                    self.left.insert(data)
+            elif data &gt; self.data:
+                if self.right is None:
+                    self.right = Node(data)
+                else:
+                    self.right.insert(data)
+        else:
+            self.data = data
+
+# Print the Tree
+    def PrintTree(self):
+        if self.left:
+            self.left.PrintTree()
+        print(self.data),
+        if self.right:
+            self.right.PrintTree()
+# Preorder traversal
+# Root -&gt; Left -&gt;Right
+    def PreorderTraversal(self, root):
+        res = []
+        if root:
+            res.append(root.data)
+            res = res + self.PreorderTraversal(root.left)
+            res = res + self.PreorderTraversal(root.right)
+        return res
+
+root = Node(27)
+root.insert(14)
+root.insert(35)
+root.insert(10)
+root.insert(19)
+root.insert(31)
+root.insert(42)
+print(root.PreorderTraversal(root))
+</code></pre>
+<p><strong>Inorder traversal</strong></p>
+<pre><code># Inorder traversal
+# Left -&gt; Root -&gt; Right
+
+def inorderTraversal(self, root):
+        res = []
+        if root:
+            res = self.inorderTraversal(root.left)
+            res.append(root.data)
+            res = res + self.inorderTraversal(root.right)
+        return res
+</code></pre>
+<p><strong>Postorder traversal</strong></p>
+<pre><code>def PostorderTraversal(self, root):
+        res = []
+        if root:
+            res = self.PostorderTraversal(root.left)
+            res = res + self.PostorderTraversal(root.right)
+            res.append(root.data)
+        return res
+</code></pre>
+<h2 id="stack">Stack</h2>
+<h3 id="get-minimum-element-from-stack">Get minimum element from stack</h3>
+<pre><code># Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+
+# push(x) -- Push element x onto stack.
+
+# pop() -- Removes the element on top of the stack.
+
+# top() -- Get the top element.
+
+# getMin() -- Retrieve the minimum element in the stack.
+
+# Example:
+
+# MinStack minStack = new MinStack(); 
+# minStack.push(-2); minStack.push(0); minStack.push(-3); minStack.getMin ....
+
+</code></pre>
+<pre><code>class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min = []
+        self.size = 0
+
+# Inserts a given element on top of the stack
+    def push(self, val):
+        if self.size == 0:
+            self.min.append(val)
+        else:
+            if val &lt;= self.min[-1]:
+                self.min.append(val)
+        self.stack.append(val)
+        self.size += 1
+
+    def pop(self):
+        tmp = self.stack.pop()
+        self.size -= 1
+        if tmp == self.min[-1]:
+            self.min.pop()
+
+    def top(self):
+        return self.stack[-1]
+
+    def getMin(self):
+        return self.min[-1]
+
+
+if __name__ == '__main__':
+
+    s = MinStack()
+
+    s.push(6)
+    print(s.getMin())
+
+    s.push(7)
+    print(s.getMin())
+
+    s.push(5)
+    print(s.getMin())
+
+    s.push(3)
+    print(s.getMin())
+
+    s.pop()
+    print(s.getMin())
+
+    s.pop()
+    print(s.getMin())
+</code></pre>
+<pre><code>$ python3 10minstck.py 
+6
+6
+5
+3
+5
+6
+</code></pre>
+<h3 id="queue-using-stacks"><strong>Queue using Stacks</strong></h3>
+<pre><code># Queue using Stacks
+# We are given a stack data structure with push and pop operations, 
+# the task is to implement a queue using instances of stack data structure and operations on them.
+
+
+# Python3 program to implement Queue using
+# two stacks with costly deQueue()
+</code></pre>
+<pre><code>class Queue:
+    def __init__(self):
+        self.s1 = []
+        self.s2 = []
+
+    # EnQueue item to the queue
+    def enQueue(self, x):
+        self.s1.append(x)
+
+    # DeQueue item from the queue
+    def deQueue(self):
+
+        # if both the stacks are empty
+        if len(self.s1) == 0 and len(self.s2) == 0:
+            print(&quot;Q is Empty&quot;)
+            return
+
+        # if s2 is empty and s1 has elements
+        elif len(self.s2) == 0 and len(self.s1) &gt; 0:
+            while len(self.s1):
+                temp = self.s1.pop()
+                self.s2.append(temp)
+            return self.s2.pop()
+
+        else:
+            return self.s2.pop()
+
+    # Driver code
+if __name__ == '__main__':
+    q = Queue()
+    q.enQueue(1)
+    q.enQueue(2)
+    q.enQueue(3)
+
+    print(q.deQueue())
+    print(q.deQueue())
+    print(q.deQueue())
+</code></pre>
+<h3 id="_2"><strong>给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效</strong>。</h3>
+<pre><code># 有效字符串需满足：左括号必须与相同类型的右括号匹配，左括号必须以正确的顺序匹配。
+# 例如，{ [ ( ) ( ) ] } 是合法的，而 { ( [ ) ] } 是非法的。
+</code></pre>
+<pre><code>def main():
+    s =  &quot;{[()()]}&quot;
+    print(isLegal(s))
+    # print(s[0])
+    # print(isLeft(s))
+
+def isLeft(c):
+    if c == '{' or c == '(' or c == '[':
+        return 1
+    else:
+        return 0
+
+def isPair(p, curr):
+    if ( p == '{' and curr == '}' ) or ( p == '(' and curr == ')') or (p == '[' and curr == ']'):
+        return 1
+    else:
+        return 0
+
+def isLegal(s):
+    stack = []
+    for i in range(0,len(s)):
+        curr = s[i]
+        if isLeft(curr) == 1:
+            stack.append(curr)
+        else:
+            if len(stack) == 0:
+                return &quot;Illegal&quot;
+            p = stack.pop()
+            if isPair(p, curr) == 0:
+                return &quot;Illegal&quot;
+
+    if len(stack) == 0:
+        return &quot;Legal&quot;
+    else:
+        return &quot;Illegal&quot;
+
+if __name__ == '__main__':
+    main()
+</code></pre>
+<h2 id="linked-lists">Linked lists</h2>
+<h3 id="intersection-point-in-y-shapped-linked-lists"><strong>Intersection Point in Y Shapped Linked Lists</strong></h3>
+<pre><code># Given two singly linked lists of size N and M, 
+# write a program to get the point where two linked lists intersect each other.
+# Input:
+# LinkList1 = 3-&gt;6-&gt;9-&gt;common
+# LinkList2 = 10-&gt;common
+# common = 15-&gt;30-&gt;NULL
+# Output: 15
+
+# Input: 
+# Linked List 1 = 4-&gt;1-&gt;common
+# Linked List 2 = 5-&gt;6-&gt;1-&gt;common
+# common = 8-&gt;4-&gt;5-&gt;NULL
+# Output: 8
+# Explanation: 
+</code></pre>
+<pre><code># 4              5
+# |              |
+# 1              6
+#  \             /
+#   8   -----  1 
+#    |
+#    4
+#    |
+#   5
+#   |
+#   NULL  
+
+</code></pre>
+<pre><code># defining a node for LinkedList
+class Node:
+  def __init__(self,data):
+    self.data=data
+    self.next=None
+
+
+
+def getIntersectionNode(head1,head2):
+
+  #finding the total number of elements in head1 LinkedList
+    c1=getCount(head1)
+
+  #finding the total number of elements in head2 LinkedList
+    c2=getCount(head2)
+
+  #Traverse the bigger node by 'd' so that from that node onwards, both LinkedList
+  #would be having same number of nodes and we can traverse them together.
+    if c1 &gt; c2:
+        d=c1-c2
+        return _getIntersectionNode(d,head1,head2)
+    else:
+        d=c2-c1
+        return _getIntersectionNode(d,head2,head1)
+
+
+def _getIntersectionNode(d,head1,head2):
+
+
+    current1=head1
+    current2=head2
+
+
+    for i in range(d):
+        if current1 is None:
+            return -1
+        current1=current1.next
+
+    while current1 is not None and current2 is not None:
+
+    # Instead of values, we need to check if there addresses are same
+    # because there can be a case where value is same but that value is
+    #not an intersecting point.
+        if current1 is current2:
+            return current1.data # or current2.data ( the value would be same)
+
+        current1=current1.next
+        current2=current2.next
+
+  # Incase, we are not able to find our intersecting point.
+    return -1
+
+#Function to get the count of a LinkedList
+def getCount(node):
+    cur=node
+    count=0
+    while cur is not None:
+        count+=1
+        cur=cur.next
+    return count
+
+
+if __name__ == '__main__':
+  # Creating two LinkedList
+  # 1st one: 3-&gt;6-&gt;9-&gt;15-&gt;30
+  # 2nd one: 10-&gt;15-&gt;30
+  # We can see that 15 would be our intersection point
+
+  # Defining the common node
+
+  common=Node(15)
+
+  #Defining first LinkedList
+
+  head1=Node(3)
+  head1.next=Node(6)
+  head1.next.next=Node(9)
+  head1.next.next.next=common
+  head1.next.next.next.next=Node(30)
+
+  # Defining second LinkedList
+
+  head2=Node(10)
+  head2.next=common
+  head2.next.next=Node(30)
+
+  print(&quot;The node of intersection is &quot;,getIntersectionNode(head1,head2))
+</code></pre>
+<pre><code>python3 12listinterction.py 
+The node of intersection is  15
+</code></pre>
+<h3 id="reverse-linked-list"><strong>Reverse Linked List</strong></h3>
+<p>Reverse a singly linked list.</p>
+<p>Explanation: head -&gt; prev(None); move pointer: head -&gt; head.next, prev -&gt; head</p>
+<p><strong>Iteratively</strong></p>
+<pre><code># Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def reverseList(self, head):
+        &quot;&quot;&quot;
+        :type head: ListNode
+        :rtype: ListNode
+        &quot;&quot;&quot;
+        next = None
+        while head:
+            head.next, head, next = next, head.next, head
+        return next # ***important***
+</code></pre>
+<ul>
+<li>Recursion</li>
+</ul>
+<pre><code> # Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def reverseList(self, head):
+        &quot;&quot;&quot;
+        :type head: ListNode
+        :rtype: ListNode
+        &quot;&quot;&quot;
+        return self.reverse(head)
+
+    def reverse(self, node, prev=None):
+        if not node:
+            return prev
+        n = node.next
+        node.next = prev
+
+        return self.reverse(n, node)
+</code></pre>
+<h2 id="others">Others</h2>
+<h3 id="two-rectangles-overlap-or-not"><strong>two rectangles overlap or not</strong></h3>
+<pre><code>#  
+# Given two rectangles, find if the given two rectangles overlap or not. 
+# A rectangle is denoted by providing the x and y coordinates of two points: 
+# the left top corner and the right bottom corner of the rectangle. 
+# Two rectangles sharing a side are considered overlapping. 
+# (L1 and R1 are the extreme points of the first rectangle and L2 and R2 are the extreme points of the second rectangle).
+
+
+# Input:
+# L1=(0,10)
+# R1=(10,0)
+# L2=(5,5)
+# R2=(15,0)
+# Output:
+# 1
+# Explanation:
+# The rectangles overlap.
+
+# Input:
+# L1=(0,2)
+# R1=(1,1)
+# L2=(-2,0)
+# R2=(0,-3)
+# Output:
+# 0
+# Explanation:
+# The rectangles do not overlap.
+
+# Python program to check if rectangles overlap
+</code></pre>
+<pre><code># Python program to check if rectangles overlap
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+def doOverlap(l1, r1, l2, r2):
+    # To check if either rectangle is actually a line
+    # For example  :  l1 ={-1,0}  r1={1,1}  l2={0,-1}  r2={0,1}
+    # the line cannot have positive overlap
+    if(l1.x== r1.x or l1.y == r1.y or l2.x == r2.x or l2.y == r2.y):
+        return False
+
+    # If one rectangle is on left side of other
+    if(l1.x &gt;= r2.x or l2.x &gt;= r1.x):
+        return False
+
+    # If one rectangle is above other
+    if(r1.y &gt;= l2.y or r2.y &gt;= l1.y):
+        return False
+
+
+    return True
+
+# Driver Code
+if __name__ == &quot;__main__&quot;:
+    l1 = Point(0, 10)
+    r1 = Point(10, 0)
+    l2 = Point(5, 5)
+    r2 = Point(15, 0)
+
+    if(doOverlap(l1, r1, l2, r2)):
+        print(&quot;Rectangles Overlap&quot;)
+    else:
+        print(&quot;Rectangles Don't Overlap&quot;)
+</code></pre>
+<pre><code>def doOverlap(l1, r1, l2, r2):
+    if(l1[0] == r1[0] or l1[1] == r1[1] or l2[0] == r2[0] or l2[1] == r2[1]):
+        return False
+
+    if(l1[0] &gt;= r2[0] or l2[0] &gt;= r1[0]):
+        return False
+
+    if(r1[1] &gt;= l2[1] or r2[1] &gt;= l1[1]):
+        return False
+
+    return True
+
+if __name__ == &quot;__main__&quot;:
+    l1=[0, 10]
+    r1=[10, 0]  
+    l2=[5, 5]  
+    r2=[15, 0]
+
+    if(doOverlap(l1, r1, l2, r2)):
+        print(&quot;Rectangles Overlap&quot;)
+    else:
+        print(&quot;Rectangles Don't Overlap&quot;)
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2021-9999 Jacob Xi
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      
+    
+  </body>
+</html>
