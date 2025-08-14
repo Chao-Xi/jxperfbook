@@ -184,6 +184,7 @@ nav:
     - '3 Script Learning': '2025/sreln/3code.md'
     - '4 SRE Test':  '2025/sre/4sre.md'
     - '5 Agile Test':  '2025/sreln/5agile.md'
+    - '6 Cloud Native Test': '2025/sreln/6cloud.md'
   - '英语学习':
     - '1 职场英语': 'Eng/1work.md'
 
